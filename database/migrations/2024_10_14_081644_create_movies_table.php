@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->bigIncrements('movie_id');
+            $table->string('image');
             $table->string('title');
             $table->string('genre');
             $table->string('duration');
