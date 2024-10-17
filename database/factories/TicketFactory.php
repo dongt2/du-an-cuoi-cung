@@ -18,7 +18,7 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'transaction_id' => Transaction::factory(),
+            'transaction_id' => fake()->numberBetween(1, 10),
         ];
     }
 }

@@ -18,7 +18,7 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(), 
+            'user_id' => fake()->numberBetween(1, 10),
             'total_amount' => fake()->randomFloat(2, 50, 5000),
             'status' => fake()->randomElement(['paid', 'unpaid', 'canceled']),
             'date' => fake()->dateTime(),

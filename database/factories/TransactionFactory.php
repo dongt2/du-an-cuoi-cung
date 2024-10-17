@@ -21,9 +21,10 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'voucher_id' => Voucher::factory(),
-            'booking_id' => Booking::factory(),
-            'user_id' => User::factory(),
+            'voucher_id' => fake()->numberBetween(1, 10), 
+            'booking_id' => fake()->numberBetween(1, 10),
+            'user_id' => fake()->numberBetween(1, 10),
+
             'payment_method' => fake()->randomElement(['Credit Card', 'PayPal', 'Bank Transfer']),
             'total' => fake()->randomFloat(2, 10, 1000),
             'date_time' => fake()->dateTime(),
