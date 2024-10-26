@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 // mới vào chạy 2 cái này
 // php artisan migrate
 // php artisan db:seed
-// b
+// b c
 
 Route::get('/', function () {
     return view('user.home');
