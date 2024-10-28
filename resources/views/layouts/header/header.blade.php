@@ -4,7 +4,7 @@
 </div>
 
 <!-- Header section -->
-<header class="header-wrapper header-wrapper--home">
+<header class="header-wrapper">
     <div class="container">
         <!-- Logo link-->
         <a href='index.html' class="logo">

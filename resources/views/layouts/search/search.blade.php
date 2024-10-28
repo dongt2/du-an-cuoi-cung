@@ -1,4 +1,4 @@
-<div class="search-wrapper" style="position: relative !important;">
+<div class="search-wrapper" style="">
     <div class="container container--add">
         <form id='search-form' method='get' class="search">
             <input type="text" class="search__field" placeholder="Search">
