@@ -3,6 +3,7 @@
 
 <head>
     @extends('layouts.head.head')
+    @include('assets.css.css')
 </head>
 
 <body>
@@ -10,6 +11,8 @@
         <!-- HEADER -->
         @include('layouts.header.header')
         <!-- END HEADER -->
+
+        @include('layouts.search.search')
 
         <!-- Main content -->
         <section class="container">
@@ -30,6 +33,7 @@
     </div>
 
     @extends('assets.js.jsAll')
+    @extends('assets.js.js')
 
 </body>
 

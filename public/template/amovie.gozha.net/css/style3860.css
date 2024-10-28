@@ -2596,7 +2596,7 @@ input[type="button"].btn-block {
 }
 .header-wrapper--home {
   background: rgba(46, 41, 46, 0.8);
-  position: absolute;
+  /* position: absolute; */
   height: 55px;
   width: 100%;
   z-index: 101;

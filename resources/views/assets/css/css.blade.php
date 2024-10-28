@@ -7,7 +7,8 @@
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
 
 <!-- Stylesheets -->
-
+<!-- jQuery UI -->
+<link href="/template/code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
 <!-- Mobile menu -->
 <link href="/template/amovie.gozha.net/css/gozha-nav.css" rel="stylesheet" />
 <!-- Select -->
@@ -18,3 +19,6 @@
 
 <!-- Custom -->
 <link href="/template/amovie.gozha.net/css/style3860.css?v=1" rel="stylesheet" />
+
+ <!-- Modernizr --> 
+ <script src="/template/amovie.gozha.net/js/external/modernizr.custom.js"></script>
