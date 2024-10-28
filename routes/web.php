@@ -24,3 +24,6 @@ Route::get('/home', function () {
 Route::get('/404', function () {
     return view('404-NotFound');
 });
+Route::get('/movies', function () {
+    return view('movie-list-full');
+});
