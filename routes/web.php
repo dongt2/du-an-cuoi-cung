@@ -36,14 +36,15 @@ Route::get('/book3', function () {
     return view('user.book3-buy');
 });
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::group([
+    'prefix'  => 'admin',
+    'as' => 'admin.'
+], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
-    Route::get('/screens', [ScreenController::class, 'index'])->name('screen.index');
+    Route::get('/screen', [ScreenController::class, 'index'])->name('screen.index');
     Route::get('/screen/create', [ScreenController::class, 'create'])->name('screen.create');
-    Route::post('/screen/create', [ScreenController::class, 'store'])->name('screen.store');
-    Route::get('/screen/edit/{post}', [ScreenController::class, 'edit'])->name('screen.edit');
-    Route::put('/screen/edit/{post}', [ScreenController::class, 'update'])->name('screen.update');
-    Route::delete('screen/delete/{post}', [ScreenController::class, 'destroy'])->name('screen.destroy');
-
-    
+    Route::post('/screen', [ScreenController::class, 'store'])->name('screen.store');
+    Route::get('/screen/{screen_id}/edit', [ScreenController::class, 'edit'])->name('screen.edit');
+    Route::put('/screen/{screen_id}', [ScreenController::class, 'update'])->name('screen.update');
+    Route::delete('/screen/{screen_id}', [ScreenController::class, 'destroy'])->name('screen.destroy');
 });

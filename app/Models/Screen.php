@@ -14,6 +14,6 @@ class Screen extends Model
     protected $primaryKey = 'screen_id';
 
     protected $fillable = [
-        'screen_name',
+        'screen_name'
     ];
 }
