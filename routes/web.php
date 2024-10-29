@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', function () {
-    return view('index');
+    return view('Users.index');
 });
 
 Route::get('/404', function () {

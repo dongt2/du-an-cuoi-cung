@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('Users.layouts.master')
 
 @section('title')
     Movie List

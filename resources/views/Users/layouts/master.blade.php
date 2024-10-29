@@ -2,17 +2,17 @@
 <html>
 
 <head>
-    @extends('layouts.head.head')
-    @include('assets.css.css')
+    @extends('Users.layouts.head.head')
+    @include('Users.assets.css.css')
 </head>
 
 <body>
     <div class="wrapper">
         <!-- HEADER -->
-        @include('layouts.header.header')
+        @include('Users.layouts.header.header')
         <!-- END HEADER -->
 
-        @include('layouts.search.search')
+        @include('Users.layouts.search.search')
 
         <!-- Main content -->
         <section class="container">
@@ -22,18 +22,18 @@
         <div class="clearfix"></div>
 
         <footer class="footer-wrapper">
-            @include('layouts.footer.footer')
+            @include('Users.layouts.footer.footer')
         </footer>
 
     </div>
 
     <!-- open/close -->
     <div class="overlay overlay-hugeinc">
-        @include('layouts.open_close.open-close')
+        @include('Users.layouts.open_close.open-close')
     </div>
 
-    @extends('assets.js.jsAll')
-    @extends('assets.js.js')
+    @extends('Users.assets.js.jsAll')
+    @extends('Users.assets.js.js')
 
 </body>
 
