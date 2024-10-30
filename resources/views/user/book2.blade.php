@@ -419,7 +419,9 @@
     <div class="clearfix"></div>
     <form id='film-and-time' class="booking-form" method='get' action='https://amovie.gozha.net/book3-buy.html'>
 
-        <input type='text' name='choosen-number' class="choosen-number">
+        <!-- <input type='text' name='choosen-number' class="choosen-number hidden-input "> -->
+
+        <input type='text' name='choosen-number' class="choosen-number" style="display: block;">
         <input type='text' name='choosen-number--cheap' class="choosen-number--cheap">
         <input type='text' name='choosen-number--middle' class="choosen-number--middle">
         <input type='text' name='choosen-number--expansive' class="choosen-number--expansive">
@@ -440,6 +442,11 @@
     </form>
 
     <div class="clearfix"></div>
+    <style>
+        .hidden-input {
+            display: none;
+        }
+    </style>
 @endsection
 
 @section('javascript')

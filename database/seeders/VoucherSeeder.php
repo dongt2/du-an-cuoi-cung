@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\voucher;
+use App\Models\Voucher;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

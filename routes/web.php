@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\SeatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,6 @@ use Illuminate\Support\Facades\Route;
 // mới vào chạy 2 cái này
 // php artisan migrate
 // php artisan db:seed
-// a
 
 Route::get('/', function () {
     return view('user.home');
@@ -32,3 +32,10 @@ Route::get('/book2', function () {
 Route::get('/book3', function () {
     return view('user.book3-buy');
 });
+
+Route::get('/list-movie', function () {
+    return view('admin.movies.list-movie');
+});
+
+
+Route::resource('/seat', SeatController::class);
