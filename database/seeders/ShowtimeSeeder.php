@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\showtime;
+use App\Models\Showtime;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 

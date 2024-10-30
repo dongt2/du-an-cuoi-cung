@@ -9,14 +9,30 @@
                 <li class="menu-title">Main</li>
 
                 <li>
-                    <a href="index.html" class="waves-effect">
+                    <a href="book1" class="waves-effect">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span class="badge rounded-pill bg-primary float-end">2</span>
-                        <span>Dashboard</span>
+                        <span>Book1</span>
                     </a>
                 </li>
 
                 <li>
+                    <a href="list-movie" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+                        <span class="badge rounded-pill bg-primary float-end">2</span>
+                        <span>Quản lí phim</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="list-seat" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+                        <span class="badge rounded-pill bg-primary float-end">2</span>
+                        <span>Quản lí ghế</span>
+                    </a>
+                </li>
+
+                {{-- <li>
                     <a href="calendar.html" class=" waves-effect">
                         <i class="mdi mdi-calendar-check"></i>
                         <span>Calendar</span>
@@ -235,7 +251,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
 
             </ul>
         </div>
