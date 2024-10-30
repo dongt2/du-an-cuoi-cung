@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ScreenController;
-
+use App\Http\Controllers\Admin\ShowtimeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,10 +41,21 @@ Route::group([
     'as' => 'admin.'
 ], function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
+
+    // Route Screen
     Route::get('/screen', [ScreenController::class, 'index'])->name('screen.index');
     Route::get('/screen/create', [ScreenController::class, 'create'])->name('screen.create');
     Route::post('/screen', [ScreenController::class, 'store'])->name('screen.store');
     Route::get('/screen/{screen_id}/edit', [ScreenController::class, 'edit'])->name('screen.edit');
     Route::put('/screen/{screen_id}', [ScreenController::class, 'update'])->name('screen.update');
     Route::delete('/screen/{screen_id}', [ScreenController::class, 'destroy'])->name('screen.destroy');
+
+    // Route Showtimes
+
+    Route::get('/showtime', [ShowtimeController::class, 'index'])->name('showtime.index');
+    Route::get('/showtime/create', [ShowtimeController::class, 'create'])->name('showtime.create');
+    Route::post('/showtime/{showtime_id}', [ShowtimeController::class, 'store'])->name('showtime.store');
+    Route::get('/showtime/{showtime_id}/edit', [ShowtimeController::class, 'edit'])->name('showtime.edit');
+    Route::put('/showtime/{showtime_id}', [ShowtimeController::class, 'update'])->name('showtime.update');
+    Route::delete('/showtime/{showtime_id}', [ShowtimeController::class, 'destroy'])->name('showtime.destroy');
 });

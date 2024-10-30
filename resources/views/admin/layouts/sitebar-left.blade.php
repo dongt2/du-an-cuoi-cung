@@ -25,7 +25,7 @@
                 </li>
 
                 <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <a href="{{ route('admin.showtime.index') }}" class="has-arrow waves-effect">
                         <i class="mdi mdi-buffer"></i>
                         <span>Quản lý Xuất chiếu</span>
                     </a>
