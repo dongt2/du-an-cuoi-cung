@@ -15,8 +15,6 @@
                     <form action="{{ route('admin.showtime.update', $showtime->showtime_id) }}" method="post">
                         @method('PUT')
                         @csrf
-                        
-                    
                         <div class="mb-3">
                             <label for="movie_id" class="form-label">Tên Phim</label>
                             <select name="movie_id" id="movie_id" class="form-control">
@@ -56,23 +54,13 @@
                         </div>
                         
                         <div class="mb-3">
-                            <label for="hours" class="form-label">Giờ</label>
-                            <input type="number" name="hours" id="hours" min="0" max="23" class="form-control" value="{{ (int)($showtime->time / 60) }}" required>
-                            @error('hours')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
+                            <label for="time" class="form-label">Thời gian chiếu phim</label>
+                            <input type="text" name="time" id="time" class="form-control" value="{{ $showtime->time }}">
                         </div>
-                        
-                        <div class="mb-3">
-                            <label for="minutes" class="form-label">Phút</label>
-                            <input type="number" name="minutes" id="minutes" min="0" max="59" class="form-control" value="{{ $showtime->time % 60 }}" required>
-                            @error('minutes')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>                                                 
                         
                         <button type="submit" class="btn btn-primary mt-2">Lưu</button>
                     </form>
+                    
                     
                 </div>
             </div>

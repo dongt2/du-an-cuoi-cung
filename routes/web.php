@@ -54,8 +54,8 @@ Route::group([
 
     Route::get('/showtime', [ShowtimeController::class, 'index'])->name('showtime.index');
     Route::get('/showtime/create', [ShowtimeController::class, 'create'])->name('showtime.create');
-    Route::post('/showtime/{showtime_id}', [ShowtimeController::class, 'store'])->name('showtime.store');
-    Route::get('/showtime/{showtime_id}/edit', [ShowtimeController::class, 'edit'])->name('showtime.edit');
+    Route::post('/showtime/', [ShowtimeController::class, 'store'])->name('showtime.store');
+    Route::get('/showtime/{showtime_id}/edit', [ShowtimeController::class, 'edit'])->name('showtime.edit');     
     Route::put('/showtime/{showtime_id}', [ShowtimeController::class, 'update'])->name('showtime.update');
     Route::delete('/showtime/{showtime_id}', [ShowtimeController::class, 'destroy'])->name('showtime.destroy');
 });

@@ -10,6 +10,7 @@ use App\Models\Showtime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ShowtimeController extends Controller
 {
@@ -50,40 +51,39 @@ class ShowtimeController extends Controller
     }
     public function store(Request $request)
     {
-        try {
-            // Lấy giá trị từ request
-            $hours = $request->input('hours');
-            $minutes = $request->input('minutes');
+        // Debugging: Kiểm tra dữ liệu nhận được
+        // dd($request->all());
 
-            // Kiểm tra xem cả hai trường hours và minutes có được cung cấp không
-            if (is_null($hours) || is_null($minutes)) {
-                return redirect()->back()->withErrors(['time' => 'Trường thời gian không được để trống.']);
-            }
+        // Validate dữ liệu
+        $request->validate([
+            'movie_id' => 'required|exists:movies,movie_id',
+            'screen_id' => 'required|exists:screens,screen_id',
+            'showtime_date' => 'required|date_format:d/m/Y', // Định dạng ngày nhập vào
+            'hours' => 'required|integer|min:0|max:23',
+            'minutes' => 'required|integer|min:0|max:59',
+            'seconds' => 'required|integer|min:0|max:59'
+        ]);
 
-            // Chuyển đổi thành định dạng H:i
-            $hours = str_pad($hours, 2, '0', STR_PAD_LEFT);  // Đảm bảo có 2 chữ số
-            $minutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
-            $time = "{$hours}:{$minutes}";
+        // Chuyển đổi định dạng ngày từ d/m/Y sang Y-m-d
+        $date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->showtime_date)->format('Y-m-d');
 
-            // Xác thực dữ liệu từ request
-            $validatedData = $request->validate([
-                'movie_id' => 'required|exists:movies,movie_id',
-                'screen_id' => 'required|exists:screens,screen_id',
-                'showtime_date' => 'required|date',
-                // Bỏ yêu cầu time ở đây, vì nó sẽ được tính toán từ hours và minutes
-            ]);
+        // Tính tổng thời gian chiếu
+        $totalSeconds = ($request->hours * 3600) + ($request->minutes * 60) + $request->seconds;
 
-            // Thêm time vào validatedData
-            $validatedData['time'] = $time;
+        // Lưu vào cơ sở dữ liệu
+        Showtime::create([
+            'movie_id' => $request->movie_id,
+            'screen_id' => $request->screen_id,
+            'showtime_date' => $date,
+            'time' => $totalSeconds, // Lưu tổng thời gian tính bằng giây
+        ]);
 
-            // Lưu dữ liệu vào cơ sở dữ liệu
-            Showtime::create($validatedData);
-
-            return redirect()->route('admin.showtime.index')->with('message', 'Thêm mới thành công');
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
+        return redirect()->route('admin.showtime.index')->with('message', 'Thêm lịch chiếu thành công');
     }
+
+
+
+
     public function edit($showtime_id)
     {
         // Tìm Showtime dựa trên ID
@@ -94,32 +94,26 @@ class ShowtimeController extends Controller
             return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi.']);
         }
 
-        // Chuyển đổi hours và minutes thành số nguyên
-        $showtime->hours = (int)$showtime->hours;
-        $showtime->minutes = (int)$showtime->minutes;
-
         // Lấy danh sách screens và movies
-        $listScreens = Screen::all(); // Sử dụng model thay vì DB facade
-        $listMovies = Movie::all();   // Sử dụng model thay vì DB facade
+        $listScreens = Screen::all();
+        $listMovies = Movie::all();
 
         // Trả về view với dữ liệu cần thiết
         return view('admin.showtimes.update', [
-            'showtime' => $showtime,
+            'showtime' => $showtime, // Giữ nguyên đối tượng showtime, bao gồm thời gian
             'listScreens' => $listScreens,
             'listMovies' => $listMovies,
         ]);
     }
 
-
     public function update(Request $request, $showtime_id)
     {
-        // Validate dữ liệu đầu vào
+        // Xác thực dữ liệu đầu vào
         $request->validate([
             'movie_id' => 'required|exists:movies,movie_id',
             'screen_id' => 'required|exists:screens,screen_id',
             'showtime_date' => 'required|date',
-            'hours' => 'required|integer|min:0|max:23',
-            'minutes' => 'required|integer|min:0|max:59'
+            'time' => 'required|string' // giả định time là định dạng chuỗi 'H:i:s'
         ]);
 
         // Tìm Showtime dựa trên ID
@@ -130,36 +124,35 @@ class ShowtimeController extends Controller
             return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi.']);
         }
 
-        // Tính toán tổng thời gian chiếu phim
-        $totalMinutes = (int)$request->hours * 60 + (int)$request->minutes;
-
         // Cập nhật thông tin lịch chiếu
         $showtime->movie_id = $request->movie_id;
         $showtime->screen_id = $request->screen_id;
         $showtime->showtime_date = $request->showtime_date;
-        $showtime->time = $totalMinutes; // Lưu tổng thời gian
+        $showtime->time = $request->time; // Lưu thời gian theo định dạng đã nhận
 
-        // Lưu lại các thay đổi
+        // Lưu thay đổi
         $showtime->save();
 
-        // Chuyển hướng về danh sách với thông báo thành công
         return redirect()->route('admin.showtime.index')->with('message', 'Cập nhật thành công');
     }
+
+
+
+
     public function destroy($showtime_id)
-{
-    // Tìm bản ghi Showtime dựa trên ID
-    $showtime = Showtime::find($showtime_id);
+    {
+        // Tìm bản ghi Showtime dựa trên ID
+        $showtime = Showtime::find($showtime_id);
 
-    // Kiểm tra xem bản ghi có tồn tại không
-    if (!$showtime) {
-        return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi để xóa.']);
+        // Kiểm tra xem bản ghi có tồn tại không
+        if (!$showtime) {
+            return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi để xóa.']);
+        }
+
+        // Xóa bản ghi
+        $showtime->delete();
+
+        // Chuyển hướng với thông báo thành công
+        return redirect()->route('admin.showtime.index')->with('message', 'Xóa lịch chiếu thành công.');
     }
-
-    // Xóa bản ghi
-    $showtime->delete();
-
-    // Chuyển hướng với thông báo thành công
-    return redirect()->route('admin.showtime.index')->with('message', 'Xóa lịch chiếu thành công.');
-}
-
 }
