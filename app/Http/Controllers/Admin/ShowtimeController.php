@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ShowtimesUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShowtimeRequest;
 use App\Models\Movie;
@@ -43,21 +44,14 @@ class ShowtimeController extends Controller
         // dd($listScreens);
         return view('admin.showtimes.create', compact('listScreens', 'listMovies'));
     }
-    public function store(Request $request)
+    public function store(ShowtimeRequest $request)
     {
         // Debugging: Kiểm tra dữ liệu nhận được
         // dd($request->all());
 
-        // Validate dữ liệu
-        $request->validate([
-            'movie_id' => 'required|exists:movies,movie_id',
-            'screen_id' => 'required|exists:screens,screen_id',
-            'time' => 'required'
-        ]);
+        // Chuyển đổi định dạng ngày từ d/m/Y sang Y-m-d nếu cần
+        // $request->merge(['showtime_date' => ...]);
 
-        // Chuyển đổi định dạng ngày từ d/m/Y sang Y-m-d
-
-        
         // Lưu vào cơ sở dữ liệu
         Showtime::create([
             'movie_id' => $request->movie_id,
@@ -65,13 +59,11 @@ class ShowtimeController extends Controller
             'showtime_date' => $request->showtime_date,
             'time' => $request->time, // Lưu tổng thời gian tính bằng giây
         ]);
+        // Phát sự kiện
+        event(new ShowtimesUpdated());
 
         return redirect()->route('admin.showtime.index')->with('message', 'Thêm lịch chiếu thành công');
     }
-
-
-
-
     public function edit($showtime_id)
     {
         // Tìm Showtime dựa trên ID
@@ -94,7 +86,7 @@ class ShowtimeController extends Controller
         ]);
     }
 
-    public function update(Request $request, $showtime_id)
+    public function update(ShowtimeRequest $request, $showtime_id)
     {
         // Xác thực dữ liệu đầu vào
         $request->validate([

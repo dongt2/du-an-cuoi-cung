@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use App\Events\ShowtimesUpdated;
+use App\Listeners\CleanExpiredShowtimesListener;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -18,14 +21,18 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        ShowtimesUpdated::class => [ // Thêm dòng này
+            CleanExpiredShowtimesListener::class, // Thêm dòng này
+        ],
     ];
+    
 
     /**
      * Register any events for your application.
      */
     public function boot(): void
     {
-        //
+        
     }
 
     /**

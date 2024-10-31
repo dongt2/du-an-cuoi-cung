@@ -53,7 +53,7 @@ class ScreenController extends Controller
             $screen->update($data);
 
             // Redirect với thông báo thành công
-            return redirect()->route('admin.screens.index')->with('message', 'Sửa thành công');
+            return redirect()->route('admin.screen.index')->with('message', 'Sửa thành công');
         } catch (\Exception $e) {
             // Xử lý ngoại lệ nếu có lỗi khi lưu dữ liệu
             return redirect()->back()->withErrors(['error' => 'Đã xảy ra lỗi trong quá trình lưu dữ liệu.']);
