@@ -42,7 +42,7 @@
 
                         <div class="mb-3">
                             <label for="showtime_date" class="form-label">Ngày chiếu phim</label>
-                            <input type="text" name="showtime_date" id="showtime_date" class="form-control"
+                            <input type="date" name="showtime_date" id="showtime_date" class="form-control"
                                 placeholder="dd/mm/yyyy" required>
                             @error('showtime_date')
                                 <span class="text-danger">{{ $message }}</span>
@@ -51,32 +51,13 @@
 
 
                         <div class="mb-3">
-                            <label for="hours" class="form-label">Giờ</label>
-                            <input type="number" name="hours" id="hours" min="0" max="23"
+                            <label for="time" class="form-label">Thời gian</label>
+                            <input type="time" name="time" id="time" min="0" max="23"
                                 class="form-control" required>
-                            @error('hours')
+                            @error('time')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <div class="mb-3">
-                            <label for="minutes" class="form-label">Phút</label>
-                            <input type="number" name="minutes" id="minutes" min="0" max="59"
-                                class="form-control" required>
-                            @error('minutes')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="seconds" class="form-label">Giây</label>
-                            <input type="number" name="seconds" id="seconds" min="0" max="59"
-                                class="form-control" required>
-                            @error('seconds')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
                         <button type="submit" class="btn btn-primary mt-2">Lưu</button>
                     </form>
 

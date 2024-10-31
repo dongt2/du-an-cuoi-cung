@@ -16,7 +16,7 @@ class ShowtimeController extends Controller
 {
     public function index()
     {
-        $data = DB::table('showtimes')
+        $data = Showtime::query()
             ->join('movies', 'movies.movie_id', '=', 'showtimes.movie_id')
             ->join('screens', 'screens.screen_id', '=', 'showtimes.screen_id')
             ->select('showtimes.showtime_id', 'movies.title as movie_title', 'screens.screen_name as screen_name', 'showtimes.showtime_date', 'showtimes.time')
@@ -28,12 +28,6 @@ class ShowtimeController extends Controller
             // Xử lý khi không có dữ liệu
             return response()->json(['message' => 'Không có dữ liệu'], 404);
         }
-
-
-        $data->transform(function ($item) {
-            $item->showtime_date = Carbon::parse($item->showtime_date)->format('d/m/Y');
-            return $item;
-        });
         // dd($data);
         $listScreens = DB::table('screens')->get();
         $listMovies = DB::table('movies')->get();
@@ -58,24 +52,18 @@ class ShowtimeController extends Controller
         $request->validate([
             'movie_id' => 'required|exists:movies,movie_id',
             'screen_id' => 'required|exists:screens,screen_id',
-            'showtime_date' => 'required|date_format:d/m/Y', // Định dạng ngày nhập vào
-            'hours' => 'required|integer|min:0|max:23',
-            'minutes' => 'required|integer|min:0|max:59',
-            'seconds' => 'required|integer|min:0|max:59'
+            'time' => 'required'
         ]);
 
         // Chuyển đổi định dạng ngày từ d/m/Y sang Y-m-d
-        $date = \Carbon\Carbon::createFromFormat('d/m/Y', $request->showtime_date)->format('Y-m-d');
 
-        // Tính tổng thời gian chiếu
-        $totalSeconds = ($request->hours * 3600) + ($request->minutes * 60) + $request->seconds;
-
+        
         // Lưu vào cơ sở dữ liệu
         Showtime::create([
             'movie_id' => $request->movie_id,
             'screen_id' => $request->screen_id,
-            'showtime_date' => $date,
-            'time' => $totalSeconds, // Lưu tổng thời gian tính bằng giây
+            'showtime_date' => $request->showtime_date,
+            'time' => $request->time, // Lưu tổng thời gian tính bằng giây
         ]);
 
         return redirect()->route('admin.showtime.index')->with('message', 'Thêm lịch chiếu thành công');

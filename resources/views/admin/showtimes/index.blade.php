@@ -15,27 +15,6 @@
 
                     <div id="datatable-buttons_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dt-buttons btn-group flex-wrap"> <button
-                                        class="btn btn-secondary buttons-copy buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>Copy</span></button> <button
-                                        class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>Excel</span></button> <button
-                                        class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>PDF</span></button>
-                                    <div class="btn-group"><button
-                                            class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
-                                            tabindex="0" aria-controls="datatable-buttons" type="button"
-                                            aria-haspopup="dialog"><span>Column visibility</span></button></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div id="datatable-buttons_filter" class="dataTables_filter"><label>Search:<input
-                                            type="search" class="form-control form-control-sm" placeholder=""
-                                            aria-controls="datatable-buttons"></label></div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-12">
                                 <a href="{{ route('admin.showtime.create') }}" class="btn btn-primary mb-3">Thêm mới</a>
                                 <table class="table table-bordered">
@@ -53,20 +32,22 @@
                                     <tbody>
                                         @foreach ($data as $key => $showtime)
                                             <tr>
-                                                <td scope="row">{{ $showtime->showtime_id }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $showtime->movie_title }}</td>
 
-                                                <td>{{ $showtime->screen_name}}</td>
+                                                <td>{{ $showtime->screen_name }}</td>
 
-                                                <td>{{ $showtime->showtime_date }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($showtime->showtime_date)->format('d-m-Y') }}
+                                                </td>
 
-                                                <td>{{ $showtime->time }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($showtime->time)->format('H:i') }}</td>
 
 
                                                 <td class="d-flex gap-1">
                                                     <a href="{{ route('admin.showtime.edit', $showtime->showtime_id) }}"
                                                         class="btn btn-primary">Edit</a>
-                                                    <form action="{{ route('admin.showtime.destroy', $showtime->showtime_id) }}"
+                                                    <form
+                                                        action="{{ route('admin.showtime.destroy', $showtime->showtime_id) }}"
                                                         method="post" class="">
                                                         @csrf
                                                         @method('DELETE')
@@ -78,7 +59,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{-- {{ $screen->links() }} --}}
+                                {{ $data->links() }}
                             </div>
                         </div>
                         {{-- <div class="row">

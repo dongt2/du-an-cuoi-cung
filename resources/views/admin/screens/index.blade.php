@@ -15,27 +15,6 @@
 
                     <div id="datatable-buttons_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                         <div class="row">
-                            <div class="col-sm-12 col-md-6">
-                                <div class="dt-buttons btn-group flex-wrap"> <button
-                                        class="btn btn-secondary buttons-copy buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>Copy</span></button> <button
-                                        class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>Excel</span></button> <button
-                                        class="btn btn-secondary buttons-pdf buttons-html5" tabindex="0"
-                                        aria-controls="datatable-buttons" type="button"><span>PDF</span></button>
-                                    <div class="btn-group"><button
-                                            class="btn btn-secondary buttons-collection dropdown-toggle buttons-colvis"
-                                            tabindex="0" aria-controls="datatable-buttons" type="button"
-                                            aria-haspopup="dialog"><span>Column visibility</span></button></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-6">
-                                <div id="datatable-buttons_filter" class="dataTables_filter"><label>Search:<input
-                                            type="search" class="form-control form-control-sm" placeholder=""
-                                            aria-controls="datatable-buttons"></label></div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-sm-12">
                                 <a href="{{ route('admin.screen.create') }}" class="btn btn-primary mb-3">Thêm mới</a>
                                 <table class="table table-bordered">
@@ -50,7 +29,7 @@
                                     <tbody>
                                         @foreach ($listScreens as $key => $screen)
                                             <tr>
-                                                <td scope="row">{{ $screen->screen_id }}</td>
+                                                <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $screen->screen_name }}</td>
                                                 <td class="d-flex gap-1">
                                                     <a href="{{ route('admin.screen.edit', $screen->screen_id) }}"
@@ -67,7 +46,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{-- {{ $screen->links() }} --}}
+                                {{ $listScreens->links() }}
                             </div>
                         </div>
                         {{-- <div class="row">
