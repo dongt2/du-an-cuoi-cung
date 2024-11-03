@@ -45,14 +45,27 @@
     	<script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script> 
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>		
     <![endif]-->
+    <style>
+        .bannercontainer {
+            height: 700px;
+            /* Thay đổi chiều cao theo ý muốn */
+            overflow: hidden;
+            /* Đảm bảo nội dung không tràn ra ngoài */
+        }
+
+        .banner {
+            height: 100%;
+            /* Đặt chiều cao của banner bằng chiều cao của bannercontainer */
+        }
+    </style>
 </head>
 
 <body>
     <div class="wrapper">
         <!-- Banner -->
-        <div class="banner-top">
-            <img alt='top banner' src="images/banners/bra.jpg">
-        </div>
+        <!-- <div class="banner-top"> -->
+        <!-- <img alt='top banner' src="images/bg-top.png"> -->
+        <!-- </div> -->
 
         <!-- Header section -->
         <header class="header-wrapper header-wrapper--home">
@@ -295,7 +308,7 @@
 
                         <li data-transition="fade" data-slotamount="7" class="slide fading-slide" data-slide='Travel worldwide.
 Create trip film.'>
-                            <img alt='' src="images/bg-video.jpg">
+                            <img alt='' src="images/banners/batman.jpg">
                             <div class="caption slide__video" data-x="0" data-y="0" data-autoplay='true'>
                                 <video class="media-element" autoplay="autoplay" preload='none' loop="loop" muted=""
                                     src="video/TravelIs.mp4">

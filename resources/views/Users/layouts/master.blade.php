@@ -19,6 +19,15 @@
             @yield('content')
         </section>
 
+        <div class="choose-film">
+            <div class="swiper-container">
+                <div class="swiper-wrapper">
+                    @yield('listMovies')
+                </div>
+            </div>
+        </div>
+
+
         <div class="clearfix"></div>
 
         <footer class="footer-wrapper">

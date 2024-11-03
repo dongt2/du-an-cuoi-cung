@@ -217,7 +217,7 @@ function init_Home() {
 				var api = $('.banner').revolution({
                     delay:9000,
                     startwidth:1170,
-                    startheight:500,
+                    startheight:700,
              
                      onHoverStop:"on",
              

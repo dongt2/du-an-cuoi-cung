@@ -22,8 +22,11 @@ Route::get('/home', function () {
 });
 
 Route::get('/404', function () {
-    return view('404-NotFound');
+    return view('Users.404-NotFound');
 });
 Route::get('/movies', function () {
-    return view('movie-list-full');
+    return view('Users.movie-list-full');
+});
+Route::get('/booking1', function () {
+    return view('Users.booking.booking1');
 });
