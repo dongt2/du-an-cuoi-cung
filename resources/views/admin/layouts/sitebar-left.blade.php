@@ -25,7 +25,7 @@
                 </li>
 
                 <li>
-                    <a href="list-seat" class="waves-effect">
+                    <a href="seat?screen=1" class="waves-effect">
                         <i class="mdi mdi-view-dashboard"></i>
                         <span class="badge rounded-pill bg-primary float-end">2</span>
                         <span>Quản lí ghế</span>

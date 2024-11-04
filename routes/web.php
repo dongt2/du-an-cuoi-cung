@@ -39,3 +39,5 @@ Route::get('/list-movie', function () {
 
 
 Route::resource('/seat', SeatController::class);
+Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+

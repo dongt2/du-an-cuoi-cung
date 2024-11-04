@@ -3,12 +3,15 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Arr;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\seat>
  */
 class SeatFactory extends Factory
 {
+    private static $index = 0; // Biến toàn cục để theo dõi chỉ số ghế
+
     /**
      * Define the model's default state.
      *
@@ -16,176 +19,52 @@ class SeatFactory extends Factory
      */
     public function definition(): array
     {
+        $places = [];
+        foreach (range(2, 17) as $i) {
+            $places[] = 'A' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'B' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'C' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'D' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'E' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'F' . $i;
+        }
+        foreach (range(1, 18) as $i) {
+            $places[] = 'G' . $i;
+        }
+        foreach (range(3, 16) as $i) {
+            $places[] = 'I' . $i;
+        }
+        foreach (range(5, 14) as $i) {
+            $places[] = 'J' . $i;
+        }
+        foreach (range(5, 14) as $i) {
+            $places[] = 'K' . $i;
+        }
+        foreach (range(6, 13) as $i) {
+            $places[] = 'L' . $i;
+        }
+
+        // Lấy giá trị ghế theo chỉ số hiện tại
+        $place = $places[self::$index];
+
+        // Tăng chỉ số để tiếp tục lấy giá trị trong lần chạy tiếp theo
+        self::$index++;
+
         return [
-            'showtime_id' => fake()->numberBetween(1, 10),
-            'seat_number' => fake()->numberBetween(80, 100),
-            // 'seat_type' => fake()->randomElement(['Cui', 'Vua', 'Vip']),
-            'A2' => 'Còn trống',
-            'A3' => 'Còn trống',
-            'A4' => 'Còn trống',
-            'A5' => 'Còn trống',
-            'A6' => 'Còn trống',
-            'A7' => 'Còn trống',
-            'A8' => 'Còn trống',
-            'A9' => 'Còn trống',
-            'A10' => 'Còn trống',
-            'A11' => 'Còn trống',
-            'A12' => 'Còn trống',
-            'A13' => 'Còn trống',
-            'A14' => 'Còn trống',
-            'A15' => 'Còn trống',
-            'A16' => 'Còn trống',
-            'A17' => 'Còn trống',
-            'B1' => 'Còn trống',
-            'B2' => 'Còn trống',
-            'B3' => 'Còn trống',
-            'B4' => 'Còn trống',
-            'B5' => 'Còn trống',
-            'B6' => 'Còn trống',
-            'B7' => 'Còn trống',
-            'B8' => 'Còn trống',
-            'B9' => 'Còn trống',
-            'B10' => 'Còn trống',
-            'B11' => 'Còn trống',
-            'B12' => 'Còn trống',
-            'B13' => 'Còn trống',
-            'B14' => 'Còn trống',
-            'B15' => 'Còn trống',
-            'B16' => 'Còn trống',
-            'B17' => 'Còn trống',
-            'B18' => 'Còn trống',
-            'C1' => 'Còn trống',
-            'C2' => 'Còn trống',
-            'C3' => 'Còn trống',
-            'C4' => 'Còn trống',
-            'C5' => 'Còn trống',
-            'C6' => 'Còn trống',
-            'C7' => 'Còn trống',
-            'C8' => 'Còn trống',
-            'C9' => 'Còn trống',
-            'C10' => 'Còn trống',
-            'C11' => 'Còn trống',
-            'C12' => 'Còn trống',
-            'C13' => 'Còn trống',
-            'C14' => 'Còn trống',
-            'C15' => 'Còn trống',
-            'C16' => 'Còn trống',
-            'C17' => 'Còn trống',
-            'C18' => 'Còn trống',
-            'D1' => 'Còn trống',
-            'D2' => 'Còn trống',
-            'D3' => 'Còn trống',
-            'D4' => 'Còn trống',
-            'D5' => 'Còn trống',
-            'D6' => 'Còn trống',
-            'D7' => 'Còn trống',
-            'D8' => 'Còn trống',
-            'D9' => 'Còn trống',
-            'D10' => 'Còn trống',
-            'D11' => 'Còn trống',
-            'D12' => 'Còn trống',
-            'D13' => 'Còn trống',
-            'D14' => 'Còn trống',
-            'D15' => 'Còn trống',
-            'D16' => 'Còn trống',
-            'D17' => 'Còn trống',
-            'D18' => 'Còn trống',
-            'E1' => 'Còn trống',
-            'E2' => 'Còn trống',
-            'E3' => 'Còn trống',
-            'E4' => 'Còn trống',
-            'E5' => 'Còn trống',
-            'E6' => 'Còn trống',
-            'E7' => 'Còn trống',
-            'E8' => 'Còn trống',
-            'E9' => 'Còn trống',
-            'E10' => 'Còn trống',
-            'E11' => 'Còn trống',
-            'E12' => 'Còn trống',
-            'E13' => 'Còn trống',
-            'E14' => 'Còn trống',
-            'E15' => 'Còn trống',
-            'E16' => 'Còn trống',
-            'E17' => 'Còn trống',
-            'E18' => 'Còn trống',
-            'F1' => 'Còn trống',
-            'F2' => 'Còn trống',
-            'F3' => 'Còn trống',
-            'F4' => 'Còn trống',
-            'F5' => 'Còn trống',
-            'F6' => 'Còn trống',
-            'F7' => 'Còn trống',
-            'F8' => 'Còn trống',
-            'F9' => 'Còn trống',
-            'F10' => 'Còn trống',
-            'F11' => 'Còn trống',
-            'F12' => 'Còn trống',
-            'F13' => 'Còn trống',
-            'F14' => 'Còn trống',
-            'F15' => 'Còn trống',
-            'F16' => 'Còn trống',
-            'F17' => 'Còn trống',
-            'F18' => 'Còn trống',
-            'G1' => 'Còn trống',
-            'G2' => 'Còn trống',
-            'G3' => 'Còn trống',
-            'G4' => 'Còn trống',
-            'G5' => 'Còn trống',
-            'G6' => 'Còn trống',
-            'G7' => 'Còn trống',
-            'G8' => 'Còn trống',
-            'G9' => 'Còn trống',
-            'G10' => 'Còn trống',
-            'G11' => 'Còn trống',
-            'G12' => 'Còn trống',
-            'G13' => 'Còn trống',
-            'G14' => 'Còn trống',
-            'G15' => 'Còn trống',
-            'G16' => 'Còn trống',
-            'G17' => 'Còn trống',
-            'G18' => 'Còn trống',
-            'I3' => 'Còn trống',
-            'I4' => 'Còn trống',
-            'I5' => 'Còn trống',
-            'I6' => 'Còn trống',
-            'I7' => 'Còn trống',
-            'I8' => 'Còn trống',
-            'I9' => 'Còn trống',
-            'I10' => 'Còn trống',
-            'I11' => 'Còn trống',
-            'I12' => 'Còn trống',
-            'I13' => 'Còn trống',
-            'I14' => 'Còn trống',
-            'I15' => 'Còn trống',
-            'I16' => 'Còn trống',
-            'J5' => 'Còn trống',
-            'J6' => 'Còn trống',
-            'J7' => 'Còn trống',
-            'J8' => 'Còn trống',
-            'J9' => 'Còn trống',
-            'J10' => 'Còn trống',
-            'J11' => 'Còn trống',
-            'J12' => 'Còn trống',
-            'J13' => 'Còn trống',
-            'J14' => 'Còn trống',
-            'K5' => 'Còn trống',
-            'K6' => 'Còn trống',
-            'K7' => 'Còn trống',
-            'K8' => 'Còn trống',
-            'K9' => 'Còn trống',
-            'K10' => 'Còn trống',
-            'K11' => 'Còn trống',
-            'K12' => 'Còn trống',
-            'K13' => 'Còn trống',
-            'K14' => 'Còn trống',
-            'L6' => 'Còn trống',
-            'L7' => 'Còn trống',
-            'L8' => 'Còn trống',
-            'L9' => 'Còn trống',
-            'L10' => 'Còn trống',
-            'L11' => 'Còn trống',
-            'L12' => 'Còn trống',
-            'L13' => 'Còn trống',
+            'screen_id' => "1", // ID của màn hình
+            'place' => $place, // Số ghế theo thứ tự
+            'price' => fake()->randomElement([10, 20, 30]), // Giá ngẫu nhiên
+            'status' => fake()->randomElement(['Còn trống', 'Đã đặt', 'Đã hỏng']), // Trạng thái ngẫu nhiên
         ];
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('movie_id');
             $table->unsignedBigInteger('screen_id');     
-            $table->date('showtime_date');  
+            $table->date('date');  
             $table->time('time');
 
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
