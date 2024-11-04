@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .choose-sits__info {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.choose-sits__info--first {
+    background-color: #f7f7f7;
+}
+
+.choose-sits__info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sits-price {
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.marker--none {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.sits-price--cheap {
+    color: green;
+}
+
+.sits-price--middle {
+    color: orange;
+}
+
+.sits-price--expensive {
+    color: red;
+}
+
+.sits-state {
+    font-size: 16px;
+    padding: 5px 0;
+}
+
+.sits-state--not {
+    color: grey;
+    font-style: italic;
+}
+
+.sits-state--your {
+    color: blue;
+    font-weight: bold;
+}
+
+    </style>
+</head>
+<body>
+    <div class="choose-sits__info choose-sits__info--first">
+        <ul>
+            <li class="sits-price marker--none"><strong>Price</strong></li>
+            <li class="sits-price sits-price--cheap">$10</li>
+            <li class="sits-price sits-price--middle">$20</li>
+            <li class="sits-price sits-price--expensive">$30</li>
+        </ul>
+    </div>
+
+    <div class="choose-sits__info">
+        <ul>
+            <li class="sits-state sits-state--not">Not available</li>
+            <li class="sits-state sits-state--your">Your choice</li>
+        </ul>
+    </div>
+</body>
+</html>
