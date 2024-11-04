@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Arr;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\seat>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Seat>
  */
 class SeatFactory extends Factory
 {
@@ -54,14 +54,13 @@ class SeatFactory extends Factory
             $places[] = 'L' . $i;
         }
 
-        // Lấy giá trị ghế theo chỉ số hiện tại
-        $place = $places[self::$index];
+        // Đảm bảo chỉ số không vượt quá số lượng phần tử trong mảng places
+        $place = $places[self::$index % count($places)];
 
         // Tăng chỉ số để tiếp tục lấy giá trị trong lần chạy tiếp theo
         self::$index++;
 
         return [
-            'screen_id' => "1", // ID của màn hình
             'place' => $place, // Số ghế theo thứ tự
             'price' => fake()->randomElement([10, 20, 30]), // Giá ngẫu nhiên
             'status' => fake()->randomElement(['Còn trống', 'Đã đặt', 'Đã hỏng']), // Trạng thái ngẫu nhiên
