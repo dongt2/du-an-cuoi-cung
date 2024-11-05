@@ -123,6 +123,7 @@ class CategoryController extends Controller
 
         // $category->delete();
 
+        
         // return redirect()->route('category.index')->with('success', 'Xóa thể loại thành công. ');
 
         if($category->movies()->count() == 0){

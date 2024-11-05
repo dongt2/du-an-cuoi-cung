@@ -41,8 +41,9 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
+
                                 <div class="d-flex justify-content-end mb-5">
-                                    <a href="{{ route('category.create') }}" class="btn btn-success">Thêm</a>
+                                    <a href="{{ route('category.create') }}" class="btn btn-success">Thêm mới</a>
                                 </div>
                                 @if (session('success'))
                                     <div class="alert alert-success" role="alert">
