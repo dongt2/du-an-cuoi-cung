@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,18 +19,24 @@ use Illuminate\Support\Facades\Route;
 // php artisan db:seed
 // b c
 
-Route::get('/', function () {
-    return view('user.home');
-});
+// Route::get('/', function () {
+//     return view('user.home');
+// });
 
-Route::get('/book1', function () {
-    return view('user.book1');
-});
+// Route::get('/book1', function () {
+//     return view('user.book1');
+// });
 
-Route::get('/book2', function () {
-    return view('user.book2');
-});
+// Route::get('/book2', function () {
+//     return view('user.book2');
+// });
 
-Route::get('/book3', function () {
-    return view('user.book3-buy');
+// Route::get('/book3', function () {
+//     return view('user.book3-buy');
+// });
+
+
+Route::group(['prefix' => 'admin'], function(){
+    Route::resource('category', CategoryController::class);
+    Route::resource('movie', MovieController::class);
 });

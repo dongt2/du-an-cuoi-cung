@@ -21,13 +21,18 @@ class Movie extends Model
         'year',
         'release_date',
         'actors',
-        'image',
+        'cover_image',
         'trailer_url',
         'category_id',
     ];
 
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class, 'category_id', 'category_id');
+    // }
+
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+        return $this->hasOne(Category::class, 'category_id', 'category_id');
     }
 }

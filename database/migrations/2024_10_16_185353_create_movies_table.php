@@ -20,12 +20,12 @@ return new class extends Migration
             $table->year('year');
             $table->date('release_date');
             $table->text('actors');
-            $table->string('image');
+            $table->string('cover_image');
             $table->string('trailer_url', 255);
             $table->unsignedBigInteger('category_id');
 
             $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
-            
+
             $table->timestamps();
         });
     }
