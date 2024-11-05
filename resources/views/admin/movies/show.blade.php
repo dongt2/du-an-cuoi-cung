@@ -27,130 +27,83 @@
                 @method('PUT')
                 <div class="mb-3">
                     <label for="" class="form-label">Tên Phim :</label>
-                    <input type="text" class="form-control" id="" name="title" placeholder="Mời nhập tên" value="{{ $movie->title }}">
+                    <input type="text" class="form-control" id="" name="title" placeholder="Mời nhập tên" value="{{ $movie->title }}" disabled>
                 </div>
-
-                @if ($errors->has('title'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('title') }}
-                    </div>
-                @endif
 
                 <div class="mb-3">
                     <label for="" class="form-label">Thời Lượng :</label>
                     <input type="text" class="form-control" id="" name="duration"
-                        placeholder="Mời nhập thời lượng" value="{{ $movie->duration }}">
+                        placeholder="Mời nhập thời lượng" value="{{ $movie->duration }}" disabled>
                 </div>
 
-                @if ($errors->has('duration'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('duration') }}
-                    </div>
-                @endif
 
                 <div class="mb-3">
                     <label for="" class="form-label">Quốc Gia :</label>
                     <input type="text" class="form-control" id="" name="country"
-                        placeholder="Mời nhập quốc gia" value="{{ $movie->country }}">
+                        placeholder="Mời nhập quốc gia" value="{{ $movie->country }}" disabled>
                 </div>
 
-                @if ($errors->has('country'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('country') }}
-                    </div>
-                @endif
 
                 <div class="mb-3">
                     <label for="" class="form-label">Mô Tả :</label>
-                    <textarea class="form-control" id="" rows="3" name="description">{{ $movie->description }}</textarea>
+                    <textarea class="form-control" id="" rows="3" name="description" disabled>{{ $movie->description }} </textarea>
                 </div>
 
-                @if ($errors->has('description'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('description') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Năm Xuất Bản:</label>
                     <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
-                        min="1900" max="2099" value="{{ $movie->year }}">
+                        min="1900" max="2099" value="{{ $movie->year }}" disabled>
                 </div>
 
-                @if ($errors->has('year'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('year') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Ngày Phát Hành :</label>
-                    <input type="date" class="form-control" id="" name="release_date" value="{{ $movie->release_date }}">
+                    <input type="date" class="form-control" id="" name="release_date" value="{{ $movie->release_date }}" disabled>
                 </div>
 
-                @if ($errors->has('release_date'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('release_date') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Diễn Viên:</label>
                     <input type="text" class="form-control" id="" name="actors"
-                        placeholder="Mời nhập diễn viên" value="{{ $movie->actors }}">
+                        placeholder="Mời nhập diễn viên" value="{{ $movie->actors }}" disabled>
                 </div>
 
-                @if ($errors->has('actors'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('actors') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Trailer:</label>
-                    <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link..." value="{{ $movie->trailer_url }}">
+                    <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link..." value="{{ $movie->trailer_url }}" disabled>
                 </div>
 
-                @if ($errors->has('trailer_url'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('trailer_url') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Thể Loại:</label>
-                    <select class="form-select" name="category_id">
+                    <select class="form-select" name="category_id" disabled>
                         @foreach ($category as $cat)
-                            <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                            <option value="{{ $cat->category_id }}" @selected($cat->category_id == $movie->category_id)>{{ $cat->category_name }}</option>
                         @endforeach
                     </select>
 
                 </div>
 
-                @if ($errors->has('category_id'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('category_id') }}
-                    </div>
-                @endif
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Hình Ảnh:</label>
-                    <input type="file" class="form-control" id="" name="image">
-                    @if ($movie->cover_image)
-                    <img src="{{ asset($movie->cover_image) }}" alt="" width="100" class="mt-4">
-                    @else
+                    {{-- <input type="file" class="form-control" id="" name="image"> --}}
+                    <img src="{{ asset($movie->cover_image) }}" alt="" width="400" class="mt-4" disabled>
 
-                    @endif
 
                 </div>
-                @if ($errors->has('image'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('image') }}
-                    </div>
-                @endif
 
-                <a href="{{ route('movie.index') }}" class="btn btn-secondary">Quay lại</a>
-                <button type="submit" class="btn btn-success">Sửa phim</button>
+
+                <a href="{{ route('movie.index') }}" class="btn btn-secondary mt-5 mb-5">Quay lại</a>
+
             </form>
             <!-- end page title -->
 
