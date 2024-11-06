@@ -1,8 +1,11 @@
 <?php
 
+
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Admin\ScreenController;
 use App\Http\Controllers\Admin\ShowtimeController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,21 +23,32 @@ use Illuminate\Support\Facades\Route;
 // php artisan db:seed
 // b c
 
-Route::get('/', function () {
-    return view('user.home');
-});
+// Route::get('/', function () {
+//     return view('user.home');
+// });
 
-Route::get('/book1', function () {
-    return view('user.book1');
-});
+// Route::get('/book1', function () {
+//     return view('user.book1');
+// });
 
-Route::get('/book2', function () {
-    return view('user.book2');
-});
+// Route::get('/book2', function () {
+//     return view('user.book2');
+// });
 
-Route::get('/book3', function () {
-    return view('user.book3-buy');
-});
+// Route::get('/book3', function () {
+//     return view('user.book3-buy');
+// });
+
+
+    Route::group([
+        'as' => 'user.'
+    ], function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+
+        // Route Screen
+
+        // Route Showtimes
+    });
 
 Route::group([
     'prefix'  => 'admin',

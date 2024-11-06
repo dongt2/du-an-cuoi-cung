@@ -16,6 +16,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="telephone=no" name="format-detection">
 
+    @include('user.layouts.partials.css')
+
 	@yield('head')
 
 </head>
@@ -82,6 +84,8 @@
 
 	<!-- JavaScript-->
 	    @yield('javascript')
+
+        @include('user.layouts.partials.js')
     <!-- End JavaScript-->
 
 </body>

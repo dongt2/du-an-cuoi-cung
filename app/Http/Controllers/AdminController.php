@@ -10,14 +10,4 @@ class AdminController extends Controller
     {
         return view('admin.index');
     }
-
-    public function create()
-    {
-        return view('admin.screens.create');
-    }
-
-    public function details()
-    {
-        return view('admin.screens.details');
-    }
 }

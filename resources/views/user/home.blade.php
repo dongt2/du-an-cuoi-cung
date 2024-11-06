@@ -5,58 +5,25 @@
 @endsection
 
 @section('head')
-    <!-- Fonts -->
-        <!-- Font awesome - icon font -->
-        <link href="netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-        <!-- Roboto -->
-        <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel='stylesheet' type='text/css'>
-        <!-- Open Sans -->
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
+    <!-- Modernizr -->
+    <script src="js/external/modernizr.custom.js"></script>
 
-    <!-- Stylesheets -->
-
-        <!-- Mobile menu -->
-        <link href="css/gozha-nav.css" rel="stylesheet" />
-        <!-- Select -->
-        <link href="css/external/jquery.selectbox.css" rel="stylesheet" />
-
-        <!-- REVOLUTION BANNER CSS SETTINGS -->
-        <link rel="stylesheet" type="text/css" href="rs-plugin/css/settings.css" media="screen" />
-
-        <!-- Custom -->
-        <link href="css/style3860.css?v=1" rel="stylesheet" />
-
-
-        <!-- Modernizr --> 
-        <script src="js/external/modernizr.custom.js"></script>
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries --> 
-    <!--[if lt IE 9]> 
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script> 
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>		
-    <![endif]-->
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+                <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+            <![endif]-->
 @endsection
 
 @section('slide')
     <div class="bannercontainer">
         <div class="banner">
             <ul>
-
                 <li data-transition="fade" data-slotamount="7" class="slide" data-slide='Rush.'>
                     <img alt='' src="{{ asset('images/slides/first-slide.jpg') }}">
-                    <div class="caption slide__name margin-slider" 
-                        data-x="right" 
-                        data-y="80" 
-
-                        data-splitin="chars"
-                        data-elementdelay="0.1"
-
-                        data-speed="700" 
-                        data-start="1400" 
-                        data-easing="easeOutBack"
-
+                    <div class="caption slide__name margin-slider" data-x="right" data-y="80" data-splitin="chars"
+                        data-elementdelay="0.1" data-speed="700" data-start="1400" data-easing="easeOutBack"
                         data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:0;transformOrigin:50% 50%;"
-
                         data-frames="{ typ :lines;
                                     elementdelay :0.1;
                                     start:1650;
@@ -72,120 +39,65 @@
                                     animation:x:0;y:0;z:0;rotationX:00;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:1;transformPerspective:600;transformOrigin:50% 50%;
                                     }
                                     "
-
-
-                        data-splitout="lines"
-                        data-endelementdelay="0.1"
+                        data-splitout="lines" data-endelementdelay="0.1"
                         data-customout="x:-230;y:0;z:0;rotationX:0;rotationY:0;rotationZ:90;scaleX:0.2;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%"
-
-                        data-endspeed="500"
-                        data-end="8400"
-                        data-endeasing="Back.easeIn"
-                        >
+                        data-endspeed="500" data-end="8400" data-endeasing="Back.easeIn">
                         RUSH
                     </div>
 
-                    <div class="caption slide__time margin-slider sfr str" 
-                        data-x="right" 
-                        data-hoffset='-243' 
-                        data-y="186" 
-                        data-speed="300" 
-                        data-start="2100" 
-                        data-easing="easeOutBack"
-                        data-endspeed="300"
-                        data-end="8700"
-                        data-endeasing="Back.easeIn"
-                        >
+                    <div class="caption slide__time margin-slider sfr str" data-x="right" data-hoffset='-243' data-y="186"
+                        data-speed="300" data-start="2100" data-easing="easeOutBack" data-endspeed="300" data-end="8700"
+                        data-endeasing="Back.easeIn">
                         From
                     </div>
-                    <div class="caption slide__date margin-slider lfb ltb" 
-                        data-x="right" 
-                        data-hoffset='-149' 
-                        data-y="186" 
-                        data-speed="500" 
-                        data-start="2400" 
-                        data-easing="Power4.easeOut"
-                        data-endspeed="400"
-                        data-end="8200"
-                        data-endeasing="Back.easeIn"
-                        >
+                    <div class="caption slide__date margin-slider lfb ltb" data-x="right" data-hoffset='-149' data-y="186"
+                        data-speed="500" data-start="2400" data-easing="Power4.easeOut" data-endspeed="400" data-end="8200"
+                        data-endeasing="Back.easeIn">
                         October 18
                     </div>
-                    <div class="caption slide__time margin-slider sfr str" 
-                        data-x="right" 
-                        data-hoffset='-113' 
-                        data-y="186" 
-                        data-speed="300" 
-                        data-start="2100" 
-                        data-easing="easeOutBack"
-                        data-endspeed="300"
-                        data-end="8700"
-                        data-endeasing="Back.easeIn"
-                        >
+                    <div class="caption slide__time margin-slider sfr str" data-x="right" data-hoffset='-113' data-y="186"
+                        data-speed="300" data-start="2100" data-easing="easeOutBack" data-endspeed="300" data-end="8700"
+                        data-endeasing="Back.easeIn">
                         - till
                     </div>
-                    <div class="caption slide__date margin-slider lfb ltb" 
-                        data-x="right" 
-                        data-y="186" 
-                        data-speed="500" 
-                        data-start="2800" 
-                        data-easing="Power4.easeOut"
-                        data-endspeed="400"
-                        data-end="8200"
-                        data-endeasing="Back.easeIn"
-                        >
+                    <div class="caption slide__date margin-slider lfb ltb" data-x="right" data-y="186" data-speed="500"
+                        data-start="2800" data-easing="Power4.easeOut" data-endspeed="400" data-end="8200"
+                        data-endeasing="Back.easeIn">
                         November 01
                     </div>
-                    <div class="caption slide__text margin-slider customin customout" 
-                        data-x="right" 
-                        data-y="250"
+                    <div class="caption slide__text margin-slider customin customout" data-x="right" data-y="250"
                         data-customin="x:0;y:100;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:1;scaleY:3;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:0% 0%;"
-                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" 
-                        data-speed="400" 
-                        data-start="3000"
-                        data-endspeed="400"
-                        data-end="8000"
-                        data-endeasing="Back.easeIn">
-                        Two-time Academy Award winner Ron Howard, teams once again with fellow two-time Academy<br> Award nominee, writer Peter Morgan , on Rush, a spectacular big-screen re-creation of the merciless<br> 1970s rivalry between James Hunt and Niki Lauda.
-                    </div>
-                    <div class="caption margin-slider skewfromright customout " 
-                        data-x="right" 
-                        data-y="324"
                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-                        data-speed="400" 
-                        data-start="3300"
-                        data-easing="Power4.easeOut"
-                        data-endspeed="300"
-                        data-end="7700"
+                        data-speed="400" data-start="3000" data-endspeed="400" data-end="8000" data-endeasing="Back.easeIn">
+                        Two-time Academy Award winner Ron Howard, teams once again with fellow two-time Academy<br> Award
+                        nominee, writer Peter Morgan , on Rush, a spectacular big-screen re-creation of the merciless<br>
+                        1970s rivalry between James Hunt and Niki Lauda.
+                    </div>
+                    <div class="caption margin-slider skewfromright customout " data-x="right" data-y="324"
+                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                        data-speed="400" data-start="3300" data-easing="Power4.easeOut" data-endspeed="300" data-end="7700"
                         data-endeasing="Power4.easeOut">
                         <a href="#" class="slide__link">check out cinemas &amp; time</a>
                     </div>
                 </li>
 
-                <li data-transition="fade" data-slotamount="7" class="slide fading-slide" data-slide='Travel worldwide.
+                <li data-transition="fade" data-slotamount="7" class="slide fading-slide"
+                    data-slide='Travel worldwide.
             Create trip film.'>
                     <img alt='' src="{{ asset('images/bg-video.jpg') }}">
                     <div class="caption slide__video" data-x="0" data-y="0" data-autoplay='true'>
-                    <video class="media-element"  autoplay="autoplay" preload='none' loop="loop" muted="" src="{{ asset('video/TravelIs.mp4') }}" >
+                        <video class="media-element" autoplay="autoplay" preload='none' loop="loop" muted=""
+                            src="{{ asset('video/TravelIs.mp4') }}">
                             <source type="video/webm" src="{{ asset('video/TravelIs.webm') }}">
                             <source type="video/mp4" src="{{ asset('video/TravelIs.mp4') }}">
                             <source type="video/ogg" src="{{ asset('video/TravelIs.ogv') }}">
                         </video>
                     </div>
 
-                    <div class="caption slide__name slide__name--smaller" 
-                        data-x="left" 
-                        data-y="160" 
-
-                        data-splitin="chars"
-                        data-elementdelay="0.1"
-
-                        data-speed="700" 
-                        data-start="1400" 
+                    <div class="caption slide__name slide__name--smaller" data-x="left" data-y="160"
+                        data-splitin="chars" data-elementdelay="0.1" data-speed="700" data-start="1400"
                         data-easing="easeOutBack"
-
                         data-customin="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:0;transformOrigin:50% 50%;"
-
                         data-frames="{ typ :lines;
                                     elementdelay :0.1;
                                     start:1650;
@@ -201,121 +113,65 @@
                                     animation:x:0;y:0;z:0;rotationX:00;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:1;transformPerspective:600;transformOrigin:50% 50%;
                                     }
                                     "
-
-
-                        data-splitout="lines"
-                        data-endelementdelay="0.1"
+                        data-splitout="lines" data-endelementdelay="0.1"
                         data-customout="x:-230;y:0;z:0;rotationX:0;rotationY:0;rotationZ:90;scaleX:0.2;scaleY:0;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%"
-                        data-endspeed="500"
-                    
-                        data-endeasing="Back.easeIn"
-                        >
+                        data-endspeed="500" data-endeasing="Back.easeIn">
                         Travel, Admire, Remember.
                     </div>
 
-                    <div class="caption slide__time position-center postion-place--one sfr stl" 
-                        data-x="left" 
-                        
-                        data-y="242" 
-                        data-speed="300" 
-                        data-start="2100" 
-                        data-easing="easeOutBack"
-                        data-endspeed="300"
-                        
+                    <div class="caption slide__time position-center postion-place--one sfr stl" data-x="left"
+                        data-y="242" data-speed="300" data-start="2100" data-easing="easeOutBack" data-endspeed="300"
                         data-endeasing="Back.easeIn">
                         From
                     </div>
-                    <div class="caption slide__date position-center postion-place--two lfb ltb" 
-                        data-x="left"                                       
-                        data-y="242" 
-                        data-speed="500" 
-                        data-start="2400" 
-                        data-easing="Power4.easeOut"
-                        data-endspeed="400"
-                        
-                        data-endeasing="Back.easeIn">
-                        April 18 
+                    <div class="caption slide__date position-center postion-place--two lfb ltb" data-x="left"
+                        data-y="242" data-speed="500" data-start="2400" data-easing="Power4.easeOut"
+                        data-endspeed="400" data-endeasing="Back.easeIn">
+                        April 18
                     </div>
-                    <div class="caption slide__time position-center postion-place--three sfr stl" 
-                        data-x="left" 
-                        data-y="242" 
-                        data-speed="300" 
-                        data-start="2100" 
-                        data-easing="easeOutBack"
-                        data-endspeed="300"
-                        
+                    <div class="caption slide__time position-center postion-place--three sfr stl" data-x="left"
+                        data-y="242" data-speed="300" data-start="2100" data-easing="easeOutBack" data-endspeed="300"
                         data-endeasing="Back.easeIn">
                         - till
                     </div>
-                    <div class="caption slide__date position-center postion-place--four lfb ltb" 
-                        data-x="left"
-                        data-y="242" 
-                        data-speed="500" 
-                        data-start="2800" 
-                        data-easing="Power4.easeOut" 
-                        data-endspeed="400"
-                        
-                        data-endeasing="Back.easeIn">
+                    <div class="caption slide__date position-center postion-place--four lfb ltb" data-x="left"
+                        data-y="242" data-speed="500" data-start="2800" data-easing="Power4.easeOut"
+                        data-endspeed="400" data-endeasing="Back.easeIn">
                         May 01
                     </div>
 
-                    <div class="caption lfb slider-wrap-btn ltb" 
-                        data-x="left"
-                        data-y="310" 
-                        data-speed="400" 
-                        data-start="3300" 
-                        data-easing="Power4.easeOut"
-                        data-endspeed="500"
-                        
-                        data-endeasing="Power4.easeOut" >
+                    <div class="caption lfb slider-wrap-btn ltb" data-x="left" data-y="310" data-speed="400"
+                        data-start="3300" data-easing="Power4.easeOut" data-endspeed="500"
+                        data-endeasing="Power4.easeOut">
                         <a href="#" class="btn btn-md btn--danger btn--wide slider--btn">learn more</a>
                     </div>
                 </li>
 
-                <li data-transition="fade" data-slotamount="7" class="slide" data-slide='Stop wishing. 
+                <li data-transition="fade" data-slotamount="7" class="slide"
+                    data-slide='Stop wishing. 
             Start doing.'>
                     <img alt='' src="{{ asset('images/slides/next-slide.jpg') }}">
-                    <div class="caption slide__name slide__name--smaller slide__name--specific customin customout" 
-                        data-x="left" 
-                        data-y="160" 
-
+                    <div class="caption slide__name slide__name--smaller slide__name--specific customin customout"
+                        data-x="left" data-y="160"
                         data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
-
-                        data-speed="700" 
-                        data-start="1400" 
-                        data-easing="easeOutBack"
-                        data-endspeed="500"
-                        data-end="8600"
-                        data-endeasing="Back.easeIn"
-
-                        >
-                        Stop <span class="highlight">wishing.</span> Start <span class="highlight">doing.</span> 
+                        data-speed="700" data-start="1400" data-easing="easeOutBack" data-endspeed="500"
+                        data-end="8600" data-endeasing="Back.easeIn">
+                        Stop <span class="highlight">wishing.</span> Start <span class="highlight">doing.</span>
                     </div>
 
-                    <div class="caption slide__descript customin customout" 
-                        data-x="left" 
-                        data-y="240"
+                    <div class="caption slide__descript customin customout" data-x="left" data-y="240"
                         data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
-                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" 
-                        data-speed="700" 
-                        data-start="2000"
-                        data-endspeed="500"
-                        data-end="8400"
+                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                        data-speed="700" data-start="2000" data-endspeed="500" data-end="8400"
                         data-endeasing="Back.easeIn">
                         find your best match movie with A.MOVIE
                     </div>
 
-                    <div class="caption lfb customout slider-wrap-btn" 
-                        data-x="left" 
-                        data-y="310" 
-                        data-speed="500" 
-                        data-start="2800" 
-                        data-easing="Power4.easeOut"
-                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;" 
-                        data-endspeed="400"
-                        data-end="8000"
-                        data-endeasing="Power4.easeOut" >
+                    <div class="caption lfb customout slider-wrap-btn" data-x="left" data-y="310" data-speed="500"
+                        data-start="2800" data-easing="Power4.easeOut"
+                        data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                        data-endspeed="400" data-end="8000" data-endeasing="Power4.easeOut">
                         <a href="#" class="btn btn-md btn--danger slider--btn">check out movies</a>
                     </div>
                 </li>
@@ -461,23 +317,35 @@
                 <div class="mega-select pull-right">
                     <span class="mega-select__point">Search by</span>
                     <ul class="mega-select__sort">
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter filter--active" data-filter='location'>Location</a></li>
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='cinema'>Cinema</a></li>
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='film-category'>Category</a></li>
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='actors'>Actors</a></li>
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='director'>Director</a></li>
-                        <li class="filter-wrap"><a href="#" class="mega-select__filter" data-filter='country'>Country</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter filter--active"
+                                data-filter='location'>Location</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter"
+                                data-filter='cinema'>Cinema</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter"
+                                data-filter='film-category'>Category</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter"
+                                data-filter='actors'>Actors</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter"
+                                data-filter='director'>Director</a></li>
+                        <li class="filter-wrap"><a href="#" class="mega-select__filter"
+                                data-filter='country'>Country</a></li>
                     </ul>
 
                     <input name="search-input" type='text' class="select__field">
-                    
+
                     <div class="select__btn">
-                        <a href="#" class="btn btn-md btn--danger location">find <span class="hidden-exrtasm">your city</span></a>
-                        <a href="#" class="btn btn-md btn--danger cinema">find <span class="hidden-exrtasm">suitable cimema</span></a>
-                        <a href="#" class="btn btn-md btn--danger film-category">find <span class="hidden-exrtasm">best category</span></a>
-                        <a href="#" class="btn btn-md btn--danger actors">find <span class="hidden-exrtasm">talented actors</span></a>
-                        <a href="#" class="btn btn-md btn--danger director">find <span class="hidden-exrtasm">favorite director</span></a>
-                        <a href="#" class="btn btn-md btn--danger country">find <span class="hidden-exrtasm">produced country</span></a>
+                        <a href="#" class="btn btn-md btn--danger location">find <span class="hidden-exrtasm">your
+                                city</span></a>
+                        <a href="#" class="btn btn-md btn--danger cinema">find <span
+                                class="hidden-exrtasm">suitable cimema</span></a>
+                        <a href="#" class="btn btn-md btn--danger film-category">find <span
+                                class="hidden-exrtasm">best category</span></a>
+                        <a href="#" class="btn btn-md btn--danger actors">find <span
+                                class="hidden-exrtasm">talented actors</span></a>
+                        <a href="#" class="btn btn-md btn--danger director">find <span
+                                class="hidden-exrtasm">favorite director</span></a>
+                        <a href="#" class="btn btn-md btn--danger country">find <span
+                                class="hidden-exrtasm">produced country</span></a>
                     </div>
 
                     <div class="select__dropdowns">
@@ -539,7 +407,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="clearfix"></div>
 
         <h2 id='target' class="page-heading heading--outcontainer">Now in the cinema</h2>
@@ -547,7 +415,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-8 col-md-9">
-                    <!-- Movie variant with time -->
+                    @foreach ($listMovies as $movie)
                         <div class="movie movie--test movie--test--dark movie--test--left">
                             <div class="movie__images">
                                 <a href="movie-page-left.blade.php" class="movie-beta__link">
@@ -556,196 +424,195 @@
                             </div>
 
                             <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">Gravity (2013)  </a>
+                                <a href='movie-page-left.blade.php' class="movie__title">{{ $movie->title }}</a>
 
-                                <p class="movie__time">91 min</p>
+                                <p class="movie__time">{{ $movie->duration }}</p>
 
-                                <p class="movie__option"><a href="#">Sci-Fi</a> | <a href="#">Thriller</a> | <a href="#">Drama</a></p>
-                                
+                                <p class="movie__option"><a href="#">Sci-Fi</a> | <a href="#">Thriller</a> |
+                                    <a href="#">Drama</a></p>
+
                                 <div class="movie__rate">
                                     <div class="score"></div>
                                     <span class="movie__rating">4.1</span>
-                                </div>               
+                                </div>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    @endforeach
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--light movie--test--left">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    {{-- <div class="movie movie--test movie--test--light movie--test--left">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time1.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">The Hobbit: The Desolation of Smaug (2013)  </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">The Hobbit: The Desolation of Smaug
+                                (2013) </a>
 
-                                <p class="movie__time">169 min</p>
+                            <p class="movie__time">169 min</p>
 
-                                <p class="movie__option"><a href="#">Adventure</a> | <a href="#">Fantasy</a> | <a href="#">Drama</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">5.0</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Adventure</a> | <a href="#">Fantasy</a> | <a
+                                    href="#">Drama</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">5.0</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--light movie--test--right">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--light movie--test--right">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time9.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">The Hunger Games: Catching Fire (2013)   </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">The Hunger Games: Catching Fire
+                                (2013) </a>
 
-                                <p class="movie__time">146 min</p>
+                            <p class="movie__time">146 min</p>
 
-                                <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a href="#">Sci-Fi</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">4.9</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a
+                                    href="#">Sci-Fi</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">4.9</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--dark movie--test--right">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--dark movie--test--right">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time10.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">Thor: The Dark World (2013) </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">Thor: The Dark World (2013) </a>
 
-                                <p class="movie__time">112 min</p>
+                            <p class="movie__time">112 min</p>
 
-                                <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a href="#">Fantasy</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">5.0</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a
+                                    href="#">Fantasy</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">5.0</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--dark movie--test--left">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--dark movie--test--left">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time11.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">World War Z (2013)  </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">World War Z (2013) </a>
 
-                                <p class="movie__time">116 min</p>
+                            <p class="movie__time">116 min</p>
 
-                                <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a href="#">Horror</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">4.1</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Action</a> | <a href="#">Adventure</a> | <a
+                                    href="#">Horror</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">4.1</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--light movie--test--left">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--light movie--test--left">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time12.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">Prisoners (2013) </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">Prisoners (2013) </a>
 
-                                <p class="movie__time">153 min</p>
+                            <p class="movie__time">153 min</p>
 
-                                <p class="movie__option"><a href="#">Crime</a> | <a href="#">Thriller</a> | <a href="#">Drama</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">5.0</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Crime</a> | <a href="#">Thriller</a> | <a
+                                    href="#">Drama</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">5.0</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--light movie--test--right">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--light movie--test--right">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time13.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">This Is the End (2013)   </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">This Is the End (2013) </a>
 
-                                <p class="movie__time">107 min</p>
+                            <p class="movie__time">107 min</p>
 
-                                <p class="movie__option"><a href="#">Comedy</a> | <a href="#">Fantasy</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">4.9</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Comedy</a> | <a href="#">Fantasy</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">4.9</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div>
 
-                    <!-- Movie variant with time -->
-                        <div class="movie movie--test movie--test--dark movie--test--right">
-                            <div class="movie__images">
-                                <a href="movie-page-left.blade.php" class="movie-beta__link">
+                    <div class="movie movie--test movie--test--dark movie--test--right">
+                        <div class="movie__images">
+                            <a href="movie-page-left.blade.php" class="movie-beta__link">
                                 <img alt='' src="{{ asset('images/movie/movie-time14.jpg') }}">
-                                </a>
-                            </div>
+                            </a>
+                        </div>
 
-                            <div class="movie__info">
-                                <a href='movie-page-left.blade.php' class="movie__title">The Internship (2013)  </a>
+                        <div class="movie__info">
+                            <a href='movie-page-left.blade.php' class="movie__title">The Internship (2013) </a>
 
-                                <p class="movie__time">112 min</p>
+                            <p class="movie__time">112 min</p>
 
-                                <p class="movie__option"><a href="#">Comedy</a></p>
-                                
-                                <div class="movie__rate">
-                                    <div class="score"></div>
-                                    <span class="movie__rating">5.0</span>
-                                </div>               
+                            <p class="movie__option"><a href="#">Comedy</a></p>
+
+                            <div class="movie__rate">
+                                <div class="score"></div>
+                                <span class="movie__rating">5.0</span>
                             </div>
                         </div>
-                    <!-- Movie variant with time -->
+                    </div> --}}
 
 
                     <div class="row">
                         <div class="social-group">
-                        <div class="col-sm-6 col-md-4 col-sm-push-6 col-md-push-4">
+                            <div class="col-sm-6 col-md-4 col-sm-push-6 col-md-push-4">
                                 <div class="social-group__head">Join <br>our social groups</div>
-                                <div class="social-group__content">A lot of fun, discussions, queezes and contests among members. <br class="hidden-xs"><br>Always be first to know about best offers from cinemas and our partners</div>
+                                <div class="social-group__content">A lot of fun, discussions, queezes and contests among
+                                    members. <br class="hidden-xs"><br>Always be first to know about best offers from
+                                    cinemas and our partners</div>
                             </div>
 
                             <div class="col-sm-6 col-md-4 col-sm-pull-6 col-md-pull-4">
                                 <div class="facebook-group">
-
-                                    <iframe class="fgroup" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fthemeforest&amp;width=240&amp;height=330&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:240px; height:330px;" allowTransparency="true"></iframe>
+                                    <iframe class="fgroup"
+                                        src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fthemeforest&amp;width=240&amp;height=330&amp;colorscheme=light&amp;show_faces=true&amp;header=false&amp;stream=false&amp;show_border=false"
+                                        scrolling="no" frameborder="0"
+                                        style="border:none; overflow:hidden; width:240px; height:330px;"
+                                        allowTransparency="true"></iframe>
                                 </div>
                             </div>
-                            
+
                             <div class="clearfix visible-sm"></div>
                             <div class="col-sm-6 col-md-4">
                                 <div class="twitter-group">
@@ -771,16 +638,19 @@
                         </div>
 
                         <div class="promo marginb-sm">
-                        <div class="promo__head">A.Movie app</div>
-                        <div class="promo__describe">for all smartphones<br> and tablets</div>
-                        <div class="promo__content">
-                            <ul>
-                                    <li class="store-variant"><a href="#"><img alt='' src="{{ asset('images/apple-store.svg') }}"></a></li>
-                                    <li class="store-variant"><a href="#"><img alt='' src="{{ asset('images/google-play.svg') }}"></a></li>
-                                    <li class="store-variant"><a href="#"><img alt='' src="{{ asset('images/windows-store.svg') }}"></a></li>
-                            </ul>
+                            <div class="promo__head">A.Movie app</div>
+                            <div class="promo__describe">for all smartphones<br> and tablets</div>
+                            <div class="promo__content">
+                                <ul>
+                                    <li class="store-variant"><a href="#"><img alt=''
+                                                src="{{ asset('images/apple-store.svg') }}"></a></li>
+                                    <li class="store-variant"><a href="#"><img alt=''
+                                                src="{{ asset('images/google-play.svg') }}"></a></li>
+                                    <li class="store-variant"><a href="#"><img alt=''
+                                                src="{{ asset('images/windows-store.svg') }}"></a></li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
 
                     </div>
                 </aside>
@@ -818,7 +688,8 @@
                         </div>
                     </div>
                     <p class="post__date">22 October 2013 </p>
-                    <a href="single-page-left.html" class="post__title">30th Annual Night Of Stars Presented By The Fashion Group International</a>
+                    <a href="single-page-left.html" class="post__title">30th Annual Night Of Stars Presented By The
+                        Fashion Group International</a>
                     <a href="single-page-left.html" class="btn read-more post--btn">read more</a>
                 </div>
             </div>
@@ -839,44 +710,9 @@
                 </div>
             </div>
         </div>
-            
+
     </section>
 @endsection
 
 @section('javascript')
-     <!-- jQuery 1.9.1--> 
-     <script src="../ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-     <script>window.jQuery || document.write('<script src="js/external/jquery-1.10.1.min.js"><\/script>')</script>
-     <!-- Migrate --> 
-     <script src="js/external/jquery-migrate-1.2.1.min.js"></script>
-     <!-- Bootstrap 3--> 
-     <script src="../netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
-
-     <!-- jQuery REVOLUTION Slider -->
-     <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
-     <script type="text/javascript" src="rs-plugin/js/jquery.themepunch.revolution.min.js"></script>
-
-     <!-- Mobile menu -->
-     <script src="js/jquery.mobile.menu.js"></script>
-      <!-- Select -->
-     <script src="js/external/jquery.selectbox-0.2.min.js"></script>
-     <!-- Stars rate -->
-     <script src="js/external/jquery.raty.js"></script>
-     
-     <!-- Form element -->
-     <script src="js/external/form-element.js"></script>
-     <!-- Form validation -->
-     <script src="js/form.js"></script>
-
-     <!-- Twitter feed -->
-     <script src="js/external/twitterfeed.js"></script>
-
-     <!-- Custom -->
-     <script src="js/custom.js"></script>
-     
-       <script type="text/javascript">
-           $(document).ready(function() {
-             init_Home();
-           });
-         </script>
 @endsection
