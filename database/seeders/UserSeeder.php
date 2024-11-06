@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class UserSeeder extends Seeder
 {
@@ -12,7 +13,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        Schema::disableForeignKeyConstraints();
+        User::truncate();
+        
+        User::factory(count: 10)->create();
+
+        Schema::enableForeignKeyConstraints();
+
     }
 }
 

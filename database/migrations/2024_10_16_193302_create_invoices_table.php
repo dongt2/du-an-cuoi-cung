@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('invoice_id');
             $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            
             $table->decimal('total_amount', 10, 2);
             $table->enum('status', ['paid', 'unpaid', 'canceled']);
             $table->dateTime('date');
             
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             
             $table->timestamps();
         });

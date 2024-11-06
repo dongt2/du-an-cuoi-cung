@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Users\DetailMovieController;
+use App\Http\Controllers\Users\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,29 +14,33 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// mới vào chạy 2 cái này
-// php artisan migrate
-// php artisan db:seed
-// b c
 
 // Route::get('/', function () {
-//     return view('user.home');
+//     return view('layouts.master');
 // });
 
-// Route::get('/book1', function () {
-//     return view('user.book1');
-// });
+Route::get('/home', function () {
+    return view('Users.index');
+});
 
-// Route::get('/book2', function () {
-//     return view('user.book2');
-// });
+Route::get('/404', function () {
+    return view('Users.404-NotFound');
+});
+Route::get('/movies', function () {
+    return view('Users.movie-list-full');
+});
+Route::get('/booking1', function () {
+    return view('Users.booking.detailMovie');
+});
 
-// Route::get('/book3', function () {
-//     return view('user.book3-buy');
-// });
+Route::prefix('/')->group(function () {
 
+    Route::get('/', function () {
+        return view('Users.index');
+    })->name('home');
 
-Route::group(['prefix' => 'admin'], function(){
-    Route::resource('category', CategoryController::class);
-    Route::resource('movie', MovieController::class);
+    Route::prefix('/movies')->group(function () {
+        Route::get('/listMovie', MovieController::class . '@index')->name('listMovie');
+        Route::get('/listMovie/{id}', DetailMovieController::class . '@index')->name('detailMovie');
+    });
 });
