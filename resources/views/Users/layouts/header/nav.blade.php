@@ -11,15 +11,13 @@
 <ul id="navigation">
     <li>
         <span class="sub-nav-toggle plus"></span>
-        <a href="#">Pages</a>
+        <a href="{{ route('listMovie') }}">Phim</a>
         <ul>
-            <li class="menu__nav-item"><a href="movie-page-left.html">Single movie (rigth
-                    sidebar)</a></li>
-            <li class="menu__nav-item"><a href="movie-page-right.html">Single movie (left
-                    sidebar)</a></li>
-            <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a>
-            </li>
-            <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth
+            <li class="menu__nav-item"><a href="{{ route('listMovie') }}">Phim đang chiếu</a></li>
+            <li class="menu__nav-item"><a href="movie-page-right.html">Phim sắp chiếu</a></li>
+            {{-- <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a>
+            </li> --}}
+            {{-- <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth
                     sidebar)</a></li>
             <li class="menu__nav-item"><a href="movie-list-right.html">Movies list (left
                     sidebar)</a></li>
@@ -35,7 +33,7 @@
             <li class="menu__nav-item"><a href="contact.html">Contact us</a></li>
             <li class="menu__nav-item"><a href="404.html">404 error</a></li>
             <li class="menu__nav-item"><a href="coming-soon.html">Coming soon</a></li>
-            <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li>
+            <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li> --}}
         </ul>
     </li>
     <li>

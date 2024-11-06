@@ -13,12 +13,13 @@
 <link href="/template/amovie.gozha.net/css/gozha-nav.css" rel="stylesheet" />
 <!-- Select -->
 <link href="/template/amovie.gozha.net/css/external/jquery.selectbox.css" rel="stylesheet" />
-
+<!-- Swiper slider -->
+<link href="/template/amovie.gozha.net/css/external/idangerous.swiper.css" rel="stylesheet" />
 <!-- REVOLUTION BANNER CSS SETTINGS -->
 <link rel="stylesheet" type="text/css" href="/template/amovie.gozha.net/rs-plugin/css/settings.css" media="screen" />
 
 <!-- Custom -->
 <link href="/template/amovie.gozha.net/css/style3860.css?v=1" rel="stylesheet" />
 
- <!-- Modernizr --> 
- <script src="/template/amovie.gozha.net/js/external/modernizr.custom.js"></script>
+<!-- Modernizr -->
+<script src="/template/amovie.gozha.net/js/external/modernizr.custom.js"></script>

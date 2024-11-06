@@ -1,13 +1,13 @@
 <!-- Banner -->
-<div class="banner-top">
+{{-- <div class="banner-top">
     @include('Users.layouts.header.banner')
-</div>
+</div> --}}
 
 <!-- Header section -->
 <header class="header-wrapper">
     <div class="container">
         <!-- Logo link-->
-        <a href='index.html' class="logo">
+        <a href='{{route('home')}}' class="logo">
             @include('Users.layouts.header.logo')
         </a>
 

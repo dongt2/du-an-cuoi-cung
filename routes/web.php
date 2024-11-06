@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Users\DetailMovieController;
+use App\Http\Controllers\Users\MovieController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,9 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('layouts.master');
-});
+// Route::get('/', function () {
+//     return view('layouts.master');
+// });
 
 Route::get('/home', function () {
     return view('Users.index');
@@ -28,5 +30,17 @@ Route::get('/movies', function () {
     return view('Users.movie-list-full');
 });
 Route::get('/booking1', function () {
-    return view('Users.booking.booking1');
+    return view('Users.booking.detailMovie');
+});
+
+Route::prefix('/')->group(function () {
+
+    Route::get('/', function () {
+        return view('Users.index');
+    })->name('home');
+
+    Route::prefix('/movies')->group(function () {
+        Route::get('/listMovie', MovieController::class . '@index')->name('listMovie');
+        Route::get('/listMovie/{id}', DetailMovieController::class . '@index')->name('detailMovie');
+    });
 });

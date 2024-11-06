@@ -13,18 +13,20 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->bigIncrements('movie_id');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
+
             $table->string('title', 255);
             $table->string('duration', 10);
             $table->string('country', 100);
+            $table->string('director', 100);
             $table->text('description');
             $table->year('year');
             $table->date('release_date');
             $table->text('actors');
             $table->string('image');
             $table->string('trailer_url', 255);
-            $table->unsignedBigInteger('category_id');
 
-            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
             
             $table->timestamps();
         });

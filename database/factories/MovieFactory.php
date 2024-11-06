@@ -20,6 +20,7 @@ class MovieFactory extends Factory
             'title' => fake()->sentence(3),
             'duration' => fake()->numberBetween(60, 180) . ' min',
             'country' => fake()->country(),
+            'director' => fake()->name(),
             'description' => fake()->paragraph(),
             'year' => fake()->year(),
             'release_date' => fake()->date(),

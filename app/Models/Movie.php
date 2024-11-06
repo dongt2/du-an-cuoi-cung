@@ -17,6 +17,7 @@ class Movie extends Model
         'title',
         'duration',
         'country',
+        'director',
         'description',
         'year',
         'release_date',

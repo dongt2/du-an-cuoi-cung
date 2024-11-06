@@ -4851,7 +4851,6 @@ ul#navigation li.mega-menu__nav-item:hover:before {
 }
 .select .sbSelector:after {
   content: '';
-  background-image: url('../images/components/wave-danger.svg');
   -webkit-background-size: 40px 4px;
   background-size: 40px 4px;
   background-repeat: repeat-x;

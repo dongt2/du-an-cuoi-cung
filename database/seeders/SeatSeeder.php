@@ -17,9 +17,12 @@ class SeatSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         Seat::truncate();
 
-        Seat::factory(10)->create();
-        
-        Schema::enableForeignKeyConstraints();
+        for ($screen_id = 1; $screen_id <= 2; $screen_id++) {
+            Seat::factory()->count(166)->create([
+                'screen_id' => $screen_id,
+            ]);
+        }
 
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -8,29 +8,16 @@
     <section class="container">
         <div class="order-container">
             <div class="order">
-                <img class="order__images" alt='' src="/template/amovie.gozha.net/images/tickets.png">
+                <img class="order__images" alt='' src="images/tickets.png">
                 <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span></p>
-                <div class="order__control">
-                    <a href="#" class="order__control-btn active">Purchase</a>
-                    <a href="#" class="order__control-btn">Reserve</a>
-                </div>
             </div>
         </div>
         <div class="order-step-area">
             <div class="order-step first--step">1. What &amp; Where &amp; When</div>
         </div>
-
-        <h2 class="page-heading heading--outcontainer">Choose a movie</h2>
     </section>
-
-
-
     <section class="container">
         <div class="col-sm-12">
-            <div class="choose-indector choose-indector--film">
-                <strong>Choosen: </strong><span class="choosen-area"></span>
-            </div>
-
             <h2 class="page-heading">City &amp; Date</h2>
 
             <div class="choose-container choose-container--short">
@@ -54,6 +41,7 @@
             </div>
 
             <h2 class="page-heading">Pick time</h2>
+            
 
             <div class="time-select time-select--wide">
                 <div class="time-select__group group--first">
@@ -155,85 +143,4 @@
         </div>
 
     </form>
-@endsection
-@section('listMovies')
-    <!--First Slide-->
-    <div class="swiper-slide" data-film='The Fifth Estate'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample1.jpg">
-        </div>
-        <p class="choose-film__title">The Fifth Estate</p>
-    </div>
-
-    <!--Second Slide-->
-    <div class="swiper-slide" data-film='Ender’s Game'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample2.jpg">
-        </div>
-        <p class="choose-film__title">Ender’s Game</p>
-    </div>
-
-    <!--Third Slide-->
-    <div class="swiper-slide" data-film='About Time'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample3.jpg">
-        </div>
-        <p class="choose-film__title">About Time</p>
-    </div>
-
-    <!--Four Slide-->
-    <div class="swiper-slide" data-film='Last Vegas'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample4.jpg">
-        </div>
-        <p class="choose-film__title">Last Vegas</p>
-    </div>
-
-    <!--Five Slide-->
-    <div class="swiper-slide" data-film='The Hunger Games: Cathing Fire'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample5.jpg">
-        </div>
-        <p class="choose-film__title">The Hunger Games: Cathing Fire</p>
-    </div>
-
-    <!--Six Slide-->
-    <div class="swiper-slide" data-film='The Counselor'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample6.jpg">
-        </div>
-        <p class="choose-film__title">The Counselor</p>
-    </div>
-
-    <!--Seven Slide-->
-    <div class="swiper-slide" data-film='Free Birds'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample7.jpg">
-        </div>
-        <p class="choose-film__title">Free Birds</p>
-    </div>
-
-    <!--Eight Slide-->
-    <div class="swiper-slide" data-film='Thor: The Dark World'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample8.jpg">
-        </div>
-        <p class="choose-film__title">Thor: The Dark World</p>
-    </div>
-
-    <!--Nine Slide-->
-    <div class="swiper-slide" data-film='The Book Thief'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample9.jpg">
-        </div>
-        <p class="choose-film__title">The Book Thief</p>
-    </div>
-
-    <!--Ten Slide-->
-    <div class="swiper-slide" data-film='The Wolf of Wall Stree'>
-        <div class="film-images">
-            <img alt='' src="/template/amovie.gozha.net/images/movie/movie-sample10.jpg">
-        </div>
-        <p class="choose-film__title">The Wolf of Wall Stree</p>
-    </div>
 @endsection
