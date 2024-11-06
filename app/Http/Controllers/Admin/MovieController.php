@@ -176,7 +176,9 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $category = Category::get();
+        $movie = Movie::findOrFail($id);
+        return view('admin.movies.show', compact('category', 'movie'));
     }
 
     /**

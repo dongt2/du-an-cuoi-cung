@@ -36,19 +36,35 @@
             </div>
             <!-- end page title -->
 
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-                                <div class="d-flex justify-content-end mb-5">
-                                    <a href="{{ route('movie.create') }}" class="btn btn-success">Thêm</a>
-                                </div>
-                                @if (session('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        <p class="text-success">{{ session('success') }}</p>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justifu-content-start">
+                                            <form class="d-flex">
+                                                <input class="form-control me-2" type="text" placeholder="Tìm kiếm...">
+                                                <button class="btn btn-primary" type="button">Search</button>
+                                            </form>
+                                        </div>
                                     </div>
-                                @endif
+                                    <div class="col">
+                                        <div class="d-flex justify-content-end mb-5">
+                                            <a href="{{ route('movie.create') }}" class="btn btn-success">Thêm</a>
+                                        </div>
+                                        @if (session('success'))
+                                            <div class="alert alert-success" role="alert">
+                                                <p class="text-success">{{ session('success') }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
+
+
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -101,8 +117,8 @@
                                                         class="btn btn-warning">Sửa</a>
 
                                                     <!-- Button to Open the Modal -->
-                                                    <button type="button" class="btn btn-danger"
-                                                        data-bs-toggle="modal" data-bs-target="#myModal">
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#myModal">
                                                         Xóa
                                                     </button>
                                                     <!-- The Modal -->
@@ -124,11 +140,13 @@
 
                                                                 <!-- Modal footer -->
                                                                 <div class="modal-footer">
-                                                                    <form action="{{ route('movie.destroy', $item->movie_id) }}"
+                                                                    <form
+                                                                        action="{{ route('movie.destroy', $item->movie_id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <button type="submit" class="btn btn-danger">Xóa</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-danger">Xóa</button>
                                                                     </form>
                                                                     <button type="button" class="btn btn-secondary"
                                                                         data-bs-dismiss="modal">Close</button>
