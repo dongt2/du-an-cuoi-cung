@@ -35,7 +35,7 @@
     <aside class="col-sm-4 col-md-3">
         <div class="sitebar first-banner--left">
             <div class="banner-wrap first-banner--left">
-                <img alt='banner' src="/storage/app/public/benners">
+                <img alt='banner' src="/template/amovie.gozha.net/images/banners/sale.jpg">
             </div>
 
             <div class="banner-wrap">
