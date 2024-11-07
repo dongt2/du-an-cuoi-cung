@@ -1,4 +1,4 @@
-@extends('Users.layouts.master')
+@extends('user.layouts.master')
 
 @section('title')
     Movie List
@@ -52,7 +52,8 @@
                         <p><strong>Thể loại:</strong> Hành Động, Khoa Học Viễn Tưởng, Phiêu Lưu, Thần thoại</p>
                         <p><strong>Thời lượng:</strong> {{ $movie->duration }} phút</p>
                         <p>
-                            <strong>Khởi chiếu:</strong> {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
+                            <strong>Khởi
+                                chiếu:</strong> {{ \Carbon\Carbon::parse($movie->release_date)->format('d/m/Y') }}
                         </p>
 
                         <div class="movie-actions">
@@ -111,10 +112,9 @@
                 </script>
 
 
-
-
                 <a href="#" id="map-switch" class="watchlist watchlist--map watchlist--map-full"><span
-                        class="show-map">Show cinemas on map</span><span class="show-time">Show cinema time table</span></a>
+                            class="show-map">Show cinemas on map</span><span
+                            class="show-time">Show cinema time table</span></a>
 
                 <div class="clearfix"></div>
 
@@ -161,17 +161,17 @@
             var span = document.querySelector(".close");
 
             // Khi người dùng ấn vào nút, hiển thị modal
-            btn.onclick = function() {
+            btn.onclick = function () {
                 modal.style.display = "block";
             }
 
             // Khi người dùng ấn vào nút x để đóng modal
-            span.onclick = function() {
+            span.onclick = function () {
                 modal.style.display = "none";
             }
 
             // Khi người dùng ấn ra ngoài modal, cũng đóng modal
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }

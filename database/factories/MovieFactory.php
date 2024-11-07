@@ -25,8 +25,8 @@ class MovieFactory extends Factory
             'year' => fake()->year(),
             'release_date' => fake()->date(),
             'actors' => implode(', ', fake()->words(5)),
-            'image' => fake()->imageUrl(640, 480, 'movies', true),
-            'trailer_url' => fake()->url(), 
+            'cover_image' => fake()->imageUrl(640, 480, 'movies', true),
+            'trailer_url' => fake()->url(),
             'category_id' => fake()->numberBetween(1, 5),
         ];
     }

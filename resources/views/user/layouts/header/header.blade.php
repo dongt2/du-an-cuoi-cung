@@ -1,6 +1,6 @@
 <!-- Banner -->
 {{-- <div class="banner-top">
-    @include('Users.layouts.header.banner')
+    @include('user.layouts.header.banner')
 </div> --}}
 
 <!-- Header section -->
@@ -8,17 +8,17 @@
     <div class="container">
         <!-- Logo link-->
         <a href='{{route('home')}}' class="logo">
-            @include('Users.layouts.header.logo')
+            @include('user.layouts.header.logo')
         </a>
 
         <!-- Main website navigation-->
         <nav id="navigation-box">
-            @include('Users.layouts.header.nav')
+            @include('user.layouts.header.nav')
         </nav>
 
         <!-- Additional header buttons / Auth and direct link to booking-->
         <div class="control-panel">
-            @include('Users.layouts.header.navRight')
+            @include('user.layouts.header.navRight')
         </div>
     </div>
 </header>

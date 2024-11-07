@@ -2595,7 +2595,7 @@ input[type="button"].btn-block {
   z-index: 120;
 }
 .header-wrapper--home {
-  background: rgba(0, 0, 0, 0.8);  
+  background: rgba(0, 0, 0, 0.8);
   height: 55px;
   width: 100%;
   z-index: 101;
@@ -2778,13 +2778,13 @@ input[type="button"].btn-block {
 }
 .logo {
   position: absolute;
-  top: 16px;
-  left: 15px;
+  top: 10px;
+  left: 20px;
   z-index: 2;
 }
 .logo img {
-  width: 111px;
-  height: 17px;
+    width: 180px;
+    height: 40px;
 }
 #navigation-box {
   background-color: transparent;
@@ -5287,7 +5287,7 @@ ul#navigation li.mega-menu__nav-item:hover:before {
   margin-top: 20px;
 }
 .movie .movie__describe {
-  font-size: 13px;
+  font-size: 16px;
 }
 .movie .movie__media {
   padding: 20px 5px;

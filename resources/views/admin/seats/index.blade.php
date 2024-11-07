@@ -5,25 +5,17 @@
 @endsection
 
 @section('head')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <base href="/">
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-    <!-- DataTables -->
-    <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet"
-          type="text/css"/>
-
-    <!-- Responsive datatable examples -->
-    <link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet"
-          type="text/css"/>
-
     <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css"/>
+    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -245,28 +237,22 @@
             <ul>
                 <li class="sits-price"><strong>Price</strong></li>
                 <li class="sits-price">
-                    <div class="square color-1"></div>
-                    $10
+                    <div class="square color-1"></div>$10
                 </li>
                 <li class="sits-price">
-                    <div class="square color-2"></div>
-                    $20
+                    <div class="square color-2"></div>$20
                 </li>
                 <li class="sits-price">
-                    <div class="square color-3"></div>
-                    $30
+                    <div class="square color-3"></div>$30
                 </li>&ensp;||&ensp;
                 <li class="sits-price">
-                    <div class="square color-4"></div>
-                    Ghế đã đặt
+                    <div class="square color-4"></div>Ghế đã đặt
                 </li>
                 <li class="sits-price">
-                    <div class="square color-5"></div>
-                    Ghế đã hỏng
+                    <div class="square color-5"></div>Ghế đã hỏng
                 </li>
                 <li class="sits-price">
-                    <div class="square" style="background-color: #4c4145"></div>
-                    Chọn
+                    <div class="square" style="background-color: #4c4145"></div>Chọn
                 </li>
             </ul>
         </div>
@@ -274,8 +260,7 @@
         <div class="sits-area">
             <div class="sits-anchor">{{ $screen[$screen_id - 1]->screen_name }}</div>
             <div class="screen"></div>
-        </div>
-        <br><br>
+        </div><br><br>
 
         <div class="seat">
             <div class="grid-left">
@@ -363,7 +348,7 @@
                 <!-- 4 hàng giữa -->
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'E'))
+                        @if (strpos($item->place, 'E') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -379,7 +364,7 @@
                 </div>
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'F'))
+                        @if (strpos($item->place, 'F') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -395,7 +380,7 @@
                 </div>
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'G'))
+                        @if (strpos($item->place, 'G') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -411,7 +396,7 @@
                 </div>
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'I'))
+                        @if (strpos($item->place, 'I') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -429,7 +414,7 @@
                 <!-- 3 hàng cuối -->
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'J'))
+                        @if (strpos($item->place, 'J') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -445,7 +430,7 @@
                 </div>
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'K'))
+                        @if (strpos($item->place, 'K') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -461,7 +446,7 @@
                 </div>
                 <div class="grid-row">
                     @foreach ($data as $item)
-                        @if (str_starts_with($item->place, 'L'))
+                        @if (strpos($item->place, 'L') === 0)
                             @php
                                 if ($item->status === 'Đã đặt') {
                                     $class = 'color-4';
@@ -501,16 +486,14 @@
 
         <div class="btn-seat">
             <div class="action-button" id="btn-add-seat" style="background-color: #800080;" onclick="showModal()">Thêm
-                ghế
-            </div>
+                ghế</div>
             <form action="{{ route('admin.seat.update', $screen_id) }}" style="display: flex;" method="POST">
                 @csrf
                 @method('PUT')
                 <div id="input-container"></div>
                 <input type="hidden" name="screen_id" value="{{ $screen_id }}">
                 <div class="action-button" id="btn-update-seat" style="background-color: #20B2AA;"
-                     onclick="editModal()">Sửa ghế
-                </div>
+                     onclick="editModal()">Sửa ghế</div>
                 <div class="action-button" id="btn-empty" style="background-color: #00BFFF;">Còn trống</div>
                 <div class="action-button" id="btn-occupied" style="background-color: #008000;">Đã đặt</div>
                 <div class="action-button" id="btn-broken" style="background-color: #FFD700;">Đã hỏng</div>
@@ -522,8 +505,7 @@
                 <div id="input-container-destroy"></div>
                 <input type="hidden" name="screen_id" value="{{ $screen_id }}">
                 <button class="action-button" style="background-color: #FF4500;"
-                        onclick="return confirm('Bạn có chắc chắn muốn xóa')">Xóa ghế
-                </button>
+                        onclick="return confirm('Bạn có chắc chắn muốn xóa')">Xóa ghế</button>
             </form>
         </div>
 
@@ -585,8 +567,7 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="save-seat"
-                        onclick="addSeat()">Thêm
-                </button>
+                        onclick="addSeat()">Thêm</button>
             </div>
         </div>
 
@@ -647,12 +628,11 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="update-seat"
-                        onclick="updateSeat()">Cập nhật
-                </button>
+                        onclick="updateSeat()">Cập nhật</button>
             </div>
         </div>
 
-
+        {{-- js chi tiết ghế --}}
         <script>
             function editModal() {
                 let inputElements = document.querySelectorAll('#input-container input');
@@ -666,7 +646,7 @@
                     let screen_id = {{ $screen_id }};
 
                     // Gửi yêu cầu đến server để lấy thông tin ghế
-                    fetch(`/seat/${place}?screen_id=${screen_id}`, {
+                    fetch(`admin/seat/${place}?screen_id=${screen_id}`, {
                         method: 'GET',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -689,7 +669,7 @@
                             let isEditDragging = false;
                             let editStartX, editStartY, editInitialMouseX, editInitialMouseY;
 
-                            editModal.querySelector('.modal-content').addEventListener('mousedown', function (e) {
+                            editModal.querySelector('.modal-content').addEventListener('mousedown', function(e) {
                                 isEditDragging = true;
                                 editStartX = editModal.offsetLeft;
                                 editStartY = editModal.offsetTop;
@@ -697,7 +677,7 @@
                                 editInitialMouseY = e.clientY;
                             });
 
-                            document.addEventListener('mousemove', function (e) {
+                            document.addEventListener('mousemove', function(e) {
                                 if (isEditDragging) {
                                     const editDx = e.clientX - editInitialMouseX;
                                     const editDy = e.clientY - editInitialMouseY;
@@ -706,7 +686,7 @@
                                 }
                             });
 
-                            document.addEventListener('mouseup', function () {
+                            document.addEventListener('mouseup', function() {
                                 isEditDragging = false;
                             });
 
@@ -732,7 +712,7 @@
             }
         </script>
 
-
+        {{-- js modal thêm ghế --}}
         <script>
             function showModal() {
                 document.getElementById('add-seat-modal').style.display = 'flex'; // Hiện modal
@@ -747,7 +727,7 @@
             let isDragging = false;
             let startX, startY, initialMouseX, initialMouseY;
 
-            modal.querySelector('.modal-content').addEventListener('mousedown', function (e) {
+            modal.querySelector('.modal-content').addEventListener('mousedown', function(e) {
                 isDragging = true;
                 startX = modal.offsetLeft;
                 startY = modal.offsetTop;
@@ -755,7 +735,7 @@
                 initialMouseY = e.clientY;
             });
 
-            document.addEventListener('mousemove', function (e) {
+            document.addEventListener('mousemove', function(e) {
                 if (isDragging) {
                     const dx = e.clientX - initialMouseX;
                     const dy = e.clientY - initialMouseY;
@@ -764,7 +744,7 @@
                 }
             });
 
-            document.addEventListener('mouseup', function () {
+            document.addEventListener('mouseup', function() {
                 isDragging = false;
             });
 
@@ -781,7 +761,7 @@
                 }
 
                 // Gửi dữ liệu đến controller của Laravel
-                fetch('/seat', {
+                fetch('admin/seat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -820,6 +800,7 @@
             }
         </script>
 
+        {{-- js  modal sửa ghế --}}
         <script>
             function updateSeat() {
                 var row = document.getElementById("edit-row").value;
@@ -834,7 +815,7 @@
                 }
 
                 // Gửi dữ liệu đến controller của Laravel
-                fetch(`/seat/update/${place}`, {
+                fetch(`admin/seat/update/${place}`, {
                     method: 'PUT', // Đảm bảo là PUT
                     headers: {
                         'Content-Type': 'application/json',
@@ -872,11 +853,11 @@
             }
         </script>
 
-
+        {{-- js status --}}
         <script>
             // css
             document.querySelectorAll('.action-button').forEach(button => {
-                button.addEventListener('click', function () {
+                button.addEventListener('click', function() {
                     // Loại bỏ class 'active-btn' khỏi các nút khác
                     document.querySelectorAll('.action-button').forEach(btn => btn.classList.remove(
                         'active-btn'));
@@ -892,7 +873,7 @@
                 // Lưu nội dung ban đầu cho mỗi ô trong vòng lặp
                 const originalContent = cell.textContent.trim(); // Sử dụng textContent để lấy nội dung văn bản
 
-                cell.addEventListener('click', function () {
+                cell.addEventListener('click', function() {
                     if (this.classList.contains('active')) {
                         // Nếu đã active, xóa active và khôi phục nội dung ban đầu
                         this.classList.remove('active'); // Xóa class active
@@ -944,10 +925,7 @@
                 document.getElementById('btn-broken').addEventListener('click', () => setInputValue('Đã hỏng'));
             });
         </script>
-    </div>
-@endsection
-
-
+        @endsection
 
 @section('javascript')
     <!-- JAVASCRIPT -->
@@ -958,24 +936,10 @@
     <script src="assets/libs/node-waves/waves.min.js"></script>
     <script src="assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
 
-    <!-- Required datatable js -->
-    <script src="assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <!-- Buttons examples -->
-    <script src="assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-    <script src="assets/libs/jszip/jszip.min.js"></script>
-    <script src="assets/libs/pdfmake/build/pdfmake.min.js"></script>
-    <script src="assets/libs/pdfmake/build/vfs_fonts.js"></script>
-    <script src="assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-    <!-- Responsive examples -->
-    <script src="assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+    <!-- Table Editable plugin -->
+    <script src="assets/libs/table-edits/build/table-edits.min.js"></script>
 
-    <!-- Datatable init js -->
-    <script src="assets/js/pages/datatables.init.js"></script>
+    <script src="assets/js/pages/table-editable.int.js"></script>
 
     <!-- App js -->
     <script src="assets/js/app.js"></script>

@@ -1,4 +1,4 @@
-@extends('Users.layouts.master')
+@extends('user.layouts.master')
 
 @section('title')
     404 - Not found

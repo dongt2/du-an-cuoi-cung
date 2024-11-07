@@ -184,7 +184,7 @@ ____________________________________________________
 		function calculateSplineCurvePoints(datapoints, curvedLinesOptions, yPos) {
 			var points = datapoints.points;
 			var ps = datapoints.pointsize;
-			
+
 			//create interpolant fuction
 			var splines = createHermiteSplines(datapoints, curvedLinesOptions, yPos);
 			var result = [];
@@ -195,8 +195,8 @@ ____________________________________________________
 			var j = 0;
 			for (var i = 0; i < points.length - ps; i += ps) {
 				var curX = i;
-				var curY = i + yPos;	
-				
+				var curY = i + yPos;
+
 				var xStart = points[curX];
 				var xEnd = points[curX + ps];
 				var xStep = (xEnd - xStart) / Number(curvedLinesOptions.nrSplinePoints);
@@ -210,7 +210,7 @@ ____________________________________________________
 					result.push(x);
 					result.push(splines[j](x));
 				}
-				
+
 				j++;
 			}
 
@@ -223,33 +223,33 @@ ____________________________________________________
 
 
 
-		// Creates an array of splines, one for each segment of the original curve. Algorithm based on the wikipedia articles: 
+		// Creates an array of splines, one for each segment of the original curve. Algorithm based on the wikipedia articles:
 		//
-		// http://de.wikipedia.org/w/index.php?title=Kubisch_Hermitescher_Spline&oldid=130168003 and 
+		// http://de.wikipedia.org/w/index.php?title=Kubisch_Hermitescher_Spline&oldid=130168003 and
 		// http://en.wikipedia.org/w/index.php?title=Monotone_cubic_interpolation&oldid=622341725 and the description of Fritsch-Carlson from
 		// http://math.stackexchange.com/questions/45218/implementation-of-monotone-cubic-interpolation
 		// for a detailed description see https://github.com/MichaelZinsmaier/CurvedLines/docu
 		function createHermiteSplines(datapoints, curvedLinesOptions, yPos) {
 			var points = datapoints.points;
 			var ps = datapoints.pointsize;
-			
+
 			// preparation get length (x_{k+1} - x_k) and slope s=(p_{k+1} - p_k) / (x_{k+1} - x_k) of the segments
 			var segmentLengths = [];
 			var segmentSlopes = [];
 
 			for (var i = 0; i < points.length - ps; i += ps) {
 				var curX = i;
-				var curY = i + yPos;			
+				var curY = i + yPos;
 				var dx = points[curX + ps] - points[curX];
 				var dy = points[curY + ps] - points[curY];
-							
+
 				segmentLengths.push(dx);
 				segmentSlopes.push(dy / dx);
 			}
 
 			//get the values for the desired gradients  m_k for all points k
 			//depending on the used method the formula is different
-			var gradients = [segmentSlopes[0]];	
+			var gradients = [segmentSlopes[0]];
 			if (curvedLinesOptions.monotonicFit) {
 				// Fritsch Carlson
 				for (var i = 1; i < segmentLengths.length; i++) {
@@ -270,7 +270,7 @@ ____________________________________________________
 				// Catmull-Rom for t = 0
 				for (var i = ps; i < points.length - ps; i += ps) {
 					var curX = i;
-					var curY = i + yPos;	
+					var curY = i + yPos;
 					gradients.push(Number(curvedLinesOptions.tension) * (points[curY + ps] - points[curY - ps]) / (points[curX + ps] - points[curX - ps]));
 				}
 			}
@@ -285,7 +285,7 @@ ____________________________________________________
 				var slope = segmentSlopes[i];
 				var invLength = 1 / segmentLengths[i];
 				var common = m_k + m_k_plus - slope - slope;
-				
+
 				coefs1.push(common * invLength * invLength);
 				coefs2.push((slope - common - m_k) * invLength);
 			}
@@ -295,16 +295,16 @@ ____________________________________________________
 			for (var i = 0; i < segmentLengths.length; i ++) {
 				var spline = function (x_k, coef1, coef2, coef3, coef4) {
 					// spline for a segment
-					return function (x) {									
+					return function (x) {
 						var diff = x - x_k;
 						var diffSq = diff * diff;
 						return coef1 * diff * diffSq + coef2 * diffSq + coef3 * diff + coef4;
 					};
-				};			
-		
+				};
+
 				ret.push(spline(points[i * ps], coefs1[i], coefs2[i], gradients[i], points[i * ps + yPos]));
 			}
-			
+
 			return ret;
 		};
 
@@ -335,7 +335,7 @@ ____________________________________________________
 					fpDist = (maxX - minX) / (500 * 100);
 					//x range / (estimated pixel length of placeholder * factor)
 				} else {
-					//use user defined value
+					//use theme defined value
 					fpDist = Number(curvedLinesOptions.fitPointDist);
 				}
 
@@ -457,7 +457,7 @@ ____________________________________________________
 
 			return result;
 		}
-		
+
 		function hasInvalidParameters(curvedLinesOptions) {
 			if (typeof curvedLinesOptions.fit != 'undefined' ||
 			    typeof curvedLinesOptions.curvePointFactor != 'undefined' ||
@@ -467,7 +467,7 @@ ____________________________________________________
 			    }
 			return false;
 		}
-		
+
 
 	}//end init
 

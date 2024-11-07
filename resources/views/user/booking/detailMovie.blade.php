@@ -1,7 +1,7 @@
-@extends('Users.layouts.master')
+@extends('user.layouts.master')
 
 @section('title')
-    Booking
+    {{ $detail->title }} | Chi tiết phim
 @endsection
 
 @section('content')
@@ -17,21 +17,21 @@
                     </div> --}}
                     <div class="image-container movie__images">
                         <span class="movie__rating">5.0</span>
-                        <img src="{{ \Storage::url($detail->image) }}" alt="Venom Poster" class="main-image">
-                        <div class="zoomed-image" style="background-image: url('{{ \Storage::url($detail->image) }}');">
+                        <img src="{{ asset($detail->cover_image) }}" alt="Venom Poster" class="main-image">
+                        <div class="zoomed-image" style="background-image: url('{{ asset($detail->cover_image) }}');">
                         </div>
                     </div>
 
                 </div>
 
                 <div class="col-sm-8 col-md-9">
-                    <p class="movie__time">{{ $detail->duration }}</p>
+                    <p class="movie__time">{{ $detail->duration }} phút</p>
 
                     <p class="movie__option" style="font-size: 30px">{{ $detail->title }}</p>
                     <hr>
                     <p class="movie__option"><strong>Đạo diễn: </strong>{{ $detail->director }}</p>
                     <p class="movie__option"><strong>Diễn viên: </strong>{{ $detail->actors }}</p>
-                    <p class="movie__option"><strong>Thể loại: </strong>Vanh Pro Vip</p>
+                    <p class="movie__option"><strong>Thể loại: </strong>{{ $detail->category_name }}</p>
                     <p class="movie__option"><strong>Khởi chiếu: </strong>
                         {{ \Carbon\Carbon::parse($detail->release_date)->format('d/m/Y') }}
                     </p>
@@ -73,9 +73,9 @@
             <div class="movie__media" id="trailerContainer" style="display: none;">
                 <div>
                     <iframe width="560" height="315" src="{{ $detail->trailer_url }}" title="YouTube video player"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                 const trailerContainer = document.getElementById('trailerContainer');
 
                 // Thêm sự kiện click cho nút Trailer
-                trailerButton.addEventListener('click', function(event) {
+                trailerButton.addEventListener('click', function (event) {
                     event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
 
                     // Kiểm tra trạng thái hiện tại của trailerContainer
@@ -121,7 +121,8 @@
                         <a href='#' class="comment__author"><span class="social-used fa fa-facebook"></span>Roberta
                             Inetti</a>
                         <p class="comment__date">today | 03:04</p>
-                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae enim
+                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            enim
                             sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante justo,
                             volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis dolor
                             tristique et.</p>
@@ -136,7 +137,8 @@
                         <a href='#' class="comment__author"><span class="social-used fa fa-vk"></span>Olia
                             Gozha</a>
                         <p class="comment__date">22.10.2013 | 14:40</p>
-                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae enim
+                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            enim
                             sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante justo,
                             volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis dolor
                             tristique et.</p>
@@ -151,7 +153,8 @@
                         <a href='#' class="comment__author"><span class="social-used fa fa-vk"></span>Dmitriy
                             Pustovalov</a>
                         <p class="comment__date">today | 10:19</p>
-                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae enim
+                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            enim
                             sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante justo,
                             volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis dolor
                             tristique et.</p>
@@ -166,7 +169,8 @@
                         <a href='#' class="comment__author"><span class="social-used fa fa-facebook"></span>Sia
                             Andrews</a>
                         <p class="comment__date"> 22.10.2013 | 12:31 </p>
-                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae enim
+                        <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            enim
                             sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante justo,
                             volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis dolor
                             tristique et.</p>
@@ -180,11 +184,13 @@
                             </div>
 
                             <a href='#' class="comment__author"><span
-                                    class="social-used fa fa-facebook"></span>Roberta Inetti</a>
+                                        class="social-used fa fa-facebook"></span>Roberta Inetti</a>
                             <p class="comment__date">today | 03:04</p>
-                            <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+                                vitae
                                 enim sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante
-                                justo, volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis
+                                justo, volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae
+                                sagittis
                                 dolor tristique et.</p>
                             <a href='#' class="comment__reply">Reply</a>
                         </div>
@@ -197,9 +203,11 @@
                             <a href='#' class="comment__author"><span class="social-used fa fa-vk"></span>Olia
                                 Gozha</a>
                             <p class="comment__date">22.10.2013 | 14:40</p>
-                            <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
+                            <p class="comment__message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
+                                vitae
                                 enim sollicitudin, euismod erat id, fringilla lacus. Cras ut rutrum lectus. Etiam ante
-                                justo, volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae sagittis
+                                justo, volutpat at viverra a, mattis in velit. Morbi molestie rhoncus enim, vitae
+                                sagittis
                                 dolor tristique et.</p>
                             <a href='#' class="comment__reply">Reply</a>
                         </div>

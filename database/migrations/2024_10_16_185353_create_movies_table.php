@@ -26,7 +26,6 @@ return new class extends Migration
             $table->text('actors');
             $table->string('cover_image');
             $table->string('trailer_url', 255);
-            $table->unsignedBigInteger('category_id');
 
             $table->timestamps();
         });

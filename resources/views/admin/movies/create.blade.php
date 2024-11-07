@@ -22,7 +22,7 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('movie.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.movie.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="" class="form-label">Tên Phim :</label>
@@ -106,6 +106,18 @@
                 @endif
 
                 <div class="mb-3">
+                    <label for="" class="form-label">Đạo Diễn:</label>
+                    <input type="text" class="form-control" id="" name="director"
+                           placeholder="Mời nhập đạo diễn">
+                </div>
+
+                @if ($errors->has('director'))
+                    <div class="text-danger mb-3">
+                        {{ $errors->first('director') }}
+                    </div>
+                @endif
+
+                <div class="mb-3">
                     <label for="" class="form-label">Trailer:</label>
                     <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link...">
                 </div>
@@ -142,7 +154,7 @@
                     </div>
                 @endif
 
-                <a href="{{ route('movie.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.movie.index') }}" class="btn btn-primary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Thêm phim</button>
             </form>
             <!-- end page title -->

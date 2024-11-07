@@ -15,7 +15,7 @@ class MovieController extends Controller
     {
         $movies = Movie::all();
         // dd(vars: $movies);
-        return view('Users.movie-list-full', compact('movies'));
+        return view('user.movie-list-full', compact('movies'));
     }
 
     /**

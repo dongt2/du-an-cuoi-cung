@@ -213,7 +213,7 @@ function init_Elements() {
     });
 
     //7. Dropdown for authorize button
-    //user list option
+    //theme list option
     $(".auth__show").click(function (e) {
         e.preventDefault();
         $(".auth__function").toggleClass("open-function");
@@ -290,7 +290,7 @@ function init_Home() {
     });
 
     //2. Dropdown for authorize button
-    //user list option
+    //theme list option
     $(".auth__show").click(function (e) {
         e.preventDefault();
         $(".auth__function").toggleClass("open-function");

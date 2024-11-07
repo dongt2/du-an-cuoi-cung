@@ -1,4 +1,4 @@
-@extends('Users.layouts.master')
+@extends('user.layouts.master')
 
 @section('title')
     Trang chủ
@@ -7,31 +7,31 @@
 @section('content')
     <!-- Slider -->
     <div class="bannercontainer"
-        style="
+         style="
             position: relative;
             left: 50%;
             right: 50%;
-            margin-left: -50vw; 
-            margin-right: -50vw; 
+            margin-left: -50vw;
+            margin-right: -50vw;
             width: 100vw;
     ">
         <div class="banner">
-            @include('Users.layouts.header.slide')
+            @include('user.layouts.header.slide')
         </div>
     </div>
     <!--end slider -->
 
-    @include('Users.layouts.content.mega')
+    @include('user.layouts.content.mega')
 
     <div class="clearfix"></div>
 
     <h2 id='target' class="page-heading heading--outcontainer">Now in the cinema</h2>
 
     <div class="col-sm-12">
-        @include('Users.layouts.content.content')
+        @include('user.layouts.content.content')
     </div>
 
     <div class="col-sm-12">
-        @include('Users.layouts.content.latestNews')
+        @include('user.layouts.content.latestNews')
     </div>
 @endsection

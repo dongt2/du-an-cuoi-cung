@@ -11,9 +11,9 @@
 <ul id="navigation">
     <li>
         <span class="sub-nav-toggle plus"></span>
-        <a href="{{ route('listMovie') }}">Phim</a>
+        <a href="{{ route('movies.list') }}">Phim</a>
         <ul>
-            <li class="menu__nav-item"><a href="{{ route('listMovie') }}">Phim đang chiếu</a></li>
+            <li class="menu__nav-item"><a href="{{ route('movies.list') }}">Phim đang chiếu</a></li>
             <li class="menu__nav-item"><a href="movie-page-right.html">Phim sắp chiếu</a></li>
             {{-- <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a>
             </li> --}}

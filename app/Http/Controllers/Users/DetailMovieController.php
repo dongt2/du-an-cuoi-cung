@@ -13,9 +13,12 @@ class DetailMovieController extends Controller
      */
     public function index($movie_id)
     {
-        $detail = Movie::find($movie_id);
-        // dd($detail);
-        return view('Users.booking.detailMovie', compact('detail'));
+        $detail = Movie::query()
+            ->join('categories', 'movies.category_id', '=', 'categories.category_id')
+            ->select('movies.*', 'categories.category_name as category_name')
+            ->where('movie_id', $movie_id)
+            ->first();
+        return view('user.booking.detailMovie', compact('detail'));
     }
 
     /**

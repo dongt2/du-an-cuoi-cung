@@ -22,7 +22,7 @@ class Movie extends Model
         'year',
         'release_date',
         'actors',
-        'image',
+        'cover_image',
         'trailer_url',
         'category_id',
     ];

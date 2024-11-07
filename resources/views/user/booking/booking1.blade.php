@@ -1,4 +1,4 @@
-@extends('Users.layouts.master')
+@extends('user.layouts.master')
 
 @section('title')
     Booking
@@ -9,7 +9,8 @@
         <div class="order-container">
             <div class="order">
                 <img class="order__images" alt='' src="images/tickets.png">
-                <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span></p>
+                <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span>
+                </p>
             </div>
         </div>
         <div class="order-step-area">
@@ -41,7 +42,7 @@
             </div>
 
             <h2 class="page-heading">Pick time</h2>
-            
+
 
             <div class="time-select time-select--wide">
                 <div class="time-select__group group--first">

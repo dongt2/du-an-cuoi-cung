@@ -1,4 +1,4 @@
-@extends('user.layouts.default')
+@extends('theme.layouts.default')
 
 @section('title')
     AMovie - Booking step 2
@@ -14,21 +14,21 @@
     <!-- Stylesheets -->
 
     <!-- Mobile menu -->
-    <link href="css/gozha-nav.css" rel="stylesheet" />
+    <link href="css/gozha-nav.css" rel="stylesheet"/>
     <!-- Select -->
-    <link href="css/external/jquery.selectbox.css" rel="stylesheet" />
+    <link href="css/external/jquery.selectbox.css" rel="stylesheet"/>
 
     <!-- Custom -->
-    <link href="css/style3860.css?v=1" rel="stylesheet" />
+    <link href="css/style3860.css?v=1" rel="stylesheet"/>
 
     <!-- Modernizr -->
     <script src="js/external/modernizr.custom.js"></script>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-        <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-        <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
 @endsection
 
 @section('content')
@@ -55,7 +55,8 @@
             <div class="order-container">
                 <div class="order">
                     <img class="order__images" alt='' src="images/tickets.png">
-                    <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span>
+                    <p class="order__title">Book a ticket <br><span
+                                class="order__descript">and have fun movie time</span>
                     </p>
                     <div class="order__control">
                         <a href="#" class="order__control-btn active">Purchase</a>
@@ -173,9 +174,9 @@
                                 <span class="sits__place sits-price--cheap" data-place='D5' data-price='10'>D5</span>
                                 <span class="sits__place sits-price--cheap" data-place='D6' data-price='10'>D6</span>
                                 <span class="sits__place sits-price--cheap sits-state--not" data-place='D7'
-                                    data-price='10'>D7</span>
+                                      data-price='10'>D7</span>
                                 <span class="sits__place sits-price--cheap sits-state--not" data-place='D8'
-                                    data-price='10'>D8</span>
+                                      data-price='10'>D8</span>
                                 <span class="sits__place sits-price--cheap" data-place='D9' data-price='10'>D9</span>
                                 <span class="sits__place sits-price--cheap" data-place='D10' data-price='10'>D10</span>
                                 <span class="sits__place sits-price--cheap" data-place='D11' data-price='10'>D11</span>
@@ -269,54 +270,68 @@
                             </div>
 
                             <div class="sits__row additional-margin">
-                                <span class="sits__place sits-price--expensive" data-place='J5' data-price='30'>J5</span>
-                                <span class="sits__place sits-price--expensive" data-place='J6' data-price='30'>J6</span>
-                                <span class="sits__place sits-price--expensive" data-place='J7' data-price='30'>J7</span>
-                                <span class="sits__place sits-price--expensive" data-place='J8' data-price='30'>J8</span>
-                                <span class="sits__place sits-price--expensive" data-place='J9' data-price='30'>J9</span>
+                                <span class="sits__place sits-price--expensive" data-place='J5'
+                                      data-price='30'>J5</span>
+                                <span class="sits__place sits-price--expensive" data-place='J6'
+                                      data-price='30'>J6</span>
+                                <span class="sits__place sits-price--expensive" data-place='J7'
+                                      data-price='30'>J7</span>
+                                <span class="sits__place sits-price--expensive" data-place='J8'
+                                      data-price='30'>J8</span>
+                                <span class="sits__place sits-price--expensive" data-place='J9'
+                                      data-price='30'>J9</span>
                                 <span class="sits__place sits-price--expensive" data-place='J10'
-                                    data-price='30'>J10</span>
+                                      data-price='30'>J10</span>
                                 <span class="sits__place sits-price--expensive" data-place='J11'
-                                    data-price='30'>J11</span>
+                                      data-price='30'>J11</span>
                                 <span class="sits__place sits-price--expensive" data-place='J12'
-                                    data-price='30'>J12</span>
+                                      data-price='30'>J12</span>
                                 <span class="sits__place sits-price--expensive" data-place='J13'
-                                    data-price='30'>J13</span>
+                                      data-price='30'>J13</span>
                                 <span class="sits__place sits-price--expensive" data-place='J14'
-                                    data-price='30'>J14</span>
+                                      data-price='30'>J14</span>
                             </div>
 
                             <div class="sits__row">
-                                <span class="sits__place sits-price--expensive" data-place='K5' data-price='30'>K5</span>
-                                <span class="sits__place sits-price--expensive" data-place='K6' data-price='30'>K6</span>
-                                <span class="sits__place sits-price--expensive" data-place='K7' data-price='30'>K7</span>
-                                <span class="sits__place sits-price--expensive" data-place='K8' data-price='30'>K8</span>
-                                <span class="sits__place sits-price--expensive" data-place='K9' data-price='30'>K9</span>
+                                <span class="sits__place sits-price--expensive" data-place='K5'
+                                      data-price='30'>K5</span>
+                                <span class="sits__place sits-price--expensive" data-place='K6'
+                                      data-price='30'>K6</span>
+                                <span class="sits__place sits-price--expensive" data-place='K7'
+                                      data-price='30'>K7</span>
+                                <span class="sits__place sits-price--expensive" data-place='K8'
+                                      data-price='30'>K8</span>
+                                <span class="sits__place sits-price--expensive" data-place='K9'
+                                      data-price='30'>K9</span>
                                 <span class="sits__place sits-price--expensive" data-place='K10'
-                                    data-price='30'>K10</span>
+                                      data-price='30'>K10</span>
                                 <span class="sits__place sits-price--expensive" data-place='K11'
-                                    data-price='30'>K11</span>
+                                      data-price='30'>K11</span>
                                 <span class="sits__place sits-price--expensive" data-place='K12'
-                                    data-price='30'>K12</span>
+                                      data-price='30'>K12</span>
                                 <span class="sits__place sits-price--expensive" data-place='K13'
-                                    data-price='30'>K13</span>
+                                      data-price='30'>K13</span>
                                 <span class="sits__place sits-price--expensive" data-place='K14'
-                                    data-price='30'>K14</span>
+                                      data-price='30'>K14</span>
                             </div>
 
                             <div class="sits__row">
-                                <span class="sits__place sits-price--expensive" data-place='L6' data-price='30'>L6</span>
-                                <span class="sits__place sits-price--expensive" data-place='L7' data-price='30'>L7</span>
-                                <span class="sits__place sits-price--expensive" data-place='L8' data-price='30'>L8</span>
-                                <span class="sits__place sits-price--expensive" data-place='L9' data-price='30'>L9</span>
+                                <span class="sits__place sits-price--expensive" data-place='L6'
+                                      data-price='30'>L6</span>
+                                <span class="sits__place sits-price--expensive" data-place='L7'
+                                      data-price='30'>L7</span>
+                                <span class="sits__place sits-price--expensive" data-place='L8'
+                                      data-price='30'>L8</span>
+                                <span class="sits__place sits-price--expensive" data-place='L9'
+                                      data-price='30'>L9</span>
                                 <span class="sits__place sits-price--expensive" data-place='L10'
-                                    data-price='30'>L10</span>
+                                      data-price='30'>L10</span>
                                 <span class="sits__place sits-price--expensive" data-place='L11'
-                                    data-price='30'>L11</span>
+                                      data-price='30'>L11</span>
                                 <span class="sits__place sits-price--expensive" data-place='L12'
-                                    data-price='30'>L12</span>
+                                      data-price='30'>L12</span>
                                 <span class="sits__place sits-price--expensive" data-place='L13'
-                                    data-price='30'>L13</span>
+                                      data-price='30'>L13</span>
                             </div>
 
                             <aside class="sits__checked">
@@ -410,8 +425,8 @@
                 </div>
 
             </div>
-        </div>
-        </section>
+    </div>
+    </section>
     </div>
 
 
@@ -474,7 +489,7 @@
     <script src="js/custom.js"></script>
 
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             init_BookingTwo();
         });
     </script>

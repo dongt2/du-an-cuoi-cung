@@ -22,7 +22,7 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('category.store') }}" method="post">
+            <form action="{{ route('admin.category.store') }}" method="post">
                 @csrf
                 <div class="mb-3">
                     <label for="" class="form-label">Name Category :</label>
@@ -35,7 +35,7 @@
                     {{ $errors->first('category_name') }}
                 </div>
                 @endif
-                <a href="{{ route('category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Thêm thể loại</button>
             </form>
             <!-- end page title -->

@@ -22,7 +22,7 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('category.update', $category->category_id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.category.update', $category->category_id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -36,7 +36,7 @@
                     {{ $errors->first('category_name') }}
                 </div>
                 @endif
-                <a href="{{ route('category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Sửa thể loại</button>
             </form>
             <!-- end page title -->

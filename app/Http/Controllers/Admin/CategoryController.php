@@ -15,7 +15,7 @@ class CategoryController extends Controller
     {
         $category = Category::paginate(5);
 
-        return view('admin.categorys.index', compact('category'));
+        return view('admin.category.index', compact('category'));
     }
 
     /**
@@ -23,7 +23,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.categorys.create');
+        return view('admin.category.create');
     }
 
     /**
@@ -35,7 +35,7 @@ class CategoryController extends Controller
             'category_name' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:25',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`
@@ -54,7 +54,7 @@ class CategoryController extends Controller
         Category::create($data);
 
         // dd($data);
-        return redirect()->route('category.index')->with('success', 'Thêm sản phẩm thành công. ');
+        return redirect()->route('admin.category.index')->with('success', 'Thêm sản phẩm thành công. ');
     }
 
     /**
@@ -64,7 +64,7 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
 
-        return view('admin.categorys.show', compact('category'));
+        return view('admin.category.show', compact('category'));
     }
 
     /**
@@ -74,7 +74,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        return view('admin.categorys.update', compact('category'));
+        return view('admin.category.update', compact('category'));
     }
 
     /**
@@ -88,7 +88,7 @@ class CategoryController extends Controller
             'category_name' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:25',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`
@@ -106,7 +106,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('category.index')->with('success', 'Sửa thể loại thành công. ');
+        return redirect()->route('admin.category.index')->with('success', 'Sửa thể loại thành công. ');
     }
 
     /**
@@ -116,20 +116,10 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        // if ($category->movies()->count() > 0) {
-        //     return redirect()->route('category.index')->with('errors', 'Không thể xóa. ');
-
-        // }
-
-        // $category->delete();
-
-        
-        // return redirect()->route('category.index')->with('success', 'Xóa thể loại thành công. ');
-
         if($category->movies()->count() == 0){
             $category->delete();
-            return redirect()->route('category.index')->with('success', 'Xóa thể loại thành công. ');
+            return redirect()->route('admin.category.index')->with('success', 'Xóa thể loại thành công. ');
         }
-        return redirect()->route('category.index')->with('errors', 'Không thể xóa. ');
+        return redirect()->route('admin.category.index')->with('errors', 'Không thể xóa. ');
     }
 }

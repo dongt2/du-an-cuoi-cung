@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Schema;
 class UserSeeder extends Seeder
 {
     /**
-     * Seed the user's table.
+     * Seed the theme's table.
      */
     public function run(): void
     {
         Schema::disableForeignKeyConstraints();
         User::truncate();
-        
+
         User::factory(count: 10)->create();
 
         Schema::enableForeignKeyConstraints();

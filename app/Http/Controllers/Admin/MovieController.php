@@ -39,21 +39,20 @@ class MovieController extends Controller
             'title' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 'unique:movies,title',
             ],
             'duration' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
             ],
             'country' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
             ],
@@ -78,9 +77,8 @@ class MovieController extends Controller
             'actors' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
             ],
             'image' => [
                 'required',                 // Bắt buộc có ảnh
@@ -102,7 +100,6 @@ class MovieController extends Controller
                 'title.string' => 'Trường tên phải là chuỗi ký tự.',
                 'title.min' => 'Trường tên phải có ít nhất 3 ký tự.',
                 'title.max' => 'Trường tên không được vượt quá 255 ký tự.',
-                'title.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
                 'title.unique' => 'Tên phim đã tồn tại.', // Thông báo lỗi khi bị trùng
 
                 'duration.required' => 'Trường thời lượng không được bỏ trống',
@@ -134,7 +131,6 @@ class MovieController extends Controller
                 'actors.string' => 'Trường diễn viên phải là chuỗi ký tự.',
                 'actors.min' => 'Trường diễn viên phải có ít nhất 3 ký tự.',
                 'actors.max' => 'Trường diễn viên không được vượt quá 255 ký tự.',
-                'actors.regex' => 'Trường diễn viên không được chứa ký tự đặc biệt.',
 
                 'image.required' => 'Ảnh đại diện là bắt buộc.',
                 'image.image' => 'Ảnh đại diện phải là một file ảnh.',
@@ -168,7 +164,7 @@ class MovieController extends Controller
         Movie::create($data);
         //dd($data);
 
-        return redirect()->route('movie.index')->with('success', 'Thêm phim thành công, ');
+        return redirect()->route('admin.movie.index')->with('success', 'Thêm phim thành công, ');
     }
 
     /**
@@ -205,21 +201,19 @@ class MovieController extends Controller
                 'string',
                 'min:3',
                 'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 //'unique:movies,title',
             ],
             'duration' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
             ],
             'country' => [
                 'required',
                 'string',
-                'min:3',
+                'min:1',
                 'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
             ],
             'description' => [
                 'required',
@@ -244,7 +238,6 @@ class MovieController extends Controller
                 'string',
                 'min:3',
                 'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
             ],
             'image' => [
                 'image',                    // Phải là một file ảnh
@@ -331,7 +324,7 @@ class MovieController extends Controller
         $movie->update($data);
         //dd($data);
 
-        return redirect()->route('movie.index')->with('success', 'Sửa phim thành công, ');
+        return redirect()->route('admin.movie.index')->with('success', 'Sửa phim thành công, ');
     }
 
     /**
@@ -347,6 +340,6 @@ class MovieController extends Controller
             }
         }
         $movie->delete();
-        return redirect()->route('movie.index')->with('success', 'Xóa sản phẩm thành công. ');
+        return redirect()->route('admin.movie.index')->with('success', 'Xóa sản phẩm thành công. ');
     }
 }

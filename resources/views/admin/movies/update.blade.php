@@ -22,7 +22,7 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('movie.update', $movie->movie_id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.movie.update', $movie->movie_id) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
@@ -149,7 +149,7 @@
                     </div>
                 @endif
 
-                <a href="{{ route('movie.index') }}" class="btn btn-secondary">Quay lại</a>
+                <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Sửa phim</button>
             </form>
             <!-- end page title -->

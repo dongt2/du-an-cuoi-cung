@@ -1,1 +1,1 @@
-<img alt='logo' src="/template/amovie.gozha.net/images/logo.png">
+<img alt='logo' src="/images/logo.png">

@@ -16,7 +16,7 @@ class SeatController extends Controller
     {
         $screen = Screen::get();
         if (!$request->has('screen')) {
-            return redirect()->route('seat.index', ['screen' => 1]);
+            return redirect()->route('admin.seat.index', ['screen' => 1]);
         }
         $screen_id = $request->input('screen');
 
@@ -25,7 +25,7 @@ class SeatController extends Controller
             ->orderByRaw("SUBSTRING(place, 1, 1), CAST(SUBSTRING(place, 2) AS UNSIGNED)")
             ->get();
 
-        return view("admin.seats.list", compact("data", "screen"));
+        return view("admin.seats.index", compact("data", "screen"));
     }
 
     /**
@@ -120,7 +120,7 @@ class SeatController extends Controller
             }
         }
 
-        return redirect()->route('seat.index', ['screen' => $screen_id]);
+        return redirect()->route('admin.seat.index', ['screen' => $screen_id]);
     }
 
     public function updateSeat(Request $request, $place)
@@ -169,6 +169,6 @@ class SeatController extends Controller
             }
         }
 
-        return redirect()->route('seat.index', ['screen' => $screen_id]);
+        return redirect()->route('admin.seat.index', ['screen' => $screen_id]);
     }
 }

@@ -16,59 +16,59 @@
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
-<div class="main-content">
 
+@section('content')
     <div class="page-content">
-        <div class="container-fluid">
+            <div class="container-fluid">
 
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="page-title-box">
-                        <h4>Bảng Categorys</h4>
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
-                            <li class="breadcrumb-item active">Danh sách Movies</li>
-                        </ol>
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="page-title-box">
+                            <h4>Danh sách Movie</h4>
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
+                                <li class="breadcrumb-item active">Danh sách Movie</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- end page title -->
+                <!-- end page title -->
 
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="d-flex justifu-content-start">
-                                            <form class="d-flex">
-                                                <input class="form-control me-2" type="text" placeholder="Tìm kiếm...">
-                                                <button class="btn btn-primary" type="button">Search</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <div class="d-flex justify-content-end mb-5">
-                                            <a href="{{ route('movie.create') }}" class="btn btn-success">Thêm</a>
-                                        </div>
-                                        @if (session('success'))
-                                            <div class="alert alert-success" role="alert">
-                                                <p class="text-success">{{ session('success') }}</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="d-flex justifu-content-start">
+                                                <form class="d-flex">
+                                                    <input class="form-control me-2" type="text" placeholder="Tìm kiếm...">
+                                                    <button class="btn btn-primary" type="button">Search</button>
+                                                </form>
                                             </div>
-                                        @endif
+                                        </div>
+                                        <div class="col">
+                                            <div class="d-flex justify-content-end mb-5">
+                                                <a href="{{ route('admin.movie.create') }}" class="btn btn-success">Thêm</a>
+                                            </div>
+                                            @if (session('success'))
+                                                <div class="alert alert-success" role="alert">
+                                                    <p class="text-success">{{ session('success') }}</p>
+                                                </div>
+                                            @endif
+                                        </div>
+
                                     </div>
 
-                                </div>
 
 
-
-                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
-                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                    <thead>
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên Phim</th>
@@ -83,9 +83,10 @@
                                             <th>Hình Ảnh</th>
                                             <th>Hành Động</th>
                                         </tr>
-                                    </thead>
+                                        </thead>
 
-                                    <tbody>
+                                        <tbody>
+                                        @if($movie->count() > 0)
                                         @foreach ($movie as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -98,27 +99,27 @@
                                                 <td>{{ $item->actors }}</td>
                                                 <td>
                                                     <iframe width="460" height="315"
-                                                        src="{{ $item->trailer_url }}" title="YouTube video player"
-                                                        frameborder="0"
-                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                        referrerpolicy="strict-origin-when-cross-origin"
-                                                        allowfullscreen></iframe>
+                                                            src="{{ $item->trailer_url }}" title="YouTube video player"
+                                                            frameborder="0"
+                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                            referrerpolicy="strict-origin-when-cross-origin"
+                                                            allowfullscreen></iframe>
                                                 </td>
                                                 <td>{{ $item->category->category_name }}</td>
                                                 <td>
 
                                                     <img src="{{ asset($item->cover_image) }}" alt="Avatar"
-                                                        width="100">
+                                                         width="100">
                                                 </td>
                                                 <td class="text-nowrap" style="width: 0px;">
-                                                    <a href="{{ route('movie.show', $item->movie_id) }}"
-                                                        class="btn btn-primary">Xem</a>
-                                                    <a href="{{ route('movie.edit', $item->movie_id) }}"
-                                                        class="btn btn-warning">Sửa</a>
+                                                    <a href="{{ route('admin.movie.show', $item->movie_id) }}"
+                                                       class="btn btn-primary">Xem</a>
+                                                    <a href="{{ route('admin.movie.edit', $item->movie_id) }}"
+                                                       class="btn btn-warning">Sửa</a>
 
                                                     <!-- Button to Open the Modal -->
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#myModal">
+                                                            data-bs-target="#myModal">
                                                         Xóa
                                                     </button>
                                                     <!-- The Modal -->
@@ -130,7 +131,7 @@
                                                                 <div class="modal-header">
                                                                     <h4 class="modal-title">Modal Heading</h4>
                                                                     <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"></button>
+                                                                            data-bs-dismiss="modal"></button>
                                                                 </div>
 
                                                                 <!-- Modal body -->
@@ -141,15 +142,15 @@
                                                                 <!-- Modal footer -->
                                                                 <div class="modal-footer">
                                                                     <form
-                                                                        action="{{ route('movie.destroy', $item->movie_id) }}"
+                                                                        action="{{ route('admin.movie.destroy', $item->movie_id) }}"
                                                                         method="post">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit"
-                                                                            class="btn btn-danger">Xóa</button>
+                                                                                class="btn btn-danger">Xóa</button>
                                                                     </form>
                                                                     <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
+                                                                            data-bs-dismiss="modal">Close</button>
                                                                 </div>
 
                                                             </div>
@@ -160,21 +161,24 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-                                    </tbody>
-                                </table>
-                                {{ $movie->links() }}
+                                        @else
+                                            <tr>
+                                                <td colspan="12" class="text-center">Không có dữ liệu</td>
+                                            </tr>
+                                        @endif
+                                        </tbody>
+                                    </table>
+                                    {{ $movie->links() }}
+                                </div>
+
                             </div>
-
                         </div>
-                    </div>
-                </div> <!-- end col -->
-            </div> <!-- end row -->
+                    </div> <!-- end col -->
+                </div> <!-- end row -->
 
-        </div> <!-- container-fluid -->
-    </div>
-    <!-- End Page-content -->
-</div>
-@section('content')
+            </div> <!-- container-fluid -->
+        </div>
+
 @endsection
 
 @section('javascript')
