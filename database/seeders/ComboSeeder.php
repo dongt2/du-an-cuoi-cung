@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\combo;
+use App\Models\Combo;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class ComboSeeder extends Seeder
 {
@@ -13,6 +14,11 @@ class ComboSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        Combo::truncate();
+
         Combo::factory(10)->create();
+
+        Schema::enableForeignKeyConstraints();
     }
 }

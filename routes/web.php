@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\ScreenController;
+use App\Http\Controllers\admin\SeatController;
+use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Users\DetailMovieController;
+use App\Http\Controllers\Users\HomeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,23 +20,37 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// mới vào chạy 2 cái này
-// php artisan migrate
-// php artisan db:seed
-// b c
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return view('user.home');
+Route::prefix('movies')
+    ->as('movies.')
+    ->group(function () {
+    Route::get('listMovie', [MovieController::class , 'index'])->name('list');
+    Route::get('show/{id}', [DetailMovieController::class , 'index'])->name('show');
 });
 
-Route::get('/book1', function () {
-    return view('user.book1');
-});
 
-Route::get('/book2', function () {
-    return view('user.book2');
-});
 
-Route::get('/book3', function () {
-    return view('user.book3-buy');
-});
+
+// route admin
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::resource('category', CategoryController::class);
+        Route::resource('movie', MovieController::class);
+
+        Route::resource('seat', SeatController::class);
+        Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+
+//        Route Screen
+        Route::resource('screen', ScreenController::class);
+
+        // Route Showtime
+        Route::resource('showtime', ShowtimeController::class)
+        ->middleware('clean.expired.showtimes');
+
+    });
+
+

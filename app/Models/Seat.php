@@ -9,19 +9,24 @@ class Seat extends Model
 {
     use HasFactory;
 
-    protected $table = 'seats';
-
     protected $primaryKey = 'seat_id';
 
     protected $fillable = [
-        'status',
-        'seat_type',
-        'seat_number',
         'screen_id',
+        'place',
+        'price',
+        'status'
     ];
 
+    // Định nghĩa mối quan hệ với bảng Showtimes
+    public function showtime()
+    {
+        return $this->belongsTo(Showtime::class, 'showtime_id');
+    }
+
+    // Định nghĩa mối quan hệ với bảng Screens
     public function screen()
     {
-        return $this->belongsTo(Screen::class, 'screen_id', 'screen_id');
+        return $this->belongsTo(Screen::class, 'screen_id');
     }
 }
