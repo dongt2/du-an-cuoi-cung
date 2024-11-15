@@ -26,23 +26,6 @@
                 class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
                 <i class="mdi mdi-menu"></i>
             </button>
-
-            <div class="d-none d-sm-block">
-                <div class="dropdown dropdown-topbar pt-3 mt-1 d-inline-block">
-                    <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Create <i class="mdi mdi-chevron-down"></i>
-                    </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Separated link</a>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="d-flex">

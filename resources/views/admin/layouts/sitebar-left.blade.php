@@ -1,3 +1,4 @@
+
 <div class="vertical-menu">
 
     <div data-simplebar class="h-100">
@@ -9,25 +10,60 @@
                 <li class="menu-title">Main</li>
 
                 <li>
-                    <a href="book1" class="waves-effect">
+                    <a href="{{ route('admin.dashboard') }}" class="waves-effect">
                         <i class="mdi mdi-view-dashboard"></i>
-                        <span class="badge rounded-pill bg-primary float-end">2</span>
-                        <span>Book1</span>
+                        <span>Dashboard</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="list-movie" class="waves-effect">
-                        <i class="mdi mdi-view-dashboard"></i>
-                        <span class="badge rounded-pill bg-primary float-end">2</span>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-movie"></i>
+                        <span>Quản lí thể loại</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.category.index') }}">Danh sách thể loại</a></li>
+                        <li><a href="{{ route('admin.category.create') }}">Thêm mới</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-movie"></i>
                         <span>Quản lí phim</span>
                     </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.movie.index') }}">Danh sách phim</a></li>
+                        <li><a href="{{ route('admin.movie.create') }}">Thêm mới</a></li>
+                    </ul>
                 </li>
 
                 <li>
-                    <a href="seat?screen=1" class="waves-effect">
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-movie"></i>
+                        <span>Quản lý phòng chiếu</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.screen.index') }}">Danh sách phòng chiếu</a></li>
+                        <li><a href="{{ route('admin.screen.create') }}">Thêm mới</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="mdi mdi-movie"></i>
+                        <span>Quản lý xuất chiếu</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin.showtime.index') }}">Danh sách xuất chiếu</a></li>
+                        <li><a href="{{ route('admin.showtime.create') }}">Thêm mới</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.seat.index') }}" class="waves-effect">
                         <i class="mdi mdi-view-dashboard"></i>
-                        <span class="badge rounded-pill bg-primary float-end">2</span>
+
                         <span>Quản lí ghế</span>
                     </a>
                 </li>
@@ -258,3 +294,4 @@
         <!-- Sidebar -->
     </div>
 </div>
+?>

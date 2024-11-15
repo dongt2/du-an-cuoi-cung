@@ -63,7 +63,7 @@ class SeatFactory extends Factory
         return [
             'place' => $place, // Số ghế theo thứ tự
             'price' => fake()->randomElement([10, 20, 30]), // Giá ngẫu nhiên
-            'status' => fake()->randomElement(['Còn trống', 'Đã đặt', 'Đã hỏng']), // Trạng thái ngẫu nhiên
+            'status' => 'Còn trống',
         ];
     }
 }

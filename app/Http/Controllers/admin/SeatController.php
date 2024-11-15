@@ -16,17 +16,31 @@ class SeatController extends Controller
     {
         $screen = Screen::get();
         if (!$request->has('screen')) {
-            return redirect()->route('seat.index', ['screen' => 1]);
+            return redirect()->route('admin.seat.index', ['screen' => 1]);
         }
         $screen_id = $request->input('screen');
 
+        // Lấy tất cả các ghế đã có trong cơ sở dữ liệu
+        $seats = Seat::where('screen_id', $screen_id)->pluck('place')->toArray();
+
+        // Lấy danh sách các hàng đã đầy
+        $fullRows = [];
+        foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L'] as $row) {
+            $rowSeats = array_filter($seats, fn($seat) => strpos($seat, $row) === 0);  // Lọc các ghế theo hàng
+            if (count($rowSeats) >= 18) {  // Nếu số ghế trong hàng >= 18 thì coi như đầy
+                $fullRows[] = $row;
+            }
+        }
+
+        // Lấy dữ liệu ghế và sắp xếp
         $data = Seat::where('screen_id', $screen_id)
             ->select('place', 'status')
             ->orderByRaw("SUBSTRING(place, 1, 1), CAST(SUBSTRING(place, 2) AS UNSIGNED)")
             ->get();
 
-        return view("admin.seats.list", compact("data", "screen"));
+        return view("admin.seats.index", compact("data", "screen", "seats", "fullRows"));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -120,7 +134,7 @@ class SeatController extends Controller
             }
         }
 
-        return redirect()->route('seat.index', ['screen' => $screen_id]);
+        return redirect()->route('admin.seat.index', ['screen' => $screen_id]);
     }
 
     public function updateSeat(Request $request, $place)
@@ -169,6 +183,6 @@ class SeatController extends Controller
             }
         }
 
-        return redirect()->route('seat.index', ['screen' => $screen_id]);
+        return redirect()->route('admin.seat.index', ['screen' => $screen_id]);
     }
 }

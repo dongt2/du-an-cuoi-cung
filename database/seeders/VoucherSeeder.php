@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Voucher;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class VoucherSeeder extends Seeder
 {
@@ -13,6 +14,11 @@ class VoucherSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        Voucher::truncate();
+        
         Voucher::factory(10)->create();
+        
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -14,20 +14,19 @@ class Showtime extends Model
     protected $primaryKey = 'showtime_id';
 
     protected $fillable = [
-        'user_id',
         'movie_id',
         'screen_id',
-        'date',
+        'showtime_date',
         'time',
     ];
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'movie_id', 'movie_id', 'user_id');
+        return $this->belongsTo(Movie::class, 'movie_id', 'movie_id');
     }
 
     public function screen()
     {
-        return $this->belongsTo(Screen::class, 'screen_id', 'screen_id', 'user_id');
+        return $this->belongsTo(Screen::class, 'screen_id', 'screen_id');
     }
 }
