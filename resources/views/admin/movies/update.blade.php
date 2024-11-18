@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+Movies - Sửa Movie {{ $movie->movie_id }}
 @endsection
 
 @section('head')

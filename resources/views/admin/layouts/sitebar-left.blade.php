@@ -23,7 +23,10 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('category.index') }}">Bảng Categorys</a></li>
                         <li><a href="{{ route('movie.index') }}">Bảng Movies</a></li>
+                        <li><a href="{{ route('users.index') }}">Bảng Users</a></li>
+                        <li><a href="{{ route('booking.index') }}">Bảng Vé</a></li>
                     </ul>
+
                 </li>
             </ul>
         </div>

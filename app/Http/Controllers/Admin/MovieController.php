@@ -73,6 +73,9 @@ class MovieController extends Controller
             'release_date' => [
                 'required',
                 'date',
+                //'after:today', // từ ngày 01/01/1990 -> ngày hôm nay
+                'after_or_equal:1990-01-01',
+                'before_or_equal:today',
 
             ],
             'actors' => [
@@ -129,6 +132,9 @@ class MovieController extends Controller
 
                 'release_date.required' => 'Trường ngày xuất bản không được bỏ trống',
                 'release_date.date' => 'Trường ngày xuất bản phải là một ngày hợp lệ.',
+                //'release_date.after' => 'Trường ngày xuất bản phải không đúng thời gian.',
+                'release_date.after_or_equal' => 'Ngày :attribute phải từ ngày :date trở về sau.',
+                'release_date.before_or_equal' => 'Ngày :attribute không được vượt quá ngày hôm nay.',
 
                 'actors.required' => 'Trường diễn viên không được bỏ trống',
                 'actors.string' => 'Trường diễn viên phải là chuỗi ký tự.',
@@ -178,6 +184,7 @@ class MovieController extends Controller
     {
         $category = Category::get();
         $movie = Movie::findOrFail($id);
+
         return view('admin.movies.show', compact('category', 'movie'));
     }
 
@@ -237,6 +244,7 @@ class MovieController extends Controller
             'release_date' => [
                 'required',
                 'date',
+                //'betweem:1900'.date('Y-m-d'),
 
             ],
             'actors' => [
@@ -292,6 +300,7 @@ class MovieController extends Controller
 
                 'release_date.required' => 'Trường ngày xuất bản không được bỏ trống',
                 'release_date.date' => 'Trường ngày xuất bản phải là một ngày hợp lệ.',
+                //'release_date.between' => 'Trường năm phải nằm trong khoảng từ 1900 đến '.date('Y-m-d').'.',
 
                 'actors.required' => 'Trường diễn viên không được bỏ trống',
                 'actors.string' => 'Trường diễn viên phải là chuỗi ký tự.',
@@ -321,8 +330,8 @@ class MovieController extends Controller
 
         }
 
-        if($request->hasFile('image')){
-            if($movie->cover_image){
+        if ($request->hasFile('image')) {
+            if ($movie->cover_image) {
 
             }
         }
@@ -340,13 +349,16 @@ class MovieController extends Controller
     public function destroy(string $id)
     {
         $movie = Movie::findOrFail($id);
-        if($movie->cover_image){
+        if ($movie->cover_image) {
             $filePath = public_path($movie->cover_image);
             if (file_exists($filePath)) {
                 unlink($filePath); // Xóa ảnh trực tiếp từ thư mục public
             }
         }
         $movie->delete();
+
         return redirect()->route('movie.index')->with('success', 'Xóa sản phẩm thành công. ');
     }
+
+    public function search($category) {}
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+Categories - Thêm Category
 @endsection
 
 @section('head')
@@ -15,9 +15,13 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-@endsection
-<div class="main-content">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@endsection
+
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
@@ -27,25 +31,29 @@
                 <div class="mb-3">
                     <label for="" class="form-label">Name Category :</label>
                     <input type="text" class="form-control" id="" name="category_name"
-                        placeholder="Mời nhập tên">
+                        placeholder="Mời nhập tên" value="{{ old('category_name') }}">
                 </div>
-
                 @if ($errors->has('category_name'))
-                <div class="text-danger mb-3">
-                    {{ $errors->first('category_name') }}
-                </div>
+                    <div class="text-danger mb-3">
+                        {{ $errors->first('category_name') }}
+                    </div>
                 @endif
-                <a href="{{ route('category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('category.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Thêm thể loại</button>
             </form>
             <!-- end page title -->
-
-
+            @if (Session::has('success'))
+                <script>
+                    swal("success", "{{ Session::get('success') }}", 'success', {
+                        button: true,
+                        button: "OK",
+                        timer:2000,
+                    })
+                </script>
+            @endif
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')

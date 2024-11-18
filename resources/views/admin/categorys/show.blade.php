@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+Categories - Xem Chi Tiết Category {{ $category->category_id }}
 @endsection
 
 @section('head')
@@ -16,8 +16,8 @@
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
-<div class="main-content">
 
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
@@ -36,7 +36,7 @@
                     {{ $errors->first('category_name') }}
                 </div>
                 @endif
-                <a href="{{ route('category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('category.index') }}" class="btn btn-secondary">Quay lại</a>
             </form>
             <!-- end page title -->
 
@@ -44,8 +44,6 @@
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')

@@ -54,7 +54,8 @@ class CategoryController extends Controller
         Category::create($data);
 
         // dd($data);
-        return redirect()->route('category.index')->with('success', 'Thêm sản phẩm thành công. ');
+        //return redirect()->route('category.index')->with('success', 'Thêm sản phẩm thành công. ');
+        return back()->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -106,7 +107,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('category.index')->with('success', 'Sửa thể loại thành công. ');
+        return redirect()->route('category.index')->with('success', 'Thao tác thành công. ');
     }
 
     /**
@@ -116,20 +117,8 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
 
-        // if ($category->movies()->count() > 0) {
-        //     return redirect()->route('category.index')->with('errors', 'Không thể xóa. ');
-
-        // }
-
-        // $category->delete();
-
+        $category->delete();
         
-        // return redirect()->route('category.index')->with('success', 'Xóa thể loại thành công. ');
-
-        if($category->movies()->count() == 0){
-            $category->delete();
-            return redirect()->route('category.index')->with('success', 'Xóa thể loại thành công. ');
-        }
-        return redirect()->route('category.index')->with('errors', 'Không thể xóa. ');
+        return redirect()->route('category.index')->with('success', 'Thao tác thành công. ');
     }
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-Movies - Xem Chi Tiết Movie {{ $movie->movie_id }}
+Users - Xem Chi Tiết User {{ $user->user_id }}
 @endsection
 
 @section('head')
@@ -16,12 +16,27 @@ Movies - Xem Chi Tiết Movie {{ $movie->movie_id }}
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
-<div class="main-content">
 
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
             <!-- start page title -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title-box">
+                        <h4>Bảng Users</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
+                            <li class="breadcrumb-item active">Danh sách Users</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- end page title -->
+
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -37,7 +52,7 @@ Movies - Xem Chi Tiết Movie {{ $movie->movie_id }}
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($movie->toArray() as $key=>$value)
+                                        @foreach ($user->toArray() as $key=>$value)
                                             <tr>
                                                 <td>{{ strtoupper($key) }}</td>
                                                 <td>{{ $value }}</td>
@@ -46,7 +61,7 @@ Movies - Xem Chi Tiết Movie {{ $movie->movie_id }}
                                     </tbody>
                                 </table>
                                 <div>
-                                    <a href="{{ route('movie.index') }}" class="btn btn-secondary">Quay lại</a>
+                                    <a href="{{ route('users.index') }}" class="btn btn-secondary">Quay lại</a>
                                 </div>
                             </div>
 
@@ -54,14 +69,10 @@ Movies - Xem Chi Tiết Movie {{ $movie->movie_id }}
                     </div>
                 </div> <!-- end col -->
             </div> <!-- end row -->
-            <!-- end page title -->
-
 
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')

@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\BookingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\ScreenController;
+use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,4 +43,6 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'admin'], function(){
     Route::resource('category', CategoryController::class);
     Route::resource('movie', MovieController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('booking', BookingController::class);
 });

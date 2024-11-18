@@ -14,15 +14,17 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('user_id');
             $table->string('username');
-            $table->string('avata');
+            $table->string('avata')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password', 255)->comment('123456');
+            $table->string('password');
             $table->string('phone', 30)->nullable();
             $table->string('address');
-            $table->enum('role', ['Admin', 'Nhan Vien', 'khach Hang']);
-            $table->boolean('is_active')->default(true)->comment('Trạng thái hoạt động');
-            $table->boolean('is_vip')->default(false)->comment('Người dùng VIP');
+            $table->enum('role', ['Admin', 'Nhân Viên', 'Khách Hàng'])->default('Khách Hàng');
+            $table->enum('is_active', ['Hoạt động', 'Tắt'])->default('Hoạt động');
+            $table->enum('is_vip', ['Thường', 'Vip'])->default('Thường');
+            // $table->boolean('is_active')->default(true)->comment('Trạng thái hoạt động');
+            // $table->boolean('is_vip')->default(false)->comment('Người dùng VIP');
             $table->rememberToken();
             $table->timestamps();
         });

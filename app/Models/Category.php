@@ -21,6 +21,6 @@ class Category extends Model
     // }
 
     public function movies(){
-        return $this->hasMany(Movie::class, 'category_id', 'category_id');
+        return $this->hasMany(Movie::class, 'category_id');
     }
 }

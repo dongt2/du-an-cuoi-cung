@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Lexa - Admin & Movies
+Movies - Danh Sách Movie
 @endsection
 
 @section('head')
@@ -43,14 +43,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="d-flex justifu-content-start">
-                                            <form class="d-flex">
-                                                <input class="form-control me-2" type="text" placeholder="Tìm kiếm...">
-                                                <button class="btn btn-primary" type="button">Search</button>
-                                            </form>
-                                        </div>
-                                    </div>
+                                    
                                     <div class="col">
                                         <div class="d-flex justify-content-end mb-5">
                                             <a href="{{ route('movie.create') }}" class="btn btn-success">Thêm</a>
@@ -73,11 +66,7 @@
                                             <th>STT</th>
                                             <th>Tên Phim</th>
                                             <th>Thời Lượng</th>
-                                            <th>Quốc Gia</th>
-                                            <th>Mô Tả</th>
-                                            <th>Năm</th>
                                             <th>Ngày Phát Hành</th>
-                                            <th>Diễn Viên</th>
                                             <th>Trailer</th>
                                             <th>Tên Thể Loại</th>
                                             <th>Hình Ảnh</th>
@@ -91,13 +80,9 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->title }}</td>
                                                 <td>{{ $item->duration }}</td>
-                                                <td>{{ $item->country }}</td>
-                                                <td>{{ $item->description }}</td>
-                                                <td>{{ $item->year }}</td>
                                                 <td>{{ $item->release_date }}</td>
-                                                <td>{{ $item->actors }}</td>
                                                 <td>
-                                                    <iframe width="460" height="315"
+                                                    <iframe width="200" height="100"
                                                         src="{{ $item->trailer_url }}" title="YouTube video player"
                                                         frameborder="0"
                                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
