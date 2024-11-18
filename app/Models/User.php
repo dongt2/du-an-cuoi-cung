@@ -18,9 +18,15 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
+        'avata',
         'email',
         'password',
+        'phone',
+        'address',
+        'role',
+        'is_active',
+        'is_vip',
     ];
 
     /**
@@ -42,4 +48,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    // app/Models/User.php
+
+public function transactions()
+{
+    return $this->hasMany(Transaction::class);
+}
+
 }
