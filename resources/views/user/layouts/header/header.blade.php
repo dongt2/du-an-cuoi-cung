@@ -16,7 +16,7 @@
             @include('user.layouts.header.nav')
         </nav>
 
-        <!-- Additional header buttons / Auth and direct link to booking-->
+        <!-- Additional header buttons / Auth and direct link to detailmovie-->
         <div class="control-panel">
             @include('user.layouts.header.navRight')
         </div>

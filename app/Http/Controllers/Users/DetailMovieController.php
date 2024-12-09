@@ -18,7 +18,7 @@ class DetailMovieController extends Controller
             ->select('movies.*', 'categories.category_name as category_name')
             ->where('movie_id', $movie_id)
             ->first();
-        return view('user.booking.detailMovie', compact('detail'));
+        return view('user.detailmovie.detailMovie', compact('detail'));
     }
 
     /**

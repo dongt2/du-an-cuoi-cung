@@ -1,19 +1,16 @@
 <div class="auth auth--home">
+    @if (\Illuminate\Support\Facades\Auth::check())
     <div class="auth__show">
-        <span class="auth__image">
-            <img alt="" src="/template/amovie.gozha.net/images/client-photo/auth.png">
-        </span>
+        <a href="#" class="btn btn--sign">
+            {{ \Illuminate\Support\Facades\Auth::user()->username }}
+        </a>
     </div>
-    <a href="#" class="btn btn--sign btn--singin">
-        me
-    </a>
-    <ul class="auth__function">
-        <li><a href="#" class="auth__function-item">Watchlist</a></li>
-        <li><a href="#" class="auth__function-item">Booked tickets</a></li>
-        <li><a href="#" class="auth__function-item">Discussion</a></li>
-        <li><a href="#" class="auth__function-item">Settings</a></li>
-    </ul>
+
+
+    @else
+        <a href="{{ route('auth.login') }}">Sign In</a>
+    @endif
 
 </div>
-<a href="#" class="btn btn-md btn--warning btn--book btn-control--home login-window">Book a
+<a href="{{ route('booking') }}" class="btn btn-md btn--warning btn--book btn-control--home">Book a
     ticket</a>

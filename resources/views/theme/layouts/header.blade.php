@@ -1,10 +1,32 @@
+    <!-- Fonts -->
+    <!-- Font awesome - icon font -->
+    <link href="../netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!-- Roboto -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <!-- jQuery UI -->
+    <link href="../code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet">
+
+    <!-- Mobile menu -->
+    <link href="css/gozha-nav.css" rel="stylesheet"/>
+    <!-- Select -->
+    <link href="css/external/jquery.selectbox.css" rel="stylesheet"/>
+    <!-- Swiper slider -->
+    <link href="css/external/idangerous.swiper.css" rel="stylesheet"/>
+
+    <!-- Custom -->
+    <link href="css/style3860.css?v=1" rel="stylesheet"/>
+
+    <!-- Modernizr -->
+    <script src="js/external/modernizr.custom.js"></script>
 <header class="header-wrapper header-wrapper--home">
     <div class="container">
         <!-- Logo link-->
         <a href='../index.html' class="logo">
             <img alt='logo' src="{{ asset('images/logo.png') }}">
         </a>
-        
+
         <!-- Main website navigation-->
         <nav id="navigation-box">
             <!-- Toggle for mobile menu mode -->
@@ -15,7 +37,7 @@
                     </span>
                 </span>
             </a>
-            
+
             <!-- Link navigation -->
             <ul id="navigation">
                 <li>
@@ -98,7 +120,7 @@
                                     <li class="mega-menu__nav-item"><a href="#">Bastards</a></li>
                                   </ul>
                               </li>
-                                
+
                               <li class="col-md-3 mega-menu__coloum mega-menu__coloum--outheading">
                                   <ul class="mega-menu__list">
                                     <li class="mega-menu__nav-item"><a href="#">Gravity</a></li>
@@ -107,7 +129,7 @@
                                     <li class="mega-menu__nav-item"><a href="#">Cloudy with a Chance of Meatballs 2</a></li>
                                   </ul>
                               </li>
-                              
+
                               <li class="col-md-3 mega-menu__coloum">
                                 <h4 class="mega-menu__heading">Ending soon</h4>
                                   <ul class="mega-menu__list">
@@ -119,7 +141,7 @@
                                     <li class="mega-menu__nav-item"><a href="#">Runner Runner</a></li>
                                   </ul>
                               </li>
-                            
+
                               <li class="col-md-3 mega-menu__coloum mega-menu__coloum--outheading">
                                   <ul class="mega-menu__list">
                                     <li class="mega-menu__nav-item"><a href="#">Insidious: Chapter 2</a></li>
@@ -129,8 +151,8 @@
                 </li>
             </ul>
         </nav>
-        
-        <!-- Additional header buttons / Auth and direct link to booking-->
+
+        <!-- Additional header buttons / Auth and direct link to detailmovie-->
         <div class="control-panel">
             <div class="auth auth--home">
               <div class="auth__show">

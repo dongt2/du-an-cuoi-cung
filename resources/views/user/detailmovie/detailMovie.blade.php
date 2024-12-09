@@ -42,7 +42,7 @@
                     {{-- <a href="#" class="comment-link">Comments: 15</a> --}}
 
                     <div class="movie__btns movie__btns--full">
-                        <a href="#" class="btn btn-md btn--warning">book a ticket for this movie</a>
+                        <a href="{{ route('bookingMovie', ['id' => $detail->movie_id]) }}" class="btn btn-md btn--warning">book a ticket for this movie</a>
                         {{-- <a href="#Trailer" class="watchlist" id="trailerButton" style="cursor: pointer;">Trailer</a> --}}
                     </div>
 

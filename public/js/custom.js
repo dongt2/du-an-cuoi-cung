@@ -384,7 +384,7 @@ function init_BookingOne() {
     })
 
     //2. Init vars for order data
-    // var for booking;
+    // var for detailmovie;
                 var movie = $('.choosen-movie'),
                     city = $('.choosen-city'),
                     date = $('.choosen-date'),
@@ -554,7 +554,7 @@ function init_BookingOne() {
                 });
 
                 // --- Step for data - serialize and send to next page---//
-                $('.booking-form').submit( function () {
+                $('.detailmovie-form').submit( function () {
                     var bookData = $(this).serialize();
                     $.get( $(this).attr('action'), bookData );
                 })
@@ -587,7 +587,7 @@ function init_BookingTwo () {
     })
 
     //2. Init vars for order data
-    // var for booking;
+    // var for detailmovie;
                 var numberTicket = $('.choosen-number'),
                     sumTicket = $('.choosen-cost'),
                     cheapTicket = $('.choosen-number--cheap'),
@@ -687,7 +687,7 @@ function init_BookingTwo () {
                 var prevDate = url.substr(url.indexOf('?')+1);
 
                 //Serialize, add new data and send to next page
-                $('.booking-form').submit( function (e) {
+                $('.detailmovie-form').submit( function (e) {
                     e.preventDefault();
                     var bookData = $(this).serialize();
 
