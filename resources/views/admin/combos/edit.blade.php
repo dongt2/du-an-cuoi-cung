@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+Combos - Thêm Combo
 @endsection
 
 @section('head')
@@ -26,23 +26,52 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('admin.category.store') }}" method="post">
+            <form action="{{ route('admin.combos.store') }}" method="post">
                 @csrf
+                @method('PUT')
                 <div class="mb-3">
-                    <label for="" class="form-label">Tên Thể Loại :</label>
-                    <input type="text" class="form-control" id="" name="category_name"
-                        placeholder="text..." value="{{ old('category_name') }}">
+                    <label for="" class="form-label">Name Combo :</label>
+                    <input type="text" class="form-control" id="" name="combo_name"
+                        placeholder="Mời nhập combo" value="{{ old('combo_name') }}">
                 </div>
 
-                @if ($errors->has('category_name'))
+                @if ($errors->has('combo_name'))
                     <div class="text-danger mb-3">
-                        {{ $errors->first('category_name') }}
+                        {{ $errors->first('combo_name') }}
                     </div>
                 @endif
-                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary">Quay lại</a>
-                <button type="submit" class="btn btn-success">Thêm thể loại</button>
+
+                <div class="mb-3">
+                    <label for="" class="form-label">Giá :</label>
+                    <input type="text" class="form-control" id="" name="price"
+                        placeholder="Mời nhập giá">
+                </div>
+
+                @if ($errors->has('price'))
+                    <div class="text-danger mb-3">
+                        {{ $errors->first('price') }}
+                    </div>
+                @endif
+
+
+                <div class="mb-3">
+                    <label for="" class="form-label">Mô tả ngắn :</label>
+                    <textarea class="form-control" id="" rows="3" name="short_description"></textarea>
+                </div>
+
+                <a href="{{ route('admin.combos.index') }}" class="btn btn-primary">Quay lại</a>
+                <button type="submit" class="btn btn-success">Thêm Combo</button>
             </form>
             <!-- end page title -->
+            @if (Session::has('success'))
+                <script>
+                    swal("success", "{{ Session::get('success') }}", 'success', {
+                        button: true,
+                        button: "OK",
+                        timer: 2000,
+                    })
+                </script>
+            @endif
 
         </div> <!-- container-fluid -->
     </div>

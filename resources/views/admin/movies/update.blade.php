@@ -22,43 +22,166 @@
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('admin.movie.update', $movie->movie_id) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.movie.update', $movie->movie_id) }}" method="post"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="mb-3">
-                    <label for="" class="form-label">Tên Phim :</label>
-                    <input type="text" class="form-control" id="" name="title" placeholder="Mời nhập tên" value="{{ $movie->title }}">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Tên Phim :</label>
+                            <input type="text" class="form-control" id="" name="title"
+                                placeholder="Mời nhập tên" value="{{ $movie->title }}">
+                        </div>
+
+                        @if ($errors->has('title'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('title') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Thời Lượng :</label>
+                            <input type="text" class="form-control" id="" name="duration"
+                                placeholder="Mời nhập thời lượng" value="{{ $movie->duration }}">
+                        </div>
+
+                        @if ($errors->has('duration'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('duration') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('title'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('title') }}
-                    </div>
-                @endif
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Quốc Gia :</label>
+                            <input type="text" class="form-control" id="" name="country"
+                                placeholder="Mời nhập quốc gia" value="{{ $movie->country }}">
+                        </div>
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Thời Lượng :</label>
-                    <input type="text" class="form-control" id="" name="duration"
-                        placeholder="Mời nhập thời lượng" value="{{ $movie->duration }}">
+                        @if ($errors->has('country'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('country') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Năm Xuất Bản:</label>
+                            <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
+                                min="1900" max="2099" value="{{ $movie->year }}">
+                        </div>
+
+                        @if ($errors->has('year'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('year') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('duration'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('duration') }}
-                    </div>
-                @endif
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Ngày Phát Hành :</label>
+                            <input type="date" class="form-control" id="" name="release_date"
+                                value="{{ $movie->release_date->format('Y-m-d') }}">
+                        </div>
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Quốc Gia :</label>
-                    <input type="text" class="form-control" id="" name="country"
-                        placeholder="Mời nhập quốc gia" value="{{ $movie->country }}">
+                        @if ($errors->has('release_date'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('release_date') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Diễn Viên:</label>
+                            <input type="text" class="form-control" id="" name="actors"
+                                placeholder="Mời nhập diễn viên" value="{{ $movie->actors }}">
+                        </div>
+
+                        @if ($errors->has('actors'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('actors') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('country'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('country') }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Trailer:</label>
+                            <input type="text" class="form-control" id="" name="trailer_url"
+                                placeholder="Link..." value="{{ $movie->trailer_url }}">
+                        </div>
+
+                        @if ($errors->has('trailer_url'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('trailer_url') }}
+                            </div>
+                        @endif
                     </div>
-                @endif
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Thể Loại:</label>
+                            <select class="form-select" name="category_id">
+                                @foreach ($category as $cat)
+                                    <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                        @if ($errors->has('category_id'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('category_id') }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Đạo Diễn:</label>
+                            <input type="text" class="form-control" id="" name="director"
+                                placeholder="Mời nhập daojd diễn" value="{{ $movie->director }}">
+                        </div>
+
+                        @if ($errors->has('director'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('director') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Hình Ảnh:</label>
+                            <input type="file" class="form-control" id="" name="image">
+                            @if ($movie->cover_image)
+                                <img src="{{ asset($movie->cover_image) }}" alt="" width="100"
+                                    class="mt-4">
+                            @else
+                            @endif
+
+                        </div>
+                        @if ($errors->has('image'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('image') }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Mô Tả :</label>
@@ -71,83 +194,17 @@
                     </div>
                 @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Năm Xuất Bản:</label>
-                    <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
-                        min="1900" max="2099" value="{{ $movie->year }}">
-                </div>
 
-                @if ($errors->has('year'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('year') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Ngày Phát Hành :</label>
-                    <input type="date" class="form-control" id="" name="release_date" value="{{ $movie->release_date }}">
-                </div>
 
-                @if ($errors->has('release_date'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('release_date') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Diễn Viên:</label>
-                    <input type="text" class="form-control" id="" name="actors"
-                        placeholder="Mời nhập diễn viên" value="{{ $movie->actors }}">
-                </div>
 
-                @if ($errors->has('actors'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('actors') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Trailer:</label>
-                    <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link..." value="{{ $movie->trailer_url }}">
-                </div>
 
-                @if ($errors->has('trailer_url'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('trailer_url') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Thể Loại:</label>
-                    <select class="form-select" name="category_id">
-                        @foreach ($category as $cat)
-                            <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
-                        @endforeach
-                    </select>
 
-                </div>
 
-                @if ($errors->has('category_id'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('category_id') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Hình Ảnh:</label>
-                    <input type="file" class="form-control" id="" name="image">
-                    @if ($movie->cover_image)
-                    <img src="{{ asset($movie->cover_image) }}" alt="" width="100" class="mt-4">
-                    @else
-
-                    @endif
-
-                </div>
-                @if ($errors->has('image'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('image') }}
-                    </div>
-                @endif
 
                 <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Sửa phim</button>

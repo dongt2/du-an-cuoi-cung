@@ -6,7 +6,7 @@
 @section('content')
     <form  method='POST' novalidate='' action="{{ route('auth.login') }}">
         @csrf
-        <p class="login__title">Dang nhap <br><span class="login-edition">welcome to A.Movie</span></p>
+        <p class="login__title">Đăng Nhập <br><span class="login-edition">welcome to A.Movie</span></p>
 
         <div class="field-wrap">
             <input type='email' placeholder='{{ __('Email') }}' class="login__input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus >
@@ -35,7 +35,7 @@
             @endif
 
 
-            <p class="login__tracker">Ban chua co tai khoan? <a href="{{ route('auth.register') }}" class="btn btn-md btn--warning btn--wider">{{__('Tao tai khoan')}}</a></p>
+            <p class="login__tracker">Bạn chưa có tài khoản? <a href="{{ route('auth.register') }}" class="btn btn-md btn--warning btn--wider">{{__('Tao tai khoan')}}</a></p>
 
         </div>
 

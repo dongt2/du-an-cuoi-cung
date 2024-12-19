@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Lexa - Admin & Category
+    Combos - Danh Sách Combo
 @endsection
 
 @section('head')
@@ -19,10 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    {{-- font icons --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 @section('content')
@@ -33,69 +29,74 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Bảng Category</h4>
+                        <h4>Bảng Users</h4>
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
-                            <li class="breadcrumb-item active">Danh sách Category</li>
+                            <li class="breadcrumb-item active">Danh sách Vé</li>
                         </ol>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
 
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-
-                                <div class="d-flex justify-content-end mb-5">
-                                    <a href="{{ route('admin.category.create') }}" class="btn btn-success"><i
-                                            class="fa-solid fa-plus"></i> Thêm mới</a>
+                                <div class="">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-end mb-5">
+                                            <a href="{{ route('admin.combos.create') }}" class="btn btn-success">Thêm</a>
+                                        </div>
+                                        @if (Session::has('success'))
+                                            <script>
+                                                swal("success", "{{ Session::get('success') }}", 'success', {
+                                                    button: true,
+                                                    button: "OK",
+                                                    timer: 2000,
+                                                })
+                                            </script>
+                                        @endif
+                                    </div>
                                 </div>
+
+
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
-                                        <tr style="text-align: center; font-family: 'Times New Roman', Times, serif">
+                                        <tr>
                                             <th>STT</th>
-                                            <th>Tên Thể Loại</th>
-                                            <th>Tổng Thể Loại</th>
+                                            <th>Tên Combos</th>
+                                            <th>Giá</th>
+                                            <th>Mô tả ngắn</th>
                                             <th>Hành Động</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($category as $item)
+                                        @foreach ($data as $item)
                                             <tr>
-                                                <td><strong>{{ $loop->iteration }}</strong></td>
-                                                <td>{{ $item->category_name }}</td>
-                                                <td>{{ $item->movies()->count() }}</td>
-
-                                                <td class="text-nowrap" style="width: 0px;">
-                                                    <a href="{{ route('admin.category.show', $item->category_id) }}"
-                                                        class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
-
-                                                    <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                        class="btn btn-warning"><i
-                                                            class="fa-solid fa-triangle-exclamation"></i></a>
-
-                                                    <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                        method="post" class="mt-2">
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->combo_name }}</td>
+                                                <td>{{ $item->price }}</td>
+                                                <td>{{ $item->short_description }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.combos.edit', $item->combo_id) }}" class="btn btn-warning">Sửa</a>
+                                                    <form action="{{ route('admin.combos.destroy', $item->combo_id) }}" method="post" class="mt-2">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa không?')"
-                                                            class="btn btn-danger"><i
-                                                                class="fa-solid fa-trash"></i></button>
-
+                                                        <button type="submit" class="btn btn-danger">Xóa</button>
                                                     </form>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $category->links() }}
+
                             </div>
 
                         </div>

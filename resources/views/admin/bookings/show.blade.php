@@ -37,7 +37,7 @@
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($movie->toArray() as $key=>$value)
+                                        @foreach ($booking->toArray() as $key=>$value)
                                             <tr>
                                                 <td>{{ strtoupper($key) }}</td>
                                                 <td>{{ $value }}</td>
@@ -46,7 +46,7 @@
                                     </tbody>
                                 </table>
                                 <div>
-                                    <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary">Quay lại</a>
+                                    <a href="{{ route('admin.bookings.index') }}" class="btn btn-secondary">Quay lại</a>
                                 </div>
                             </div>
 

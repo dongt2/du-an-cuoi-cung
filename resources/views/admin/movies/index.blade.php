@@ -15,169 +15,121 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- font icons --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 @section('content')
     <div class="page-content">
-            <div class="container-fluid">
+        <div class="container-fluid">
 
-                <!-- start page title -->
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="page-title-box">
-                            <h4>Danh sách Movie</h4>
-                            <ol class="breadcrumb m-0">
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
-                                <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
-                                <li class="breadcrumb-item active">Danh sách Movie</li>
-                            </ol>
-                        </div>
+            <!-- start page title -->
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="page-title-box">
+                        <h4>Danh sách Movie</h4>
+                        <ol class="breadcrumb m-0">
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
+                            <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
+                            <li class="breadcrumb-item active">Danh sách Movie</li>
+                        </ol>
                     </div>
                 </div>
-                <!-- end page title -->
+            </div>
+            <!-- end page title -->
 
 
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="d-flex justifu-content-start">
-                                                <form class="d-flex">
-                                                    <input class="form-control me-2" type="text" placeholder="Tìm kiếm...">
-                                                    <button class="btn btn-primary" type="button">Search</button>
-                                                </form>
-                                            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-end mb-5">
+                                            <a href="{{ route('admin.movie.create') }}" class="btn btn-success"><i
+                                                class="fa-solid fa-plus"></i> Thêm</a>
                                         </div>
-                                        <div class="col">
-                                            <div class="d-flex justify-content-end mb-5">
-                                                <a href="{{ route('admin.movie.create') }}" class="btn btn-success">Thêm</a>
-                                            </div>
-                                            @if (session('success'))
-                                                <div class="alert alert-success" role="alert">
-                                                    <p class="text-success">{{ session('success') }}</p>
-                                                </div>
-                                            @endif
-                                        </div>
-
                                     </div>
+                                </div>
 
 
 
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap"
-                                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                        <thead>
-                                        <tr>
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr style="text-align: center; font-family: 'Times New Roman', Times, serif">
                                             <th>STT</th>
                                             <th>Tên Phim</th>
                                             <th>Thời Lượng</th>
-                                            <th>Quốc Gia</th>
-                                            <th>Mô Tả</th>
-                                            <th>Năm</th>
                                             <th>Ngày Phát Hành</th>
-                                            <th>Diễn Viên</th>
                                             <th>Trailer</th>
                                             <th>Tên Thể Loại</th>
                                             <th>Hình Ảnh</th>
                                             <th>Hành Động</th>
                                         </tr>
-                                        </thead>
+                                    </thead>
 
-                                        <tbody>
-                                        @if($movie->count() > 0)
-                                        @foreach ($movie as $item)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->title }}</td>
-                                                <td>{{ $item->duration }}</td>
-                                                <td>{{ $item->country }}</td>
-                                                <td>{{ $item->description }}</td>
-                                                <td>{{ $item->year }}</td>
-                                                <td>{{ $item->release_date }}</td>
-                                                <td>{{ $item->actors }}</td>
-                                                <td>
-                                                    <iframe width="460" height="315"
-                                                            src="{{ $item->trailer_url }}" title="YouTube video player"
-                                                            frameborder="0"
-                                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                                            referrerpolicy="strict-origin-when-cross-origin"
-                                                            allowfullscreen></iframe>
-                                                </td>
-                                                <td>{{ $item->category->category_name }}</td>
-                                                <td>
+                                    <tbody>
+                                        @if ($movie->count() > 0)
+                                            @foreach ($movie as $item)
+                                                <tr>
+                                                    <td><strong>{{ $loop->iteration }}</strong></td>
+                                                    <td>{{ $item->title }}</td>
+                                                    <td>{{ $item->duration }}</td>
+                                                    <td>{{ $item->release_date->format('d-m-Y') }}</td>
+                                                    <td>
 
-                                                    <img src="{{ asset($item->cover_image) }}" alt="Avatar"
-                                                         width="100">
-                                                </td>
-                                                <td class="text-nowrap" style="width: 0px;">
-                                                    <a href="{{ route('admin.movie.show', $item->movie_id) }}"
-                                                       class="btn btn-primary">Xem</a>
-                                                    <a href="{{ route('admin.movie.edit', $item->movie_id) }}"
-                                                       class="btn btn-warning">Sửa</a>
+                                                            <iframe src="{{ $item->trailer_url }}" frameborder="0"></iframe>
+                                                    </td>
+                                                    <td>{{ $item->category?->category_name }}</td>
+                                                    <td>
 
-                                                    <!-- Button to Open the Modal -->
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                            data-bs-target="#myModal">
-                                                        Xóa
-                                                    </button>
-                                                    <!-- The Modal -->
-                                                    <div class="modal" id="myModal">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-
-                                                                <!-- Modal Header -->
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title">Modal Heading</h4>
-                                                                    <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"></button>
-                                                                </div>
-
-                                                                <!-- Modal body -->
-                                                                <div class="modal-body">
-                                                                    Bạn có chắc muốn xóa?
-                                                                </div>
-
-                                                                <!-- Modal footer -->
-                                                                <div class="modal-footer">
-                                                                    <form
-                                                                        action="{{ route('admin.movie.destroy', $item->movie_id) }}"
-                                                                        method="post">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit"
-                                                                                class="btn btn-danger">Xóa</button>
-                                                                    </form>
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                        <img src="{{ asset($item->cover_image) }}" alt="Avatar"
+                                                            width="100">
+                                                    </td>
+                                                    <td class="text-nowrap" style="width: 0px;">
+                                                        <a href="{{ route('admin.movie.show', $item->movie_id) }}"
+                                                            class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                                        <a href="{{ route('admin.movie.edit', $item->movie_id) }}"
+                                                            class="btn btn-warning"><i
+                                                            class="fa-solid fa-triangle-exclamation"></i></a>
+                                                        <form action="{{ route('admin.movie.destroy', $item->movie_id) }}"
+                                                            method="post" class="mt-2">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')"><i
+                                                                class="fa-solid fa-trash" ></i></button>
+                                                        </form>
 
 
-                                                </td>
-                                            </tr>
-                                        @endforeach
+
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         @else
                                             <tr>
                                                 <td colspan="12" class="text-center">Không có dữ liệu</td>
                                             </tr>
                                         @endif
-                                        </tbody>
-                                    </table>
-                                    {{ $movie->links() }}
-                                </div>
-
+                                    </tbody>
+                                </table>
+                                {{ $movie->links() }}
                             </div>
-                        </div>
-                    </div> <!-- end col -->
-                </div> <!-- end row -->
 
-            </div> <!-- container-fluid -->
-        </div>
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
+
+        </div> <!-- container-fluid -->
+    </div>
 
 @endsection
 

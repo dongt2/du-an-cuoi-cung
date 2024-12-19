@@ -27,8 +27,18 @@ class Movie extends Model
         'category_id',
     ];
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'category_id');
+
+
+    public function category(){
+        return $this->hasOne(Category::class, 'category_id', 'category_id');
     }
+
+
+    public function bookings(){
+        return $this->hasMany(Booking::class);
+    }
+
+    protected $casts = [
+        'release_date' => 'date',
+    ];
 }

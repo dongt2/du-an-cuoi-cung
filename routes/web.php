@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ComboController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\OrderComboController;
 use App\Http\Controllers\Admin\ScreenController;
 use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -61,6 +65,11 @@ Route::prefix('admin')
 
         Route::resource('category', CategoryController::class);
         Route::resource('movie', MovieController::class);
+
+        Route::resource('users', UserController::class);
+        Route::resource('bookings', AdminBookingController::class);
+        Route::resource('combos', ComboController::class);
+        Route::resource('ordercombo', OrderComboController::class);
 
         Route::resource('seat', SeatController::class);
         Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);

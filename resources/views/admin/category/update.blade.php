@@ -20,7 +20,9 @@
 
     <div class="page-content">
         <div class="container-fluid">
-
+            <div class="mb-5">
+                <h1>Sửa Tên Thể Loại  : <span class="badge bg-secondary">{{ $category->category_name }}</span></h1>
+            </div>
             <!-- start page title -->
             <form action="{{ route('admin.category.update', $category->category_id) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -36,7 +38,7 @@
                     {{ $errors->first('category_name') }}
                 </div>
                 @endif
-                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Sửa thể loại</button>
             </form>
             <!-- end page title -->

@@ -68,6 +68,30 @@
                     </a>
                 </li>
 
+                <li>
+                    <a href="{{ route('admin.combos.index') }}" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+
+                        <span>Quản lí Combo</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.ordercombo.index') }}" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+
+                        <span>Quản lí Order</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('admin.bookings.index') }}" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+
+                        <span>Quản lí Booking</span>
+                    </a>
+                </li>
+
                 {{-- <li>
                     <a href="calendar.html" class=" waves-effect">
                         <i class="mdi mdi-calendar-check"></i>

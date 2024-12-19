@@ -1,7 +1,7 @@
 @extends('admin.layouts.default')
 
 @section('title')
-    Lexa - Admin & Category
+Users - Danh Sách User
 @endsection
 
 @section('head')
@@ -33,69 +33,87 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div class="page-title-box">
-                        <h4>Bảng Category</h4>
+                        <h4>Bảng Users</h4>
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
                             <li class="breadcrumb-item"><a href="javascript: void(0);">Bảng</a></li>
-                            <li class="breadcrumb-item active">Danh sách Category</li>
+                            <li class="breadcrumb-item active">Danh sách Users</li>
                         </ol>
                     </div>
                 </div>
             </div>
             <!-- end page title -->
 
+
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
                             <div class="table-responsive">
-
-                                <div class="d-flex justify-content-end mb-5">
-                                    <a href="{{ route('admin.category.create') }}" class="btn btn-success"><i
-                                            class="fa-solid fa-plus"></i> Thêm mới</a>
+                                <div class="">
+                                    <div class="col">
+                                        <div class="d-flex justify-content-end mb-5">
+                                            <a href="{{ route('admin.users.create') }}" class="btn btn-success"><i
+                                                class="fa-solid fa-plus"></i> Thêm</a>
+                                        </div>
+                                        @if (session('success'))
+                                            <div class="alert alert-success" role="alert">
+                                                <p class="text-success">{{ session('success') }}</p>
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
+
+
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap"
                                     style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
-                                        <tr style="text-align: center; font-family: 'Times New Roman', Times, serif">
+                                        <tr>
                                             <th>STT</th>
-                                            <th>Tên Thể Loại</th>
-                                            <th>Tổng Thể Loại</th>
+                                            <th>Tên </th>
+                                            <th>Phone</th>
+                                            <th>Cấp</th>
+                                            <th>VIP</th>
+                                            <th>Trạng thái</th>
+                                            <th>Avatar</th>
                                             <th>Hành Động</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($category as $item)
+                                        @foreach ($users as $item)
                                             <tr>
-                                                <td><strong>{{ $loop->iteration }}</strong></td>
-                                                <td>{{ $item->category_name }}</td>
-                                                <td>{{ $item->movies()->count() }}</td>
-
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $item->username }}</td>
+                                                <td>{{ $item->phone }}</td>
+                                                <td>{{ $item->role }}</td>
+                                                <td>{{ $item->is_vip }}</td>
+                                                <td><span class="badge bg-primary">{{ $item->is_active }}</span></td>
+                                                <td>
+                                                    <img src="{{ asset($item->avata) }}" alt="" width="50" height="50">
+                                                </td>
                                                 <td class="text-nowrap" style="width: 0px;">
-                                                    <a href="{{ route('admin.category.show', $item->category_id) }}"
-                                                        class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                                        <a href="{{ route('admin.users.show', $item->user_id) }}"
+                                                            class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
 
-                                                    <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                        class="btn btn-warning"><i
+                                                        <a href="{{ route('admin.users.edit', $item->user_id) }}"
+                                                            class="btn btn-warning"><i
                                                             class="fa-solid fa-triangle-exclamation"></i></a>
 
-                                                    <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                        method="post" class="mt-2">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa không?')"
-                                                            class="btn btn-danger"><i
-                                                                class="fa-solid fa-trash"></i></button>
-
-                                                    </form>
+                                                            <form action="{{ route('admin.users.destroy', $item->user_id) }}" method="post">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa?')"><i
+                                                                    class="fa-solid fa-trash" ></i></button>
+                                                            </form>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $category->links() }}
+
                             </div>
 
                         </div>

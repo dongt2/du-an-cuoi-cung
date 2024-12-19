@@ -24,40 +24,153 @@
             <!-- start page title -->
             <form action="{{ route('admin.movie.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="mb-3">
-                    <label for="" class="form-label">Tên Phim :</label>
-                    <input type="text" class="form-control" id="" name="title" placeholder="Mời nhập tên">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Tên Phim :</label>
+                            <input type="text" class="form-control" id="" name="title"
+                                placeholder="Mời nhập tên" value="{{ old('title') }}">
+                        </div>
+
+                        @if ($errors->has('title'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('title') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Thời Lượng :</label>
+                            <input type="text" class="form-control" id="" name="duration"
+                                placeholder="Mời nhập thời lượng" value="{{ old('duration') }}">
+                        </div>
+
+                        @if ($errors->has('duration'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('duration') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('title'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('title') }}
-                    </div>
-                @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Thời Lượng :</label>
-                    <input type="text" class="form-control" id="" name="duration"
-                        placeholder="Mời nhập thời lượng">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Quốc Gia :</label>
+                            <input type="text" class="form-control" id="" name="country"
+                                placeholder="Mời nhập quốc gia" value="{{ old('country') }}">
+                        </div>
+
+                        @if ($errors->has('country'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('country') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Năm Xuất Bản:</label>
+                            <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
+                                min="1900" max="2099" value="{{ old('year') }}">
+                        </div>
+
+                        @if ($errors->has('year'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('year') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('duration'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('duration') }}
-                    </div>
-                @endif
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Ngày Phát Hành :</label>
+                            <input type="date" class="form-control" id="" name="release_date">
+                        </div>
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Quốc Gia :</label>
-                    <input type="text" class="form-control" id="" name="country"
-                        placeholder="Mời nhập quốc gia">
+                        @if ($errors->has('release_date'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('release_date') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Diễn Viên:</label>
+                            <input type="text" class="form-control" id="" name="actors"
+                                placeholder="Mời nhập diễn viên" value="{{ old('actors') }}">
+                        </div>
+
+                        @if ($errors->has('actors'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('actors') }}
+                            </div>
+                        @endif
+                    </div>
                 </div>
 
-                @if ($errors->has('country'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('country') }}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Đạo Diễn:</label>
+                            <input type="text" class="form-control" id="" name="director"
+                                placeholder="Mời nhập đạo diễn" value="{{ old('director') }}">
+                        </div>
+
+                        @if ($errors->has('director'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('director') }}
+                            </div>
+                        @endif
                     </div>
-                @endif
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Trailer:</label>
+                            <input type="text" class="form-control" id="" name="trailer_url"
+                                placeholder="Link...">
+                        </div>
+
+                        @if ($errors->has('trailer_url'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('trailer_url') }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Thể Loại:</label>
+                            <select class="form-select" name="category_id">
+                                @foreach ($category as $cat)
+                                    <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+
+                        @if ($errors->has('category_id'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('category_id') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Hình Ảnh:</label>
+                            <input type="file" class="form-control" id="" name="image">
+                        </div>
+                        @if ($errors->has('image'))
+                            <div class="text-danger mb-3">
+                                {{ $errors->first('image') }}
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
 
                 <div class="mb-3">
                     <label for="" class="form-label">Mô Tả :</label>
@@ -70,91 +183,7 @@
                     </div>
                 @endif
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Năm Xuất Bản:</label>
-                    <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
-                        min="1900" max="2099">
-                </div>
-
-                @if ($errors->has('year'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('year') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Ngày Phát Hành :</label>
-                    <input type="date" class="form-control" id="" name="release_date">
-                </div>
-
-                @if ($errors->has('release_date'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('release_date') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Diễn Viên:</label>
-                    <input type="text" class="form-control" id="" name="actors"
-                        placeholder="Mời nhập diễn viên">
-                </div>
-
-                @if ($errors->has('actors'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('actors') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Đạo Diễn:</label>
-                    <input type="text" class="form-control" id="" name="director"
-                           placeholder="Mời nhập đạo diễn">
-                </div>
-
-                @if ($errors->has('director'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('director') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Trailer:</label>
-                    <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link...">
-                </div>
-
-                @if ($errors->has('trailer_url'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('trailer_url') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Thể Loại:</label>
-                    <select class="form-select" name="category_id">
-                        @foreach ($category as $cat)
-                            <option value="{{ $cat->category_id }}">{{ $cat->category_name }}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-
-                @if ($errors->has('category_id'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('category_id') }}
-                    </div>
-                @endif
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Hình Ảnh:</label>
-                    <input type="file" class="form-control" id="" name="image">
-                </div>
-                @if ($errors->has('image'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('image') }}
-                    </div>
-                @endif
-
-                <a href="{{ route('admin.movie.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Thêm phim</button>
             </form>
             <!-- end page title -->

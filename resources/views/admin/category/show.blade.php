@@ -16,36 +16,49 @@
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
-<div class="main-content">
-
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('admin.category.update', $category->category_id) }}" method="post" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="mb-3">
-                    <label for="" class="form-label">Name Category :</label>
-                    <input type="text" class="form-control" id="" name="category_name"
-                        value="{{ $category->category_name }}" disabled>
-                </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Trường dữ liệu</th>
+                                            <th>Giá trị</th>
+                                        </tr>
+                                    </thead>
 
-                @if ($errors->has('category_name'))
-                <div class="text-danger mb-3">
-                    {{ $errors->first('category_name') }}
-                </div>
-                @endif
-                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Quay lại</a>
-            </form>
+                                    <tbody>
+                                        @foreach ($category->toArray() as $key=>$value)
+                                            <tr>
+                                                <td>{{ strtoupper($key) }}</td>
+                                                <td>{{ $value }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <a href="{{ route('admin.category.index') }}" class="btn btn-secondary">Quay lại</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
             <!-- end page title -->
 
 
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')
