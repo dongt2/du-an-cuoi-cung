@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\screen;
+use App\Models\Screen;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class ScreenSeeder extends Seeder
 {
@@ -13,6 +14,12 @@ class ScreenSeeder extends Seeder
      */
     public function run(): void
     {
-        screen::factory(10)->create();
+        Schema::disableForeignKeyConstraints();
+        Screen::truncate();
+
+        Screen::factory(10)->create();
+
+        Schema::enableForeignKeyConstraints();
+
     }
 }

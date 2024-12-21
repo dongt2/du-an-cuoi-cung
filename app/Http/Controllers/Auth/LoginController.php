@@ -4,53 +4,47 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    // use AuthenticatesUsers;
-
-    // /**
-    //  * Where to redirect users after login.
-    //  *
-    //  * @var string
-    //  */
-    // protected $redirectTo = '/home';
-
-    // /**
-    //  * Create a new controller instance.
-    //  *
-    //  * @return void
-    //  */
-    // public function __construct()
-    // {
-    //     $this->middleware('guest')->except('logout');
-    //     $this->middleware('auth')->only('logout');
-    // }
-
-    public function showLoginForm()
+    public function showFormLogin()
     {
         return view('auth.login');
     }
-
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ], [
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email không đúng định dạng',
+            'password.required' => 'Mật khẩu không được để trống',
+        ]);
+
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('member');
+            $request->session()->regenerate();
+
+            if(Auth::user()->type == '1'){
+                return redirect()->intended('admin/home');
+            }
+
+            return redirect()->intended('/');
         }
-        return back()->withErrors(['email' => 'Invalid credentials']);
+        return back()->withErrors([
+            'email' => 'Tài khoản hoặc mật khẩu không chính xác!',
+        ])->onlyInput('email');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        \request()->session()->invalidate();
+
+        return redirect('/');
     }
 }

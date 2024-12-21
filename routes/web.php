@@ -1,16 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MovieController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\backend\AdminController;
-use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\MovieController;
+use App\Http\Controllers\Admin\ScreenController;
+use App\Http\Controllers\admin\SeatController;
+use App\Http\Controllers\Admin\ShowtimeController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Client\BookingController;
+use App\Http\Controllers\Users\DetailMovieController;
+use App\Http\Controllers\Users\HomeController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,67 +24,76 @@ use App\Http\Controllers\UserController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-// mới vào chạy 2 cái này
-// php artisan migrate
-// php artisan db:seed
-// b c
-Route::get('/',[HomeController::class,'index'])->name('index');
-Route::get('/', function () {
-    return view('user.home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/book1', function () {
-    return view('user.book1');
-});
+Route::prefix('movies')
+    ->as('movies.')
+    ->group(function () {
+        Route::get('listMovie', [MovieController::class, 'index'])->name('list');
+        Route::get('show/{id}', [DetailMovieController::class, 'index'])->name('show');
 
-Route::get('/book2', function () {
-    return view('user.book2');
-});
+    });
 
-Route::get('/book3', function () {
-    return view('user.book3-buy');
-});
+//Route Booking with movie_id
+Route::post('/booking/store', [BookingController::class, 'storeBooking'])->name('storeBooking');
+Route::get('booking', [BookingController::class, 'stepFinal'])->name(name: 'booking');
+Route::get('booking/{id}', [BookingController::class, 'bookingWithMovie'])->name('bookingMovie');
+Route::get('booking-step-2', [BookingController::class, 'bookingStepTwo'])->name('user.bookings.stepTwo');
+Route::post('booking1', [BookingController::class, 'storestepTwo'])->name('storestepTwo');
+Route::get('booking-step-3', [BookingController::class, 'bookingStepThree'])->name('user.bookings.stepThree');
+// Route::post('combo', [BookingController::class, 'comboPost'])->name('storestepThree');
 
-// Route::get('/movies', [MovieController::class, 'index'])->name('movies.index');
-// Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
-// Route::post('/movies/{id}/book', [MovieController::class, 'bookTicket'])->name('movies.book');
+// Route::get('/booking/combo', [BookingController::class, 'stepFinal']);
+// Route::get('/booking/combo', [BookingController::class, 'stepFinal']);
+// Route::post('/booking/combo', [BookingController::class, 'comboPost'])->name('user.bookings.comboPost');
+Route::get('/booking/confirmation', [BookingController::class, 'confirmation'])->name('user.bookings.confirmation');
+Route::post('booking/step-final', [BookingController::class, 'stepFinal'])->name('user.bookings.stepFinal');
+Route::get('/booking/combo', [BookingController::class, 'showComboPage'])->name('booking.combo');
+Route::post('/booking/combo/select', [BookingController::class, 'selectCombo'])->name('booking.combo.select');
+Route::get('/booking/payment', [BookingController::class, 'showPayment'])->name('booking.payment');
+Route::get('/booking/final', [BookingController::class, 'stepFinal'])->name('booking.final');
+Route::get('/booking/step2', [BookingController::class, 'storeStepTwo'])->name('booking.step2');
 
-// Route::post('/book', [BookingController::class, 'book'])->name('bookings.store');
+// route admin
+Route::prefix('admin')
+    ->as('admin.')
+    ->group(function () {
+        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::group(['prefix'=>'backend','as'=>'admin.','middleware'=>['guest']], function(){
-     Route::get('/',[AdminController::class, 'index'])->name('home');
-});
+        Route::resource('category', CategoryController::class);
+        Route::resource('movie', MovieController::class);
 
-// Route::get('/account', [AccountController::class, 'index'])->name('account');
-// Route::get('/account', [AccountController::class, 'index'])->name('account')->middleware('auth');
-// Route::put('/account', [AccountController::class, 'update'])->name('account.update');
+        Route::resource('seat', SeatController::class);
+        Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
 
-//route fe
-// Route::get('/',[HomeController::class,'index'])->name('index');
+        //        Route Screen
+        Route::resource('screen', ScreenController::class);
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
-    Route::post('/account/update', [AccountController::class, 'update'])->name('account.update');
-    Route::post('/account/change-password', [AccountController::class, 'changePassword'])->name('account.changePassword');
-});       
+        // Route Showtime
+        Route::resource('showtime', ShowtimeController::class)
+            ->middleware('clean.expired.showtimes');
 
+    });
 
-Route::get('/login',[UserController::class,'login'])->name('login');
-// Route cho đăng nhập
-// Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-// Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::prefix('auth')
+    ->as('auth.')
+    ->group(function () {
+        Route::get('login', [LoginController::class, 'showFormLogin'])->name('login');
+        Route::post('login', [LoginController::class, 'login']);
 
-// Route cho đăng ký
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
-// Route cho quên mật khẩu
-Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
-Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+        Route::get('register', [RegisterController::class, 'showFormRegister'])->name('register');
+        Route::post('register', [RegisterController::class, 'register']);
 
-// Route cho trang thành viên
-// Route::middleware(['auth'])->group(function () {
-//     Route::get('/member', [MemberController::class, 'index'])->name('member.index');
-// });
+        Route::prefix('password')
+            ->as('password.')
+            ->group(function () {
+                Route::get('forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot');
+                Route::post('forgot', [ForgotPasswordController::class, 'forgotPassword']);
+            });
 
+    });
+Route::get('reset/{token}', [ForgotPasswordController::class, 'reset']);
+Route::post('reset/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
 

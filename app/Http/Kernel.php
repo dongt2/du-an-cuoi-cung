@@ -65,4 +65,9 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
     ];
+    protected $routeMiddleware = [
+        // Các middleware khác...
+        'clean.expired.showtimes' => \App\Http\Middleware\CleanExpiredShowtimes::class,
+    ];
+
 }

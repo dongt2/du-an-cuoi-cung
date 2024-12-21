@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\ticket;
+use App\Models\Ticket;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class TicketSeeder extends Seeder
 {
@@ -13,6 +14,12 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+        Ticket::truncate();
+        
         Ticket::factory(10)->create();
+
+        Schema::enableForeignKeyConstraints();
+
     }
 }

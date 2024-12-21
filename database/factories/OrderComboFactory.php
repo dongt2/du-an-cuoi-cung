@@ -18,6 +18,7 @@ class OrderComboFactory extends Factory
     {
         return [
             'combo_id' => fake()->numberBetween(1, 10),
+            'user_id' => fake()->numberBetween(1, 10),
             'total_price' => fake()->randomFloat(2, 50000, 500000),
             'quantity' => fake()->numberBetween(1, 5),
         ];

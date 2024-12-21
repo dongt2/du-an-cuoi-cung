@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('combos', function (Blueprint $table) {
             $table->bigIncrements('combo_id');
-            $table->string('combo_name', 255); 
+            $table->string('combo_name', 255);
+            $table->string('cover', 255);
             $table->string('short_description', 800);
-            $table->decimal('price', 10, 2);  // Giá với 10 chữ số và 2 chữ số thập phân
+            $table->decimal('price', 10);  // Giá với 10 chữ số và 2 chữ số thập phân
+            $table->string('image_path', 255)->nullable(); // Cột lưu đường dẫn ảnh, có thể null
             $table->timestamps();
         });
     }

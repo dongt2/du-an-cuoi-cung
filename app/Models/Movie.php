@@ -17,11 +17,12 @@ class Movie extends Model
         'title',
         'duration',
         'country',
+        'director',
         'description',
         'year',
         'release_date',
         'actors',
-        'image',
+        'cover_image',
         'trailer_url',
         'category_id',
     ];

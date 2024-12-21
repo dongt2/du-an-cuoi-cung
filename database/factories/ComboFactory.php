@@ -18,6 +18,7 @@ class ComboFactory extends Factory
     {
         return [
             'combo_name' => fake()->words(3, true),
+            'cover' => fake()->imageUrl(250, 250),
             'short_description' => fake()->sentence(15),
             'price' => fake()->randomFloat(2, 50000, 500000),
         ];

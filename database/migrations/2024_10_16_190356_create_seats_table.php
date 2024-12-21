@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,13 +12,12 @@ return new class extends Migration
     {
         Schema::create('seats', function (Blueprint $table) {
             $table->bigIncrements('seat_id');
-            $table->enum('status', ['Con', 'Het']);
-            $table->enum('seat_type', ['Thuong', 'Vip']);
-            $table->smallInteger('seat_number');
             $table->unsignedBigInteger('screen_id');
+            $table->text('place');
+            $table->decimal('price', 10);
+            $table->enum('status', ['Còn trống', 'Đã đặt', 'Đã hỏng']);
 
-            $table->foreign('screen_id')->references('screen_id')->on('screens')->onDelete('cascade');  // Xóa ghế nếu màn hình bị xóa
-
+            $table->foreign('screen_id')->references('screen_id')->on('screens')->onDelete('cascade');
             $table->timestamps();
         });
     }
