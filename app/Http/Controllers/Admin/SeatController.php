@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\seat;
@@ -20,13 +20,27 @@ class SeatController extends Controller
         }
         $screen_id = $request->input('screen');
 
-        $data = Seat::where('screen_id', $screen_id)
+        // Lấy tất cả các ghế đã có trong cơ sở dữ liệu
+        $seats = Seat::where('showtime_id', $screen_id)->pluck('place')->toArray();
+
+        // Lấy danh sách các hàng đã đầy
+        $fullRows = [];
+        foreach (['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L'] as $row) {
+            $rowSeats = array_filter($seats, fn($seat) => strpos($seat, $row) === 0);  // Lọc các ghế theo hàng
+            if (count($rowSeats) >= 18) {  // Nếu số ghế trong hàng >= 18 thì coi như đầy
+                $fullRows[] = $row;
+            }
+        }
+
+        // Lấy dữ liệu ghế và sắp xếp
+        $data = Seat::where('showtime_id', 1)
             ->select('place', 'status')
             ->orderByRaw("SUBSTRING(place, 1, 1), CAST(SUBSTRING(place, 2) AS UNSIGNED)")
             ->get();
 
-        return view("admin.seats.index", compact("data", "screen"));
+        return view("admin.seats.index", compact("data", "screen", "seats", "fullRows"));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -41,8 +55,8 @@ class SeatController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         // Xác thực dữ liệu
-
         $validated = $request->validate([
             'screen_id' => 'required|integer',
             'place' => 'required|string',
@@ -66,7 +80,7 @@ class SeatController extends Controller
             'price' => $validated['price'],
             'status' => $validated['status'],
         ]);
-
+        dd($data);
         return response()->json($data);
     }
 

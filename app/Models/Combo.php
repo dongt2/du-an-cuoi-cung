@@ -15,6 +15,7 @@ class Combo extends Model
 
     protected $fillable = [
         'combo_name',
+        'image',
         'short_description',
         'price',
     ];

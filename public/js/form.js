@@ -2,9 +2,9 @@
 
 //Plaeholder handler
 $(function() {
-
+	
 if(!Modernizr.input.placeholder){             //placeholder for old brousers and IE
-
+ 
   $('[placeholder]').focus(function() {
    var input = $(this);
    if (input.val() == input.attr('placeholder')) {
@@ -27,28 +27,28 @@ if(!Modernizr.input.placeholder){             //placeholder for old brousers and
    })
   });
  }
-
+  
 $('#contact-form').submit(function(e) {
-
-		e.preventDefault();
+      
+		e.preventDefault();	
 		var error = 0;
 		var self = $(this);
-
-	    var $name = self.find('[name=theme-name]');
+		
+	    var $name = self.find('[name=user-name]');
 	    var $email = self.find('[type=email]');
-	    var $message = self.find('[name=theme-message]');
-
-
+	    var $message = self.find('[name=user-message]');
+		
+				
 		var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+		
   		if(!emailRegex.test($email.val())) {
 			createErrTult('Error! Wrong email!', $email)
-			error++;
+			error++;	
 		}
 
 		if( $name.val().length>1 &&  $name.val()!= $name.attr('placeholder')  ) {
-			$name.removeClass('invalid_field');
-		}
+			$name.removeClass('invalid_field');			
+		} 
 		else {
 			createErrTult('Error! Write your name!', $name)
 			error++;
@@ -56,14 +56,14 @@ $('#contact-form').submit(function(e) {
 
 		if($message.val().length>2 && $message.val()!= $message.attr('placeholder')) {
 			$message.removeClass('invalid_field');
-		}
+		} 
 		else {
 			createErrTult('Error! Write message!', $message)
 			error++;
 		}
-
-
-
+		
+		
+		
 		if (error!=0)return;
 		self.find('[type=submit]').attr('disabled', 'disabled');
 
@@ -77,32 +77,32 @@ $('#contact-form').submit(function(e) {
 }); // end submit
 
 $('.login').submit(function(e) {
-
-		e.preventDefault();
+      
+		e.preventDefault();	
 		var error = 0;
 		var self = $(this);
-
+		
 	    var $email = self.find('[type=email]');
 	    var $pass = self.find('[type=password]');
-
-
+		
+				
 		var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
+		
   		if(!emailRegex.test($email.val())) {
 			createErrTult("Error! Wrong email!", $email)
-			error++;
+			error++;	
 		}
 
 		if( $pass.val().length>1 &&  $pass.val()!= $pass.attr('placeholder')  ) {
-			$pass.removeClass('invalid_field');
-		}
+			$pass.removeClass('invalid_field');			
+		} 
 		else {
 			createErrTult('Error! Wrong password!', $pass)
 			error++;
 		}
-
-
-
+		
+		
+		
 		if (error!=0)return;
 		self.find('[type=submit]').attr('disabled', 'disabled');
 
@@ -114,8 +114,8 @@ $('.login').submit(function(e) {
 		// var formInput = self.serialize();
 		// $.post(self.attr('action'),formInput, function(data){}); // end post
 }); // end submit
-
-
+		
+		
 
 function createErrTult(text, $elem){
 			$elem.focus();
@@ -123,7 +123,7 @@ function createErrTult(text, $elem){
 				'class':'inv-em alert alert-danger',
 				'html':'<span class="icon-warning"></span>' + text + ' <a class="close" data-dismiss="alert" href="#" aria-hidden="true"></a>',
 			})
-			.appendTo($elem.addClass('invalid_field').parent())
+			.appendTo($elem.addClass('invalid_field').parent()) 
 			.insertAfter($elem)
 			.delay(4000).animate({'opacity':0},300, function(){ $(this).slideUp(400,function(){ $(this).remove() }) });
 	}

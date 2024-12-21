@@ -20,9 +20,9 @@ class BookingFactory extends Factory
             'user_id' => fake()->numberBetween(1, 10),
             'movie_id' => fake()->numberBetween(1, 10),
             'showtime_id' => fake()->numberBetween(1, 10), 
-            'seat_id' => fake()->numberBetween(1, 10),
-            'ordercombo_id' => fake()->optional()->numberBetween(1, 10), 
-            'total_price' => fake()->randomFloat(2, 50000, 500000),
+            'seat_name' => 'ghế',
+            'combo_id' => fake()->numberBetween(1, 10), 
+            'total_price' => fake()->randomFloat(0, 10, 500),
         ];
     }
 }

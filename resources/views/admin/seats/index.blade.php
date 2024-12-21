@@ -1,24 +1,26 @@
-@extends('admin.layouts.default')
+@extends('admin.layout.default')
 
 @section('title')
-    Lexa - Admin & Category
+    @parent
+    Seat
 @endsection
 
-@section('head')
-    <base href="/">
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-    <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-@endsection
+@push('style')
+    <!-- Datatables css -->
+    <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
+    <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
+        type="text/css" />
+@endpush
 
 @section('content')
+    
     <style>
         .choose-sits {
             padding: 10px;
@@ -74,6 +76,7 @@
             gap: 10px;
             width: 70%;
             /* border: 2px solid #333; */
+            height: 503px;
         }
 
         .grid-left {
@@ -87,6 +90,7 @@
             justify-content: center;
             gap: 5px;
             font-size: 13px;
+
         }
 
         .grid-left .grid-row {
@@ -230,15 +234,6 @@
                     </option>
                 @endforeach
             </select>
-
-            <label for="screen_name">Chọn Xuất Chiếu:</label>
-            <select id="screen_name" name="screen_name">
-                @foreach ($screen as $item)
-                    <option value="{{ $item->screen_id }}" {{ $item->screen_id == $screen_id ? 'selected' : '' }}>
-                        {{ $item->screen_id . '. ' . $item->screen_name }}
-                    </option>
-                @endforeach
-            </select>
             <button type="submit">Xác nhận</button>
         </form>
 
@@ -267,7 +262,7 @@
         </div>
 
         <div class="sits-area">
-            <div class="sits-anchor">{{ $screen[$screen_id - 1]->screen_name }}</div>
+            <div class="sits-anchor">screen</div>
             <div class="screen"></div>
         </div><br><br>
 
@@ -470,7 +465,7 @@
                     @endforeach
                 </div>
                 <!-- hàng số -->
-                <div class="grid-row" style="padding-top: 30px;">
+                <div class="grid-row" style="margin-top: auto;">
                     <div class="grid-cell grid-number">1</div>
                     <div class="grid-cell grid-number">2</div>
                     <div class="grid-cell grid-number">3</div>
@@ -502,22 +497,25 @@
                 <div id="input-container"></div>
                 <input type="hidden" name="screen_id" value="{{ $screen_id }}">
                 <div class="action-button" id="btn-update-seat" style="background-color: #20B2AA;"
-                     onclick="editModal()">Sửa ghế</div>
-                <div class="action-button" id="btn-empty" style="background-color: #00BFFF;">Còn trống</div>
-                <div class="action-button" id="btn-occupied" style="background-color: #008000;">Đã đặt</div>
-                <div class="action-button" id="btn-broken" style="background-color: #FFD700;">Đã hỏng</div>
-                <button class="action-button" style="background-color: #FFA500;" type="submit">Cập nhật</button>
-            </form>&emsp;
-            <form action="{{ route('admin.seat.destroy', $screen_id) }}" method="POST">
+                    onclick="editModal()">Sửa ghế</div>
+                <div class="action-button" id="btn-empty" style="background-color: #00BFFF;"
+                    onclick="setInputValue('Còn trống')">Còn trống</div>
+                <div class="action-button" id="btn-occupied" style="background-color: #008000;"
+                    onclick="setInputValue('Đã đặt')">Đã đặt</div>
+                <div class="action-button" id="btn-broken" style="background-color: #FFD700;"
+                    onclick="setInputValue('Đã hỏng')">Đã hỏng</div>
+                <button hidden class="action-button auto-submit" style="background-color: #FFA500;" type="submit">Cập
+                    nhật</button>
+            </form>&emsp;&emsp;
+            <form action="{{ route('admin.seat.destroy', $screen_id) }}" method="POST" id="delete-form">
                 @csrf
                 @method('delete')
                 <div id="input-container-destroy"></div>
                 <input type="hidden" name="screen_id" value="{{ $screen_id }}">
-                <button class="action-button" style="background-color: #FF4500;"
-                        onclick="return confirm('Bạn có chắc chắn muốn xóa')">Xóa ghế</button>
+                <button type="button" class="action-button" style="background-color: #FF4500;"
+                    onclick="checkInputsAndSubmit()">Xóa ghế</button>
             </form>
         </div>
-
 
         <!-- Modal thêm ghế -->
         <div id="add-seat-modal" class="modal" style="display: none;">
@@ -528,40 +526,13 @@
                 <label for="row">Chọn Hàng:</label>
                 <select id="row" name="row">
                     <option value=""></option>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                    <option value="D">D</option>
-                    <option value="E">E</option>
-                    <option value="F">F</option>
-                    <option value="G">G</option>
-                    <option value="I">I</option>
-                    <option value="J">J</option>
-                    <option value="K">K</option>
-                    <option value="L">L</option>
+                    <!-- Các hàng sẽ được điền vào qua JavaScript -->
                 </select>
                 <br>
                 <label for="column">Chọn Cột:</label>
                 <select id="column" name="column">
                     <option value=""></option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
+                    <!-- Các cột sẽ được điền vào qua JavaScript -->
                 </select>
                 <br>
                 <label for="price">Nhập Giá:</label>
@@ -576,7 +547,7 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="save-seat"
-                        onclick="addSeat()">Thêm</button>
+                    onclick="addSeat()">Thêm</button>
             </div>
         </div>
 
@@ -637,7 +608,7 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="update-seat"
-                        onclick="updateSeat()">Cập nhật</button>
+                    onclick="updateSeat()">Cập nhật</button>
             </div>
         </div>
 
@@ -645,6 +616,12 @@
         <script>
             function editModal() {
                 let inputElements = document.querySelectorAll('#input-container input');
+
+                // Kiểm tra nếu chưa chọn ghế
+                if (inputElements.length === 0) {
+                    alert('Bạn chưa chọn ghế');
+                    return; // Ngừng thực thi hàm nếu không có input
+                }
 
                 // Kiểm tra số lượng input
                 if (inputElements.length === 1) {
@@ -656,11 +633,11 @@
 
                     // Gửi yêu cầu đến server để lấy thông tin ghế
                     fetch(`admin/seat/${place}?screen_id=${screen_id}`, {
-                        method: 'GET',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        }
-                    })
+                            method: 'GET',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
                         .then(response => {
                             if (!response.ok) {
                                 return response.json().then(data => {
@@ -698,7 +675,6 @@
                             document.addEventListener('mouseup', function() {
                                 isEditDragging = false;
                             });
-
 
                             // Điền dữ liệu vào các trường trong modal
                             document.getElementById("edit-row").value = row; // Hàng
@@ -771,19 +747,125 @@
 
                 // Gửi dữ liệu đến controller của Laravel
                 fetch('admin/seat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                            'content') // Thêm CSRF token
-                    },
-                    body: JSON.stringify({
-                        screen_id: {{ $screen_id }},
-                        place: place,
-                        price: price,
-                        status: status
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
+                                'content') // Thêm CSRF token
+                        },
+                        body: JSON.stringify({
+                            screen_id: {{ $screen_id }},
+                            place: place,
+                            price: price,
+                            status: status
+                        })
                     })
-                })
+                    .then(response => {
+                        const contentType = response.headers.get("content-type");
+                        if (!contentType || !contentType.includes("application/json")) {
+                            throw new Error("Server trả về HTML thay vì JSON.");
+                        }
+                        // Kiểm tra mã lỗi HTTP
+                        if (!response.ok) {
+                            return response.json().then(data => {
+                                throw new Error(data.message || "Có lỗi xảy ra.");
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Dữ liệu đã được lưu:", data);
+                        location.reload();
+                        closeModal();
+                    })
+                    .catch((error) => {
+                        alert(error.message); // Hiển thị thông báo lỗi
+                        console.error("Có lỗi xảy ra:", error);
+                    });
+            }
+
+            // loại bỏ row và colum đã có
+            const seats = @json($seats);
+            const fullRows = @json($fullRows);
+
+            // Hàm điền các hàng vào dropdown, loại bỏ hàng đã đầy
+            function populateRowOptions() {
+                const rowSelect = document.getElementById('row');
+
+                // Xóa tất cả các tùy chọn cũ
+                rowSelect.innerHTML = '<option value=""></option>';
+
+                // Thêm các hàng chưa đầy vào dropdown
+                const allRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L'];
+                allRows.forEach(row => {
+                    if (!fullRows.includes(row)) {
+                        const option = document.createElement('option');
+                        option.value = row;
+                        option.textContent = row;
+                        rowSelect.appendChild(option);
+                    }
+                });
+            }
+
+            // Hàm điền các cột vào dropdown
+            function populateColumnOptions() {
+                const row = document.getElementById('row').value;
+                const columnSelect = document.getElementById('column');
+
+                // Xóa tất cả các tùy chọn cũ
+                columnSelect.innerHTML = '<option value=""></option>';
+
+                // Kiểm tra các cột đã có trong cơ sở dữ liệu
+                const takenColumns = seats
+                    .filter(seat => seat.startsWith(row)) // Lọc ghế có cùng hàng
+                    .map(seat => seat.slice(1)); // Lấy số cột của ghế
+
+                // Thêm các cột vào dropdown, loại bỏ các cột đã có
+                for (let i = 1; i <= 18; i++) { // Giới hạn từ 1 đến 18
+                    if (!takenColumns.includes(i.toString())) {
+                        const option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = i;
+                        columnSelect.appendChild(option);
+                    }
+                }
+            }
+
+            // Gọi hàm mỗi khi trang được tải
+            populateRowOptions();
+
+            // Gọi hàm mỗi khi hàng được chọn
+            document.getElementById('row').addEventListener('change', populateColumnOptions);
+        </script>
+
+        {{-- js  modal sửa ghế --}}
+        <script>
+            function updateSeat() {
+                var row = document.getElementById("edit-row").value;
+                var column = document.getElementById("edit-column").value;
+                var price = document.getElementById("edit-price").value;
+                var status = document.getElementById("edit-stt").value;
+                var place = row + column;
+
+                if (row === "" || column === "" || price === "" || status === "") {
+                    alert("Vui lòng điền đầy đủ thông tin!");
+                    return;
+                }
+
+                // Gửi dữ liệu đến controller của Laravel
+                fetch(`admin/seat/update/${place}`, {
+                        method: 'PUT', // Đảm bảo là PUT
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: JSON.stringify({
+                            screen_id: {{ $screen_id }},
+                            place: place,
+                            price: price,
+                            status: status
+                        })
+                    })
                     .then(response => {
                         const contentType = response.headers.get("content-type");
                         if (!contentType || !contentType.includes("application/json")) {
@@ -809,56 +891,17 @@
             }
         </script>
 
-        {{-- js  modal sửa ghế --}}
+        {{-- js xóa ghế --}}
         <script>
-            function updateSeat() {
-                var row = document.getElementById("edit-row").value;
-                var column = document.getElementById("edit-column").value;
-                var price = document.getElementById("edit-price").value;
-                var status = document.getElementById("edit-stt").value;
-                var place = row + column;
-
-                if (row === "" || column === "" || price === "" || status === "") {
-                    alert("Vui lòng điền đầy đủ thông tin!");
-                    return;
+            function checkInputsAndSubmit() {
+                const inputs = document.querySelectorAll('#input-container-destroy input');
+                if (inputs.length === 0) {
+                    alert('Bạn chưa chọn ghế');
+                } else {
+                    if (confirm('Bạn có chắc chắn muốn xóa')) {
+                        document.getElementById('delete-form').submit();
+                    }
                 }
-
-                // Gửi dữ liệu đến controller của Laravel
-                fetch(`admin/seat/update/${place}`, {
-                    method: 'PUT', // Đảm bảo là PUT
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({
-                        screen_id: {{ $screen_id }},
-                        place: place,
-                        price: price,
-                        status: status
-                    })
-                })
-                    .then(response => {
-                        const contentType = response.headers.get("content-type");
-                        if (!contentType || !contentType.includes("application/json")) {
-                            throw new Error("Server trả về HTML thay vì JSON.");
-                        }
-                        // Kiểm tra mã lỗi HTTP
-                        if (!response.ok) {
-                            return response.json().then(data => {
-                                throw new Error(data.message || "Có lỗi xảy ra.");
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Dữ liệu đã được lưu:", data);
-                        location.reload();
-                        closeModal();
-                    })
-                    .catch((error) => {
-                        alert(error.message); // Hiển thị thông báo lỗi
-                        console.error("Có lỗi xảy ra:", error);
-                    });
             }
         </script>
 
@@ -905,7 +948,7 @@
                         const input = document.createElement('input'); // Tạo thẻ input mới
                         input.type = 'text'; // Đặt loại input là text
                         input.name = originalContent; // Gán thuộc tính name cho input
-                        input.hidden = true;
+                        // input.hidden = true;
 
                         // Thêm input vào vùng chứa chính
                         document.getElementById('input-container').appendChild(input);
@@ -920,36 +963,78 @@
                     }
                 });
 
-                // Hàm để gán giá trị cho tất cả ô input
                 function setInputValue(value) {
                     const inputs = document.querySelectorAll('#input-container input');
+                    if (inputs.length === 0) {
+                        alert('Bạn chưa chọn ghế');
+                        return;
+                    }
                     inputs.forEach(input => {
                         input.value = value;
                     });
                 }
 
-                // Thêm sự kiện cho các nút mới
-                document.getElementById('btn-empty').addEventListener('click', () => setInputValue('Còn trống'));
-                document.getElementById('btn-occupied').addEventListener('click', () => setInputValue('Đã đặt'));
-                document.getElementById('btn-broken').addEventListener('click', () => setInputValue('Đã hỏng'));
+                document.getElementById('btn-empty').onclick = function() {
+                    const status = 'Còn trống';
+                    setInputValue(status);
+                    if (document.querySelectorAll('#input-container input').length === 0)
+                        return;
+                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
+                        '.auto-submit').click();
+                };
+
+                document.getElementById('btn-occupied').onclick = function() {
+                    const status = 'Đã đặt';
+                    setInputValue(status);
+                    if (document.querySelectorAll('#input-container input').length === 0)
+                        return;
+                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
+                        '.auto-submit').click();
+                };
+
+                document.getElementById('btn-broken').onclick = function() {
+                    const status = 'Đã hỏng';
+                    setInputValue(status);
+                    if (document.querySelectorAll('#input-container input').length === 0)
+                        return;
+                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
+                        '.auto-submit').click();
+                };
+
             });
         </script>
-        @endsection
-
-@section('javascript')
-    <!-- JAVASCRIPT -->
-    <script src="assets/libs/jquery/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/metismenu/metisMenu.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
-
-    <!-- Table Editable plugin -->
-    <script src="assets/libs/table-edits/build/table-edits.min.js"></script>
-
-    <script src="assets/js/pages/table-editable.int.js"></script>
-
-    <!-- App js -->
-    <script src="assets/js/app.js"></script>
+    </div>
 @endsection
+
+@push('script')
+    <!-- Datatables js -->
+    <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+
+    <!-- dataTables.bootstrap5 -->
+    <script src="{{ asset('assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
+
+    <!-- buttons.colVis -->
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.flash.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
+
+    <!-- buttons.bootstrap5 -->
+    <script src="{{ asset('assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
+
+    <!-- dataTables.keyTable -->
+    <script src="{{ asset('assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-keytable-bs5/js/keyTable.bootstrap5.min.js') }}"></script>
+
+    <!-- dataTable.responsive -->
+    <script src="{{ asset('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
+
+    <!-- dataTables.select -->
+    <script src="{{ asset('assets/libs/datatables.net-select/js/dataTables.select.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/datatables.net-select-bs5/js/select.bootstrap5.min.js') }}"></script>
+
+    <!-- Datatable Demo App Js -->
+    <script src="{{ asset('assets/js/pages/datatable.init.js') }}"></script>
+@endpush

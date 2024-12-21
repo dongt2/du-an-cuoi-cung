@@ -1,578 +1,415 @@
-@extends('admin.layouts.default')
+@extends('admin.layout.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+    @parent
+    Dashboard | Tapeli - Responsive Admin Dashboard Template
 @endsection
 
-@section('head')
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-    <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-@endsection
+@push('style')
+@endpush
 
 @section('content')
-    <div class="page-content">
-        <div class="container-fluid">
+    <div class="content">
 
-            <!-- start page title -->
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="page-title-box">
-                        <h4>Dashboard</h4>
-                        <ol class="breadcrumb m-0">
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Lexa</a></li>
-                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="state-information d-none d-sm-block">
-                        <div class="state-graph">
-                            <div id="header-chart-1" data-colors='["--bs-primary"]'></div>
-                            <div class="info">Balance $ 2,317</div>
-                        </div>
-                        <div class="state-graph">
-                            <div id="header-chart-2" data-colors='["--bs-info"]'></div>
-                            <div class="info">Item Sold 1230</div>
-                        </div>
-                    </div>
+        <!-- Start Content-->
+        <div class="container-xxl">
+
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="fs-18 fw-semibold m-0">Dashboard</h4>
                 </div>
             </div>
-            <!-- end page title -->
 
+            <!-- start row -->
             <div class="row">
-                <div class="col-xl-3 col-sm-6">
-                    <div class="card mini-stat bg-primary">
-                        <div class="card-body mini-stat-img">
-                            <div class="mini-stat-icon">
-                                <i class="mdi mdi-cube-outline float-end"></i>
-                            </div>
-                            <div class="text-white">
-                                <h6 class="text-uppercase mb-3 font-size-16 text-white">Orders</h6>
-                                <h2 class="mb-4 text-white">1,587</h2>
-                                <span class="badge bg-info"> +11% </span> <span class="ms-2">From previous period</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="card mini-stat bg-primary">
-                        <div class="card-body mini-stat-img">
-                            <div class="mini-stat-icon">
-                                <i class="mdi mdi-buffer float-end"></i>
-                            </div>
-                            <div class="text-white">
-                                <h6 class="text-uppercase mb-3 font-size-16 text-white">Revenue</h6>
-                                <h2 class="mb-4 text-white">$46,782</h2>
-                                <span class="badge bg-danger"> -29% </span> <span class="ms-2">From previous period</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="card mini-stat bg-primary">
-                        <div class="card-body mini-stat-img">
-                            <div class="mini-stat-icon">
-                                <i class="mdi mdi-tag-text-outline float-end"></i>
-                            </div>
-                            <div class="text-white">
-                                <h6 class="text-uppercase mb-3 font-size-16 text-white">Average Price</h6>
-                                <h2 class="mb-4 text-white">$15.9</h2>
-                                <span class="badge bg-warning"> 0% </span> <span class="ms-2">From previous period</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-3 col-sm-6">
-                    <div class="card mini-stat bg-primary">
-                        <div class="card-body mini-stat-img">
-                            <div class="mini-stat-icon">
-                                <i class="mdi mdi-briefcase-check float-end"></i>
-                            </div>
-                            <div class="text-white">
-                                <h6 class="text-uppercase mb-3 font-size-16 text-white">Product Sold</h6>
-                                <h2 class="mb-4 text-white">1890</h2>
-                                <span class="badge bg-info"> +89% </span> <span class="ms-2">From previous period</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- end row -->
+                <div class="col-md-12 col-xl-12">
+                    <div class="row g-3">
 
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="fs-14 mb-1">Website Traffic</div>
+                                    </div>
+
+                                    <div class="d-flex align-items-baseline mb-2">
+                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">91.6K</div>
+                                        <div class="me-auto">
+                                            <span class="text-primary d-inline-flex align-items-center">
+                                                15%
+                                                <i data-feather="trending-up" class="ms-1"
+                                                    style="height: 22px; width: 22px;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="website-visitors" class="apex-charts"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="fs-14 mb-1">Conversion rate</div>
+                                    </div>
+
+                                    <div class="d-flex align-items-baseline mb-2">
+                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">15%</div>
+                                        <div class="me-auto">
+                                            <span class="text-danger d-inline-flex align-items-center">
+                                                10%
+                                                <i data-feather="trending-down" class="ms-1"
+                                                    style="height: 22px; width: 22px;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="conversion-visitors" class="apex-charts"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="fs-14 mb-1">Session duration</div>
+                                    </div>
+
+                                    <div class="d-flex align-items-baseline mb-2">
+                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">90 Sec</div>
+                                        <div class="me-auto">
+                                            <span class="text-success d-inline-flex align-items-center">
+                                                25%
+                                                <i data-feather="trending-up" class="ms-1"
+                                                    style="height: 22px; width: 22px;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="session-visitors" class="apex-charts"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="fs-14 mb-1">Active Users</div>
+                                    </div>
+
+                                    <div class="d-flex align-items-baseline mb-2">
+                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">2,986</div>
+                                        <div class="me-auto">
+                                            <span class="text-success d-inline-flex align-items-center">
+                                                4%
+                                                <i data-feather="trending-up" class="ms-1"
+                                                    style="height: 22px; width: 22px;"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div id="active-users" class="apex-charts"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- end sales -->
+            </div> <!-- end row -->
+
+            <!-- Start Monthly Sales -->
             <div class="row">
-
-                <div class="col-xl-3">
+                <div class="col-md-6 col-xl-8">
                     <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Monthly Earnings</h4>
 
-                            <div class="row text-center mt-4">
-                                <div class="col-6">
-                                    <h5 class="font-size-20">$56241</h5>
-                                    <p class="text-muted">Marketplace</p>
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
+                                    <i data-feather="bar-chart" class="widgets-icons"></i>
                                 </div>
-                                <div class="col-6">
-                                    <h5 class="font-size-20">$23651</h5>
-                                    <p class="text-muted">Total Income</p>
-                                </div>
+                                <h5 class="card-title mb-0">Monthly Sales</h5>
                             </div>
-
-                            <div id="morris-donut-example" data-colors='["#f0f1f4","--bs-primary","--bs-info"]' class="morris-charts morris-charts-height" dir="ltr"></div>
                         </div>
+
+                        <div class="card-body">
+                            <div id="monthly-sales" class="apex-charts"></div>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Email Sent</h4>
+                <div class="col-md-6 col-xl-4">
+                    <div class="card overflow-hidden">
 
-                            <div class="row text-center mt-4">
-                                <div class="col-4">
-                                    <h5 class="font-size-20">$ 89425</h5>
-                                    <p class="text-muted">Marketplace</p>
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
+                                    <i data-feather="tablet" class="widgets-icons"></i>
                                 </div>
-                                <div class="col-4">
-                                    <h5 class="font-size-20">$ 56210</h5>
-                                    <p class="text-muted">Total Income</p>
-                                </div>
-                                <div class="col-4">
-                                    <h5 class="font-size-20">$ 8974</h5>
-                                    <p class="text-muted">Last Month</p>
-                                </div>
-                            </div>
-
-                            <div id="morris-area-example" data-colors='["#f0f1f4","--bs-primary","--bs-info"]' class="morris-charts morris-charts-height" dir="ltr"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Monthly Earnings</h4>
-
-                            <div class="row text-center mt-4">
-                                <div class="col-6">
-                                    <h5 class="font-size-20">$ 2548</h5>
-                                    <p class="text-muted">Marketplace</p>
-                                </div>
-                                <div class="col-6">
-                                    <h5 class="font-size-20">$ 6985</h5>
-                                    <p class="text-muted">Total Income</p>
-                                </div>
-                            </div>
-
-                            <div id="morris-bar-stacked" data-colors='["--bs-info","#f0f1f4"]' class="morris-charts morris-charts-height" dir="ltr"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- end row -->
-
-            <div class="row">
-
-                <div class="col-xl-4 col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-3">Inbox</h4>
-                            <div class="inbox-wid">
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-1.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Misty</h6>
-                                        <p class="inbox-item-text text-muted mb-0">Hey! there I'm available...</p>
-                                        <p class="inbox-item-date text-muted">13:40 PM</p>
-                                    </div>
-                                </a>
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-2.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Melissa</h6>
-                                        <p class="inbox-item-text text-muted mb-0">I've finished it! See you so...</p>
-                                        <p class="inbox-item-date text-muted">13:34 PM</p>
-                                    </div>
-                                </a>
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-3.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Dwayne</h6>
-                                        <p class="inbox-item-text text-muted mb-0">This theme is awesome!</p>
-                                        <p class="inbox-item-date text-muted">13:17 PM</p>
-                                    </div>
-                                </a>
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-4.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Martin</h6>
-                                        <p class="inbox-item-text text-muted mb-0">Nice to meet you</p>
-                                        <p class="inbox-item-date text-muted">12:20 PM</p>
-                                    </div>
-                                </a>
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-5.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Vincent</h6>
-                                        <p class="inbox-item-text text-muted mb-0">Hey! there I'm available...</p>
-                                        <p class="inbox-item-date text-muted">11:47 AM</p>
-                                    </div>
-                                </a>
-
-                                <a href="#" class="text-dark">
-                                    <div class="inbox-item">
-                                        <div class="inbox-item-img float-start me-3"><img src="assets/images/users/user-6.jpg" class="avatar-sm rounded-circle" alt=""></div>
-                                        <h6 class="inbox-item-author mb-1 font-size-16">Robert Chappa</h6>
-                                        <p class="inbox-item-text text-muted mb-0">Hey! there I'm available...</p>
-                                        <p class="inbox-item-date text-muted">10:12 AM</p>
-                                    </div>
-                                </a>
-
+                                <h5 class="card-title mb-0">Best Traffic Source</h5>
                             </div>
                         </div>
-                    </div>
 
-                </div>
-                <div class="col-xl-4 col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Recent Activity Feed</h4>
-
-                            <ol class="activity-feed mb-0">
-                                <li class="feed-item">
-                                    <div class="feed-item-list">
-                                        <span class="date">Jun 25</span>
-                                        <span class="activity-text">Responded to need “Volunteer Activities”</span>
-                                    </div>
-                                </li>
-                                <li class="feed-item">
-                                    <div class="feed-item-list">
-                                        <span class="date">Jun 24</span>
-                                        <span class="activity-text">Added an interest “Volunteer Activities”</span>
-                                    </div>
-                                </li>
-                                <li class="feed-item">
-                                    <div class="feed-item-list">
-                                        <span class="date">Jun 23</span>
-                                        <span class="activity-text">Joined the group “Boardsmanship Forum”</span>
-                                    </div>
-                                </li>
-                                <li class="feed-item">
-                                    <div class="feed-item-list">
-                                        <span class="date">Jun 21</span>
-                                        <span class="activity-text">Responded to need “In-Kind Opportunity”</span>
-                                    </div>
-                                </li>
-                            </ol>
-
-                            <div class="text-center">
-                                <a href="#" class="btn btn-sm btn-primary">Load More</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="col-xl-4">
-                    <div class="card widget-user">
-                        <div class="widget-user-desc p-4 text-center bg-primary position-relative">
-                            <i class="fas fa-quote-left h2 text-white-50"></i>
-                            <p class="text-white mb-0">The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe the same vocabulary. The languages only in their grammar.</p>
-                        </div>
-                        <div class="p-4">
-                            <div class="float-start mt-2 me-3">
-                                <img src="assets/images/users/user-2.jpg" alt="" class="rounded-circle avatar-sm">
-                            </div>
-                            <h6 class="mb-1 font-size-16 mt-2">Marie Minnick</h6>
-                            <p class="text-muted mb-0">Marketing Manager</p>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Yearly Sales</h4>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div>
-                                        <h3>52,345</h3>
-                                        <p class="text-muted">The languages only differ grammar</p>
-                                        <a href="#" class="text-primary">Learn more <i class="mdi mdi-chevron-double-right"></i></a>
-                                    </div>
-                                </div>
-                                <div class="col-md-8 text-end">
-                                    <div id="sparkline" data-colors='["--bs-primary"]'></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <!-- end row -->
-
-            <div class="row">
-                <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Latest Transactions</h4>
-
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table align-middle table-centered table-vertical table-nowrap">
-
+                                <table class="table table-traffic mb-0">
                                     <tbody>
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/users/user-2.jpg" alt="user-image" class="avatar-xs rounded-circle me-2" /> Herbert C. Patton
-                                        </td>
-                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>
-                                        <td>
-                                            $14,584
-                                            <p class="m-0 text-muted font-size-14">Amount</p>
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                            <p class="m-0 text-muted font-size-14">Date</p>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <thead>
+                                            <tr>
+                                                <th>Network</th>
+                                                <th colspan="2">Visitors</th>
+                                            </tr>
+                                        </thead>
 
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/users/user-3.jpg" alt="user-image" class="avatar-xs rounded-circle me-2" /> Mathias N. Klausen
-                                        </td>
-                                        <td><i class="mdi mdi-checkbox-blank-circle text-warning"></i> Waiting payment</td>
-                                        <td>
-                                            $8,541
-                                            <p class="m-0 text-muted font-size-14">Amount</p>
-                                        </td>
-                                        <td>
-                                            10/11/2016
-                                            <p class="m-0 text-muted font-size-14">Date</p>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>Instagram</td>
+                                            <td>3,550</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-danger" style="width: 80.0%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/users/user-4.jpg" alt="user-image" class="avatar-xs rounded-circle me-2" /> Nikolaj S. Henriksen
-                                        </td>
-                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>
-                                        <td>
-                                            $954
-                                            <p class="m-0 text-muted font-size-14">Amount</p>
-                                        </td>
-                                        <td>
-                                            8/11/2016
-                                            <p class="m-0 text-muted font-size-14">Date</p>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>Facebook</td>
+                                            <td>1,245</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-primary" style="width: 55.9%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/users/user-5.jpg" alt="user-image" class="avatar-xs rounded-circle me-2" /> Lasse C. Overgaard
-                                        </td>
-                                        <td><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Payment expired</td>
-                                        <td>
-                                            $44,584
-                                            <p class="m-0 text-muted font-size-14">Amount</p>
-                                        </td>
-                                        <td>
-                                            7/11/2016
-                                            <p class="m-0 text-muted font-size-14">Date</p>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>Twitter</td>
+                                            <td>1,798</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-secondary" style="width: 67.0%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>
-                                            <img src="assets/images/users/user-6.jpg" alt="user-image" class="avatar-xs rounded-circle me-2" /> Kasper S. Jessen
-                                        </td>
-                                        <td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>
-                                        <td>
-                                            $8,844
-                                            <p class="m-0 text-muted font-size-14">Amount</p>
-                                        </td>
-                                        <td>
-                                            1/11/2016
-                                            <p class="m-0 text-muted font-size-14">Date</p>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>YouTube</td>
+                                            <td>986</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-success" style="width: 38.72%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Pinterest</td>
+                                            <td>854</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-danger" style="width: 45.08%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Linkedin</td>
+                                            <td>650</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-warning" style="width: 68.0%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>Nextdoor</td>
+                                            <td>420</td>
+                                            <td class="w-50">
+                                                <div class="progress progress-md mt-0">
+                                                    <div class="progress-bar bg-info" style="width: 56.4%"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- End Monthly Sales -->
+
+            <div class="row">
+                <div class="col-md-6 col-xl-6">
+                    <div class="card">
+
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
+                                    <i data-feather="minus-square" class="widgets-icons"></i>
+                                </div>
+                                <h5 class="card-title mb-0">Audiences By Time Of Day</h5>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div id="audiences-daily" class="apex-charts mt-n3"></div>
+                        </div>
+
                     </div>
                 </div>
 
-                <div class="col-xl-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title mb-4">Latest Orders</h4>
+                <div class="col-md-6 col-xl-6">
+                    <div class="card overflow-hidden">
 
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
+                                    <i data-feather="table" class="widgets-icons"></i>
+                                </div>
+                                <h5 class="card-title mb-0">Most Visited Pages</h5>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table align-middle table-centered table-vertical table-nowrap mb-1">
-
+                                <table class="table table-traffic mb-0">
                                     <tbody>
-                                    <tr>
-                                        <td>#12354781</td>
-                                        <td>
-                                            <img src="assets/images/users/user-1.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> Riverston Glass Chair
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
-                                        <td>
-                                            $185
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
 
-                                    <tr>
-                                        <td>#52140300</td>
-                                        <td>
-                                            <img src="assets/images/users/user-2.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> Shine Company Catalina
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
-                                        <td>
-                                            $1,024
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <thead>
+                                            <tr>
+                                                <th>Page name</th>
+                                                <th>Visitors</th>
+                                                <th>Unique</th>
+                                                <th colspan="2">Bounce rate</th>
+                                            </tr>
+                                        </thead>
 
-                                    <tr>
-                                        <td>#96254137</td>
-                                        <td>
-                                            <img src="assets/images/users/user-3.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> Trex Outdoor Furniture Cape
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-danger">Cancel</span></td>
-                                        <td>
-                                            $657
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                /home
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>5,896</td>
+                                            <td>3,654</td>
+                                            <td>82.54%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-1" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>#12365474</td>
-                                        <td>
-                                            <img src="assets/images/users/user-4.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> Oasis Bathroom Teak Corner
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-warning">Shipped</span></td>
-                                        <td>
-                                            $8451
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                /about.html
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>3,898</td>
+                                            <td>3,450</td>
+                                            <td>76.29%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-2" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>#85214796</td>
-                                        <td>
-                                            <img src="assets/images/users/user-5.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> BeoPlay Speaker
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
-                                        <td>
-                                            $584
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>#12354781</td>
-                                        <td>
-                                            <img src="assets/images/users/user-6.jpg" alt="user-image" class="avatar-xs me-2 rounded-circle" /> Riverston Glass Chair
-                                        </td>
-                                        <td><span class="badge rounded-pill bg-success">Delivered</span></td>
-                                        <td>
-                                            $185
-                                        </td>
-                                        <td>
-                                            5/12/2016
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-secondary btn-sm waves-effect waves-light">Edit</button>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td>
+                                                /index.html
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>3,057</td>
+                                            <td>2,589</td>
+                                            <td>72.68%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-3" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                /invoice.html
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>867</td>
+                                            <td>795</td>
+                                            <td>44.78%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-4" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                /docs/
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>958</td>
+                                            <td>801</td>
+                                            <td>41.15%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-5" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                /service.html
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>658</td>
+                                            <td>589</td>
+                                            <td>32.65%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-6" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                /analytical.html
+                                                <a href="#" class="ms-1" aria-label="Open website">
+                                                    <i data-feather="link" class="ms-1 text-primary"
+                                                        style="height: 15px; width: 15px;"></i>
+                                                </a>
+                                            </td>
+                                            <td>457</td>
+                                            <td>859</td>
+                                            <td>32.65%</td>
+                                            <td class="w-25">
+                                                <div id="sparkline-bounce-7" class="apex-charts"></div>
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
-            <!-- end row -->
 
-
-        </div>
-        <!-- container-fluid -->
-    </div>
-    <!-- End Page-content -->
-
-    <footer class="footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-12">
-                    © <script>document.write(new Date().getFullYear())</script> Lexa <span class="d-none d-sm-inline-block"> - Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand.</span>
-                </div>
-            </div>
-        </div>
-    </footer>
+        </div> <!-- container-fluid -->
+    </div> <!-- content -->
 @endsection
 
-@section('javascript')
-    <!-- JAVASCRIPT -->
-    <script src="assets/libs/jquery/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/metismenu/metisMenu.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
-
-    <!--Morris Chart-->
-    <script src="assets/libs/morris.js/morris.min.js"></script>
-    <script src="assets/libs/raphael/raphael.min.js"></script>
-
-    <script src="assets/js/pages/dashboard.init.js"></script>
-
-    <script src="assets/js/app.js"></script>
-@endsection
+@push('script')
+@endpush

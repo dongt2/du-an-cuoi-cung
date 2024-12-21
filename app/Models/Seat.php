@@ -12,7 +12,7 @@ class Seat extends Model
     protected $primaryKey = 'seat_id';
 
     protected $fillable = [
-        'screen_id',
+        'showtime_id',
         'place',
         'price',
         'status'
@@ -21,12 +21,6 @@ class Seat extends Model
     // Định nghĩa mối quan hệ với bảng Showtimes
     public function showtime()
     {
-        return $this->belongsTo(Showtime::class, 'showtime_id');
-    }
-
-    // Định nghĩa mối quan hệ với bảng Screens
-    public function screen()
-    {
-        return $this->belongsTo(Screen::class, 'screen_id');
+        return $this->belongsTo(Showtime::class, 'showtime_id', 'showtime_id');
     }
 }

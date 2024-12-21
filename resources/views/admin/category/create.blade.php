@@ -1,68 +1,71 @@
-@extends('admin.layouts.default')
+@extends('admin.layout.default')
 
 @section('title')
-    Dashboard | Lexa - Admin & Dashboard Template
+    @parent
+    Thêm mới phim
 @endsection
 
-@section('head')
-    <base href="/">
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-    <!-- Bootstrap Css -->
-    <link href="assets/css/bootstrap.min.css" id="bootstrap-style" rel="stylesheet" type="text/css" />
-    <!-- Icons Css -->
-    <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-    <!-- App Css-->
-    <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
-        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-@endsection
+@push('style')
+    <!-- Flatpickr Timepicker css -->
+    <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+@endpush
 
 @section('content')
-    <div class="page-content">
-        <div class="container-fluid">
+    <div class="content">
 
-            <!-- start page title -->
-            <form action="{{ route('admin.category.store') }}" method="post">
-                @csrf
-                <div class="mb-3">
-                    <label for="" class="form-label">Tên Thể Loại :</label>
-                    <input type="text" class="form-control" id="" name="category_name"
-                        placeholder="text..." value="{{ old('category_name') }}">
+        <!-- Start Content-->
+        <div class="container-xxl">
+
+            <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
+                <div class="flex-grow-1">
+                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
                 </div>
 
-                @if ($errors->has('category_name'))
-                    <div class="text-danger mb-3">
-                        {{ $errors->first('category_name') }}
+                {{-- <div class="text-end">
+                    <ol class="breadcrumb m-0 py-0">
+                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
+                        <li class="breadcrumb-item active">Form Pickers</li>
+                    </ol>
+                </div> --}}
+            </div>
+
+            <!-- Advance Form -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Thêm mới</h5>
+                        </div><!-- end card header -->
+
+                        <form action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-xl-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Tên thể loại</label>
+                                            <input type="text" class="form-control" id="" name="category_name"
+                                                placeholder="Tên danh mục">
+                                            @error('title')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary">Thêm</button>
+                            </div>
+                        </form>
                     </div>
-                @endif
-                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary">Quay lại</a>
-                <button type="submit" class="btn btn-success">Thêm thể loại</button>
-            </form>
-            <!-- end page title -->
-
+                </div>
+            </div>
         </div> <!-- container-fluid -->
-    </div>
-    <!-- End Page-content -->
+
+    </div> <!-- content -->
 @endsection
 
-@section('javascript')
-    <!-- JAVASCRIPT -->
-    <script src="assets/libs/jquery/jquery.min.js"></script>
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/metismenu/metisMenu.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+@push('script')
+    <!-- Flatpickr Timepicker Plugin js -->
+    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 
-    <!-- Table Editable plugin -->
-    <script src="assets/libs/table-edits/build/table-edits.min.js"></script>
-
-    <script src="assets/js/pages/table-editable.int.js"></script>
-
-    <!-- App js -->
-    <script src="assets/js/app.js"></script>
-@endsection
+    <script src="{{ asset('assets/js/pages/form-picker.js') }}"></script>
+@endpush

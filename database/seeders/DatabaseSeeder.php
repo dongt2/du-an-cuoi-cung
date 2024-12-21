@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ShowtimeSeeder::class);
         $this->call(SeatSeeder::class);
         $this->call(ComboSeeder::class);
-        $this->call(OrderComboSeeder::class);
         $this->call(BookingSeeder::class);
         $this->call(VoucherSeeder::class);
         $this->call(TransactionSeeder::class);

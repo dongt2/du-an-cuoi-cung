@@ -24,8 +24,8 @@ return new class extends Migration
             $table->year('year');
             $table->date('release_date');
             $table->text('actors');
-            $table->string('cover_image');
-            $table->string('trailer_url', 255);
+            $table->string('cover_image')->nullable();
+            $table->string('trailer_url', 255)->nullable();
 
             $table->timestamps();
         });

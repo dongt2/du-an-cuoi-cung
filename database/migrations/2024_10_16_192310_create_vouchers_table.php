@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('quantity')->default(1);
-            $table->decimal('deduct_amount', 10);
+            $table->decimal('deduct_amount', 10, 2);
             $table->timestamps();
 
             // Thêm chỉ số cho code

@@ -1,21 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\BookingController as AdminBookingController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ComboController;
-use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MovieController;
-use App\Http\Controllers\Admin\OrderComboController;
-use App\Http\Controllers\Admin\ScreenController;
-use App\Http\Controllers\admin\SeatController;
-use App\Http\Controllers\Admin\ShowtimeController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\Client\BookingController;
-use App\Http\Controllers\Users\DetailMovieController;
-use App\Http\Controllers\Users\HomeController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\LoginController;
+use App\Http\Controllers\User\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,80 +19,46 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// Route::get('/', function () {
+//     return view('admin.dashboard');
+// });
 
-Route::prefix('movies')
-    ->as('movies.')
-    ->group(function () {
-        Route::get('listMovie', [MovieController::class, 'index'])->name('list');
-        Route::get('show/{id}', [DetailMovieController::class, 'index'])->name('show');
+Route::resource('/register', RegisterController::class);
+Route::resource('/login', LoginController::class);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-    });
+Route::get('/', [HomeController::class, 'listMovie'])->name('home');
+Route::resource('/movie', HomeController::class);
 
-//Route Booking with movie_id
-Route::post('/booking/store', [BookingController::class, 'storeBooking'])->name('storeBooking');
-Route::get('booking', [BookingController::class, 'stepFinal'])->name('booking');
-Route::get('booking/{id}', [BookingController::class, 'bookingWithMovie'])->name('bookingMovie');
-Route::get('booking-step-2', [BookingController::class, 'bookingStepTwo'])->name('user.bookings.stepTwo');
-Route::post('booking1', [BookingController::class, 'storestepTwo'])->name('storestepTwo');
-Route::get('booking-step-3', [BookingController::class, 'bookingStepThree'])->name('user.bookings.stepThree');
-// Route::post('combo', [BookingController::class, 'comboPost'])->name('storestepThree');
 
-// Route::get('/booking/combo', [BookingController::class, 'stepFinal']);
-// Route::get('/booking/combo', [BookingController::class, 'stepFinal']);
-// Route::post('/booking/combo', [BookingController::class, 'comboPost'])->name('user.bookings.comboPost');
-Route::get('/booking/confirmation', [BookingController::class, 'confirmation'])->name('user.bookings.confirmation');
-Route::post('booking/step-final', [BookingController::class, 'stepFinal'])->name('user.bookings.stepFinal');
-Route::get('/booking/combo', [BookingController::class, 'showComboPage'])->name('booking.combo');
-Route::post('/booking/combo/select', [BookingController::class, 'selectCombo'])->name('booking.combo.select');
-Route::get('/booking/payment', [BookingController::class, 'showPayment'])->name('booking.payment');
-Route::get('/booking/final', [BookingController::class, 'stepFinal'])->name('booking.final');
-Route::get('/booking/step2', [BookingController::class, 'storeStepTwo'])->name('booking.step2');
-// route admin
-Route::prefix('admin')
-    ->as('admin.')
-    ->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+// Routes dành cho User
+Route::prefix('user')->name('user.')->group(function () {
+    Route::get('/bookingStore1/{id}', [BookingController::class, 'bookingStore1'])->name('bookingStore1');
+    Route::get('/booking1', [BookingController::class, 'viewBooking1'])->name('booking1');
 
-        Route::resource('category', CategoryController::class);
-        Route::resource('movie', MovieController::class);
+    // ajax
+    Route::post('/get-showtimes', [BookingController::class, 'getShowtimes'])->name('get-showtimes');
 
-        Route::resource('users', UserController::class);
-        Route::resource('bookings', AdminBookingController::class);
-        Route::resource('combos', ComboController::class);
-        Route::resource('ordercombo', OrderComboController::class);
+    Route::post('/bookingStore2', [BookingController::class, 'bookingStore2'])->name('bookingStore2');
+    Route::get('/booking2', [BookingController::class, 'viewBooking2'])->name('booking2');
 
-        Route::resource('seat', SeatController::class);
-        Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+    Route::post('/bookingStore3', [BookingController::class, 'bookingStore3'])->name('bookingStore3');
+    Route::get('/booking3', [BookingController::class, 'viewBooking3'])->name('booking3');
+});
 
-        //        Route Screen
-        Route::resource('screen', ScreenController::class);
+// Routes dành cho Admin
+Route::prefix('admin')->name('admin.')->group(function () {
 
-        // Route Showtime
-        Route::resource('showtime', ShowtimeController::class)
-            ->middleware('clean.expired.showtimes');
+    Route::get('/', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
-    });
+    Route::resource('/movie', MovieController::class);
+    Route::resource('/category', CategoryController::class);
+    Route::resource('/seat', SeatController::class);
+    Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+});
 
-Route::prefix('auth')
-    ->as('auth.')
-    ->group(function () {
-        Route::get('login', [LoginController::class, 'showFormLogin'])->name('login');
-        Route::post('login', [LoginController::class, 'login']);
 
-        Route::post('logout', [LoginController::class, 'logout'])->name('logout');
-
-        Route::get('register', [RegisterController::class, 'showFormRegister'])->name('register');
-        Route::post('register', [RegisterController::class, 'register']);
-
-        Route::prefix('password')
-            ->as('password.')
-            ->group(function () {
-                Route::get('forgot', [ForgotPasswordController::class, 'forgot'])->name('forgot');
-                Route::post('forgot', [ForgotPasswordController::class, 'forgotPassword']);
-            });
-
-    });
-Route::get('reset/{token}', [ForgotPasswordController::class, 'reset']);
-Route::post('reset/{token}', [ForgotPasswordController::class, 'resetPassword'])->name('reset.password');
-
+// thanh toan
+Route::post('/vnpay_payment', [BookingController::class, 'vnpay_payment'])->name('payment');

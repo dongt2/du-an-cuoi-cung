@@ -18,14 +18,14 @@ class MovieFactory extends Factory
     {
         return [
             'title' => fake()->sentence(3),
-            'duration' => fake()->numberBetween(60, 180) . ' min',
+            'duration' => fake()->numberBetween(20, 200),
             'country' => fake()->country(),
             'director' => fake()->name(),
             'description' => fake()->paragraph(),
             'year' => fake()->year(),
             'release_date' => fake()->date(),
             'actors' => implode(', ', fake()->words(5)),
-            'cover_image' => fake()->imageUrl(640, 480, 'movies', true),
+            'cover_image' => 'images/movie/1734622718.hinhnen.jpg',
             'trailer_url' => fake()->url(),
             'category_id' => fake()->numberBetween(1, 5),
         ];

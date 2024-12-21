@@ -57,12 +57,20 @@ class SeatFactory extends Factory
         // Đảm bảo chỉ số không vượt quá số lượng phần tử trong mảng places
         $place = $places[self::$index % count($places)];
 
-        // Tăng chỉ số để tiếp tục lấy giá trị trong lần chạy tiếp theo
         self::$index++;
 
+        // Xác định giá trị dựa trên chữ cái đầu tiên của place
+        $firstLetter = substr($place, 0, 1);
+        $price = match ($firstLetter) {
+            'A', 'B', 'C', 'D' => '10',
+            'E', 'F', 'G', 'I' => '20',
+            'J', 'K', 'L' => '30',
+            default => '10', // Mặc định là 10 nếu không khớp
+        };
+
         return [
-            'place' => $place, // Số ghế theo thứ tự
-            'price' => fake()->randomElement([10, 20, 30]), // Giá ngẫu nhiên
+            'place' => $place, 
+            'price' => $price,
             'status' => 'Còn trống',
         ];
     }

@@ -17,8 +17,8 @@ class Booking extends Model
         'user_id',
         'movie_id',
         'showtime_id',
-        'seat_id',
-        'ordercombo_id',
+        'seat_name',
+        'combo_id',
         'total_price',
     ];
 
@@ -37,13 +37,8 @@ class Booking extends Model
         return $this->belongsTo(Showtime::class, 'showtime_id', 'showtime_id');
     }
 
-    public function seat()
+    public function combo()
     {
-        return $this->belongsTo(Seat::class, 'seat_id', 'seat_id');
-    }
-
-    public function orderCombo()
-    {
-        return $this->belongsTo(OrderCombo::class, 'ordercombo_id', 'ordercombo_id');
+        return $this->belongsTo(Combo::class, 'combo_id', 'combo_id');
     }
 }

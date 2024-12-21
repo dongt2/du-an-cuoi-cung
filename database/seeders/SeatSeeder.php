@@ -12,9 +12,9 @@ class SeatSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($screen_id = 1; $screen_id <= 2; $screen_id++) {
+        for ($showtime_id = 1; $showtime_id <= 2; $showtime_id++) {
             Seat::factory()->count(166)->create([
-                'screen_id' => $screen_id,
+                'showtime_id' => $showtime_id,
             ]);
         }
     }

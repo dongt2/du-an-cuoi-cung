@@ -1,1 +1,274 @@
-!function(a){"use strict";function n(){}n.prototype.init=function(){a("#world-map-markers").vectorMap({map:"world_mill_en",normalizeFunction:"polynomial",hoverOpacity:.7,hoverColor:!1,regionStyle:{initial:{fill:"#7a6fbe"}},markerStyle:{initial:{r:9,fill:"#03a9f4","fill-opacity":.9,stroke:"#fff","stroke-width":7,"stroke-opacity":.4},hover:{stroke:"#fff","fill-opacity":1,"stroke-width":1.5}},backgroundColor:"transparent",markers:[{latLng:[41.9,12.45],name:"Vatican City"},{latLng:[43.73,7.41],name:"Monaco"},{latLng:[-.52,166.93],name:"Nauru"},{latLng:[-8.51,179.21],name:"Tuvalu"},{latLng:[43.93,12.46],name:"San Marino"},{latLng:[47.14,9.52],name:"Liechtenstein"},{latLng:[7.11,171.06],name:"Marshall Islands"},{latLng:[17.3,-62.73],name:"Saint Kitts and Nevis"},{latLng:[3.2,73.22],name:"Maldives"},{latLng:[35.88,14.5],name:"Malta"},{latLng:[12.05,-61.75],name:"Grenada"},{latLng:[13.16,-61.23],name:"Saint Vincent and the Grenadines"},{latLng:[13.16,-59.55],name:"Barbados"},{latLng:[17.11,-61.85],name:"Antigua and Barbuda"},{latLng:[-4.61,55.45],name:"Seychelles"},{latLng:[7.35,134.46],name:"Palau"},{latLng:[42.5,1.51],name:"Andorra"},{latLng:[14.01,-60.98],name:"Saint Lucia"},{latLng:[6.91,158.18],name:"Federated States of Micronesia"},{latLng:[1.3,103.8],name:"Singapore"},{latLng:[.33,6.73],name:"SÃ£o TomÃ© and PrÃ­ncipe"}]}),a("#usa").vectorMap({map:"us_merc_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}}),a("#india").vectorMap({map:"in_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}}),a("#australia").vectorMap({map:"au_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}}),a("#chicago").vectorMap({map:"us-il-chicago_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}}),a("#uk").vectorMap({map:"uk_mill_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}}),a("#canada").vectorMap({map:"ca_lcc_en",backgroundColor:"transparent",regionStyle:{initial:{fill:"#7a6fbe"}}})},a.VectorMap=new n,a.VectorMap.Constructor=n}(window.jQuery),function(){"use strict";window.jQuery.VectorMap.init()}();
+/*
+Template Name: Tapeli - Responsive Bootstrap 5 Admin Dashboard
+Author: Zoyothemes
+Version: 1.0.0
+Website: https://zoyothemes.com/
+File: Vector Map Js
+*/
+
+class VectorMap {
+
+  // World Line Map Market
+  initWorldLineMapMarker() {
+    const map = new jsVectorMap({
+      map: "world_merc",
+      selector: "#world-mapline-markers",
+      zoomOnScroll: false,
+      zoomButtons: false,
+      markersSelectable: true,
+      markers: [
+        { name: "Greenland", coords: [72, -42] },
+        { name: "Canada", coords: [56.1304, -106.3468] },
+        { name: "Germany", coords: [51.1657, 10.4515] },
+        { name: "Japan", coords: [36.2048, 138.2529] },
+        { name: "United States", coords: [37.0902, -95.7129] },
+        { name: "Egypt", coords: [26.8206, 30.8025] },
+        { name: "Brazil", coords: [-14.2350, -51.9253] },
+        { name: "Australia", coords: [-25.2744, 133.7751] },
+        { name: "Malaysia", coords: [4.2105, 101.9758] },
+        { name: "China", coords: [35.8617, 104.1954] },
+        { name: "Norway", coords: [60.472024, 8.468946] },
+        { name: "Ukraine", coords: [48.379433, 31.16558] }
+      ],
+      lines: [
+        { from: "Greenland", to: "Egypt" },
+        { from: "Canada", to: "Egypt" },
+        { from: "Germany", to: "Egypt" },
+        { from: "Japan", to: "Egypt" },
+        { from: "United States", to: "Egypt" },
+        { from: "Brazil", to: "Egypt" },
+        { from: "Australia", to: "Egypt" },
+        { from: "Malaysia", to: "Egypt" },
+        { from: "China", to: "Egypt" },
+        { from: "Norway", to: "Egypt" },
+        { from: "Ukraine", to: "Egypt" }
+      ],
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+      markerStyle: {
+        initial: {
+          fill: "#343a40",
+        },
+      },
+      labels: {
+        markers: {
+          render: marker => marker.name
+        }
+      },
+      lineStyle: {
+        animation: true,
+        strokeDasharray: "6 3 6",
+      },
+    })
+  }
+
+  // vectorMapWorldMarkersColors
+  initWorldMarkerMap() {
+    const map = new jsVectorMap({
+      map: 'world_merc',
+      selector: '#world-map-markers',
+      zoomOnScroll: false,
+      zoomButtons: false,
+      selectedMarkers: [0, 2],
+      markersSelectable: true,
+      markers: [
+        { name: "Palestine", coords: [31.9474, 35.2272] },
+        { name: "Russia", coords: [61.524, 105.3188] },
+        { name: "Canada", coords: [56.1304, -106.3468] },
+        { name: "Greenland", coords: [71.7069, -42.6043] },
+      ],
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+      markerStyle: {
+        initial: { fill: "#343a40" },
+        selected: { fill: "red" }
+      },
+      labels: {
+        markers: {
+          render: marker => marker.name
+        }
+      },
+    });
+  }
+
+  // World Map Markers image
+  initWorldMarkerImageMap() {
+    const map = new jsVectorMap({
+      map: 'world_merc',
+      selector: '#world-map-markers-image',
+      zoomOnScroll: true,
+      zoomButtons: true,
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+      selectedMarkers: [0, 2],
+      markersSelectable: true,
+      markers: [
+        { name: "Palestine", coords: [31.9474, 35.2272] },
+        { name: "Russia", coords: [61.524, 105.3188] },
+        { name: "Canada", coords: [56.1304, -106.3468] },
+        { name: "Greenland", coords: [71.7069, -42.6043] },
+      ],
+      markerStyle: {
+        initial: {
+          image: "assets/images/logo-sm.png"
+        }
+      },
+      labels: {
+        markers: {
+          render: marker => marker.name
+        }
+      },
+    });
+  }
+
+  // US Vector Map
+  initUsaVectorMap() {
+    const usamap = new jsVectorMap({
+      selector: "#usa-vectormap",
+      map: "us_merc_en",
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        }
+      },
+    });
+  }
+
+  // Canada Vector Map
+  initCanadaVectorMap() {
+    const canadamap = new jsVectorMap({
+      map: 'canada',
+      selector: "#canada-vectormap",
+      zoomOnScroll: false,
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+    })
+  }
+
+  // Russia Vector Map
+  initRussiaVectorMap() {
+    const russiamap = new jsVectorMap({
+      map: 'russia',
+      selector: "#russia-vectormap",
+      zoomOnScroll: false,
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      }
+    });
+  }
+
+  // Spain Vector Map
+  initSpainVectorMap() {
+    const spainmap = new jsVectorMap({
+      map: 'spain',
+      selector: "#spain-vectormap",
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+    })
+  }
+
+  // Iraq Vector Map
+  initIraqVectorMap() {
+    const iraqmap = new jsVectorMap({
+      map: 'iraq',
+      selector: "#iraq-vectormap",
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+    })
+  }
+
+  // US (Lcc-En) Vector Map
+  initUsLccVectorMap() {
+    const uslccmap = new jsVectorMap({
+      map: 'us_lcc_en',
+      selector: "#us-lcc-vectormap",
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+    })
+  }
+
+  // US (Mill En) Vector Map
+  initUsMillVectorMap() {
+    const usmillmap = new jsVectorMap({
+      map: 'us_mill_en',
+      selector: "#us-mill-vectormap",
+      regionStyle: {
+        initial: {
+          stroke: "#4a5a6b",
+          fill: "#dee2e6",
+          strokeWidth: 0.25,
+          fillOpacity: 1,
+        },
+      },
+    })
+  }
+
+  init() {
+    // this.initWorldMapMarker();
+    this.initWorldLineMapMarker();
+    this.initWorldMarkerMap();
+    this.initWorldMarkerImageMap();
+    this.initUsaVectorMap();
+    this.initCanadaVectorMap();
+    this.initRussiaVectorMap();
+    this.initSpainVectorMap();
+    this.initIraqVectorMap();
+    this.initUsLccVectorMap();
+    this.initUsMillVectorMap();
+  }
+
+}
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  new VectorMap().init();
+});

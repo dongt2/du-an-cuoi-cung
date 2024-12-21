@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMovieRequest;
 use App\Models\Category;
 use App\Models\Movie;
 use Illuminate\Http\Request;
@@ -16,9 +15,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movie = Movie::latest()->paginate(5);
-
-        return view('admin.movies.index', compact('movie'));
+        $data = Movie::all();
+        return view('admin.movie.list', compact('data'));
     }
 
     /**
@@ -26,31 +24,52 @@ class MovieController extends Controller
      */
     public function create()
     {
-        $category = Category::get();
-
-        return view('admin.movies.create', compact('category'));
+        $data = Category::all();
+        return view('admin.movie.create', compact('data'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMovieRequest $request)
+    public function store(Request $request)
     {
-        $linkImage = '';
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name = time().'.'.$image->getClientOriginalExtension();  // đổi tên trống trùng
-            $destinationPath = 'imageMovies/';  // kho lưu trữ
-            $image->move(public_path($destinationPath), $name);
-            $linkImage = $destinationPath.$name;
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'duration' => 'required|integer|min:1|max:1000',
+            'country' => 'required|string|max:100',
+            'year' => 'required|integer|min:1500|max:' . date('Y'),
+            'director' => 'required|string|max:255',
+            'actors' => 'required|string|max:500',
+            'category_id' => 'required|exists:categories,category_id',
+            'description' => 'required|string|max:1500',
+            'trailer_url' => 'nullable|url',
+            'release_date' => 'required|date|before_or_equal:today',
+        ]);
+        
+        $path = null;
+        if($request->hasFile('cover_image')){
+            $image = $request->file('cover_image');
+            $newName = time().'.'.$image->getClientOriginalName();
 
+            $path = $image->storeAs('images/movie', $newName, 'public');
         }
 
-        $data = $request->all() + ['cover_image' => $linkImage];
+        $data = [
+            'title' => $request->title,
+            'cover_image' => $path,
+            'duration' => $request->duration,
+            'country' => $request->country,
+            'year' => $request->year,
+            'director' => $request->director,
+            'actors' => $request->actors,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'trailer_url' => $request->trailer_url,
+            'release_date' => $request->release_date,
+        ];
         Movie::create($data);
-        //dd($data);
-
-        return redirect()->route('admin.movie.index')->with('success', 'Thêm phim thành công, ');
+        return redirect()->route('admin.movie.index');
     }
 
     /**
@@ -58,9 +77,7 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::get();
-        $movie = Movie::findOrFail($id);
-        return view('admin.movies.show', compact('category', 'movie'));
+        //
     }
 
     /**
@@ -68,11 +85,9 @@ class MovieController extends Controller
      */
     public function edit(string $id)
     {
-
-        $category = Category::get();
-        $movie = Movie::findOrFail($id);
-
-        return view('admin.movies.update', compact('category', 'movie'));
+        $data = Movie::where('movie_id', $id)->first();
+        $category = Category::all();
+        return view('admin.movie.edit', compact('data', 'category'));
     }
 
     /**
@@ -80,23 +95,49 @@ class MovieController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $movie = Movie::findOrFail($id);
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'duration' => 'required|integer|min:1|max:1000',
+            'country' => 'required|string|max:100',
+            'year' => 'required|integer|min:1500|max:' . date('Y'),
+            'director' => 'required|string|max:255',
+            'actors' => 'required|string|max:500',
+            'category_id' => 'required|exists:categories,category_id',
+            'description' => 'required|string|max:1500',
+            'trailer_url' => 'nullable|url',
+            'release_date' => 'required|date|before_or_equal:today',
+        ]);
+        
+        $movie = Movie::where('movie_id', $id)->first();
+        $path = $movie->cover_image;
 
-        $linkImage = $movie->cover_image;
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $name = time().'.'.$image->getClientOriginalExtension();  // đổi tên trống trùng
-            $destinationPath = 'imageMovies/';  // kho lưu trữ
-            $image->move(public_path($destinationPath), $name);
-            $linkImage = $destinationPath.$name;
+        if($request->hasFile('cover_image')){
+            // Xóa ảnh cũ
+            Storage::disk('public')->delete($path);
 
+            //Lưu ảnh mới
+            $image = $request->file('cover_image');
+            $newName = time().'.'.$image->getClientOriginalName();
+
+            $path = $image->storeAs('images/movie', $newName, 'public');
         }
 
-        $data = $request->all() + ['cover_image' => $linkImage];
+        $data = [
+            'title' => $request->title,
+            'cover_image' => $path,
+            'duration' => $request->duration,
+            'country' => $request->country,
+            'year' => $request->year,
+            'director' => $request->director,
+            'actors' => $request->actors,
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'trailer_url' => $request->trailer_url,
+            'release_date' => $request->release_date,
+        ];
         $movie->update($data);
-        //dd($data);
-
-        return redirect()->route('admin.movie.index')->with('success', 'Sửa phim thành công, ');
+        return redirect()->route('admin.movie.index');
     }
 
     /**
@@ -104,14 +145,7 @@ class MovieController extends Controller
      */
     public function destroy(string $id)
     {
-        $movie = Movie::findOrFail($id);
-        if($movie->cover_image){
-            $filePath = public_path($movie->cover_image);
-            if (file_exists($filePath)) {
-                unlink($filePath); // Xóa ảnh trực tiếp từ thư mục public
-            }
-        }
-        $movie->delete();
-        return redirect()->route('admin.movie.index')->with('success', 'Xóa sản phẩm thành công. ');
+        Movie::where('movie_id', $id)->delete();
+        return redirect()->route('admin.movie.index');
     }
 }

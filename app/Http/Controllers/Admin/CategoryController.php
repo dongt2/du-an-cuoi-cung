@@ -3,10 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateCategoryRequest;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -15,9 +13,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::latest()->paginate(5);
-
-        return view('admin.category.index', compact('category'));
+        $data = Category::all();
+        return view('admin.category.list', compact('data'));
     }
 
     /**
@@ -31,15 +28,18 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategoryRequest $request)
+    public function store(Request $request)
     {
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+        ]);
 
-        $data = $request->all();
+        $data = [
+            'category_name' => $request->category_name,
+        ];
 
         Category::create($data);
-
-        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công. ');
-
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -47,9 +47,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        $category = Category::find($id);
-
-        return view('admin.category.show', compact('category'));
+        //
     }
 
     /**
@@ -57,23 +55,26 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = Category::findOrFail($id);
-
-        return view('admin.category.update', compact('category'));
+        $data = Category::where('category_id', $id)->first();
+        return view('admin.category.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        $category = Category::findOrFail($id);
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+        ]);
+        
+        $category = Category::where('category_id', $id)->first();
 
-        $data = $request->validated();
-
+        $data = [
+            'category_name' => $request->category_name,
+        ];
         $category->update($data);
-
-        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công. ');
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -81,17 +82,7 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail(id: $id);
-
-
-        $movieCount = $category->movies()->count();
-
-        if($movieCount == 0){
-            $category->delete();
-
-            return back()->with('success', 'Thao tác thành công');
-        }
-        return back()->with('error', 'Thao tác không thành công vì thể loại này vẫn còn liên kết');
-
+        Category::where('category_id', $id)->delete();
+        return redirect()->route('admin.category.index');
     }
 }

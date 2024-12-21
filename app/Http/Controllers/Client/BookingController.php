@@ -1,209 +1,196 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-<<<<<<< HEAD
-use App\Models\Movie;
-=======
-use App\Models\Booking;
-use App\Models\Movie;
 use App\Models\Combo;
->>>>>>> 257d8252b2967f4fbe361751b7aabd220d3731fa
+use App\Models\Movie;
+use App\Models\Screen;
+use App\Models\Seat;
 use App\Models\Showtime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 class BookingController extends Controller
 {
-<<<<<<< HEAD
-=======
-    // Hiển thị thông tin phim và suất chiếu
->>>>>>> 257d8252b2967f4fbe361751b7aabd220d3731fa
-    public function bookingWithMovie($id)
+    /**
+     * Display a listing of the resource.
+     */
+
+    public function generateRandomOrderCode($length = 8)
     {
-        $movie = Movie::findOrFail($id);
-        $showtime = DB::table('showtimes')
-            ->join('screens', 'showtimes.screen_id', '=', 'screens.screen_id')
-            ->where('showtimes.movie_id', $id)
-            ->select('showtimes.*', 'screens.screen_name as screen_name')
-            ->get()
-            ->toArray();
-<<<<<<< HEAD
-//        dd($movie, $showtime);
-        return view('user.bookings.booking', compact('movie', 'showtime'));
-    }
-
-    public function bookingShow()
-    {
-        $movies= Movie::all();
-
-//        $showtimes = Showtime::all();
-
-        return view('user.bookings.booking', compact('movies'));
-    }
-=======
-
-        $movies = Movie::all();
-
-        return view('user.bookings.booking', compact('movie', 'movies', 'showtime'));
-    }
-
-    // Lưu thông tin bước 1 của đặt vé
-    public function storeBooking(Request $request)
-    {
-        try {
-            $request->validate([
-                'movie_id' => 'required',
-                'movie_title' => 'required|string',
-                'date' => 'required|date',
-                'time' => 'required|string',
-            ]);
-
-            session([
-                'bookingStep1' => [
-                    'user_id' => auth()->id(),
-                    'movie_id' => $request->movie_id,
-                    'movie_title' => $request->movie_title,
-                    'date' => $request->date,
-                    'time' => $request->time,
-                ],
-            ]);
-
-            return redirect()->route('user.bookings.stepTwo');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
+        return $randomString;
     }
 
-    // Lưu thông tin bước 2 của đặt vé
-    public function storeStepTwo(Request $request)
+    public function bookingStore1($id)
     {
-        try {
-            $request->validate([
-                'choosen_number' => 'required',
-                'choosen_number_cheap' => 'required',
-                'choosen_number_middle' => 'required',
-                'choosen_number_expansive' => 'required',
-                'choosen_cost' => 'required',
-                'choosen_sits' => 'required',
-            ]);
+        $data = Movie::where('movie_id', $id)->first();
+        session([
+            'movie' => [
 
-            session([
-                'bookingStep2' => [
-                    'choosen_number' => $request->choosen_number,
-                    'choosen_number_cheap' => $request->choosen_number_cheap,
-                    'choosen_number_middle' => $request->choosen_number_middle,
-                    'choosen_number_expansive' => $request->choosen_number_expansive,
-                    'choosen_cost' => $request->choosen_cost,
-                    'choosen_sits' => $request->choosen_sits,
-                ],
-            ]);
-
-            return redirect()->route('user.bookings.stepThree');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-    // Hiển thị danh sách combo
-    // public function showCombo()
-    // {
-    //     $combos = Combo::all(); // Lấy tất cả combo từ database
-    //     return view('booking.combo', compact('combos'));
-    // }
-
-    // // Xử lý chọn combo
-    // public function selectCombo(Request $request)
-    // {
-    //     $request->validate([
-    //         'combo_ids' => 'required|array',
-    //         'combo_ids.*' => 'exists:combos,id',
-    //     ]);
-
-    //     $selectedCombos = Combo::whereIn('id', $request->combo_ids)->get();
-    //     $comboTotal = $selectedCombos->sum('price');
-
-    //     session([
-    //         'selectedCombo' => [
-    //             'ids' => $request->combo_ids,
-    //             'total' => $comboTotal,
-    //         ],
-    //     ]);
-
-    //     return redirect()->route('user.bookings.confirmation');
-    // }
-    public function showComboPage()
-    {
-        $combos = Combo::all(); // Lấy danh sách combo từ database
-        $selectedCombo = session('selected_combo', null); // Combo được chọn, nếu có
-        return view('booking.step3', compact('combos', 'selectedCombo'));
-    }
-
-    public function selectCombo(Request $request)
-    {
-        $comboId = $request->input('combo_id');
-        $comboName = $request->input('combo_name');
-        $comboPrice = $request->input('combo_price');
-
-        session(['selected_combo' => [
-            'id' => $comboId,
-            'name' => $comboName,
-            'price' => $comboPrice,
-        ]]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Combo đã được chọn.',
+                'movie_id' => $data->movie_id,
+                'title' => $data->title,
+            ]
         ]);
+        return redirect()->route('user.booking1');
     }
-    // Hiển thị thông tin thanh toán
-    public function confirmation()
+
+    public function viewBooking1()
     {
-        $bookingStep1 = session('bookingStep1', []);
-        $bookingStep2 = session('bookingStep2', []);
-        $selectedCombo = session('selectedCombo', []);
-        $finalTotal = ($bookingStep2['choosen_cost'] ?? 0) + ($selectedCombo['total'] ?? 0);
+        if (session('movie')) {
+            $data = Movie::where('movie_id', session('movie')['movie_id'])->get();
+        } else {
+            $data = Movie::all();
+        }
+        $screens = Screen::all();
 
-        return view('user.bookings.confirmation', compact('bookingStep1', 'bookingStep2', 'selectedCombo', 'finalTotal'));
+        return view('user.booking.booking1', compact('data', 'screens'));
     }
 
-    // Hiển thị trang bước cuối cùng
-    public function stepFinal()
+    public function getShowtimes(Request $request)
     {
-        $ticketQuantity = session('ticket_quantity', 1); // Số lượng vé từ session (mặc định là 1)
-        $ticketPrice = session('ticket_price', 200000); // Giá vé từ session (mặc định là 200,000 VNĐ)
-        $combos = session('selectedCombo', []);
-        $totalComboPrice = $combos['total'] ?? 0;
-        $totalPrice = ($ticketQuantity * $ticketPrice) + $totalComboPrice;
+        $screen_id = $request->input('screen_id');
+        $movie_id = $request->input('movie_id');
 
-        return view('user.bookings.stepFinal', compact('ticketQuantity', 'ticketPrice', 'totalComboPrice', 'totalPrice', 'combos'));
+        $showtimes = Showtime::where('movie_id', $movie_id)
+            ->where('screen_id', $screen_id)
+            ->get()
+            ->groupBy('showtime_date');
+
+        return response()->json($showtimes);
     }
-//     public function bookingStepThree()
-// {
-//     // Logic xử lý cho bước 3 (ví dụ: hiển thị giao diện chọn ghế ngồi)
-    
-//     $bookingStep2 = session('bookingStep2', []); // Lấy thông tin bước 2 từ session
 
-//     // Nếu cần, bạn có thể thêm các logic kiểm tra hoặc xử lý ở đây
 
-//     return view('user.bookings.stepThree', compact('bookingStep2'));
-// }
-public function bookingStepThree(Request $request)
-{
-    // Lấy danh sách combo
-    $combos = Combo::all(); // Lấy dữ liệu từ database hoặc xử lý logic phù hợp
-// Kiểm tra combo đã được chọn từ session hoặc logic khác
-$selectedCombo = session('selected_combo', null);
-    // Truyền biến $combos vào view
-    return view('user.bookings.stepFinal', compact('combos','selectedCombo'));
-}
+    public function bookingStore2(Request $request)
+    {
+        session([
+            'booking' => [
+                'code_movie' => $this->generateRandomOrderCode(),
+                'movie_id' => $request->input('movie_id'),
+                'screen_id' => $request->input('screen_id'),
+                'showtime_date' => $request->input('showtime_date'),
+                'showtime_time' => $request->input('showtime_time'),
+            ]
+        ]);
+        //        dd(session()->get('booking'));
+        return redirect()->route('user.booking2');
+    }
 
-//     public function stepFinal() {
-//         $combo = Combo::all();
-//         return view('user.bookings.stepFinal', compact('combo'));
+    public function viewBooking2()
+    {
+        // dd(session()->get('booking'));
+        $showtime_id = Showtime::where('movie_id', session('booking.movie_id'))
+            ->where('screen_id', session('booking.screen_id'))
+            ->where('showtime_date', session('booking.showtime_date'))
+            ->where('time', session('booking.showtime_time'))
+            ->value('showtime_id');
+        // $showtime_id = 1;
 
-// //        return view('user.bookings.stepFinal');
-//     }
->>>>>>> 257d8252b2967f4fbe361751b7aabd220d3731fa
+        $data = Seat::where('showtime_id', $showtime_id)
+            ->select('place', 'price', 'status')
+            ->orderByRaw("SUBSTRING(place, 1, 1), CAST(SUBSTRING(place, 2) AS UNSIGNED)")
+            ->get();
+
+        return view('user.booking.booking2', compact("data"));
+    }
+
+
+    public function bookingStore3(Request $request)
+    {
+        session()->push('booking.seats', array_filter($request->all(), fn($key) => $key !== '_token' && $key !== 'total_price'));
+        session(['booking.seats' => $request->except(['_token', 'total_price'])]);
+        session(['booking.total_price' => $request->input('total_price')]);
+        // dd(session()->get('booking'));
+        return redirect()->route('user.booking3');
+    }
+
+    public function viewBooking3()
+    {
+        $combos = Combo::get();
+        return view('user.booking.booking3', compact('combos'));
+    }
+
+
+    public function vnpay_payment(Request $request)
+    {
+        $data = $request->all();
+
+        $code = session('booking.code_movie');
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "http://127.0.0.1:8000/";
+        $vnp_TmnCode = "LVYOOXSX";//Mã website tại VNPAY
+        $vnp_HashSecret = "L5NY1FEL473DG8W77E8G5J76N16VJJNR"; //Chuỗi bí mật
+
+        $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
+        $vnp_OrderInfo = 'Thanh toán vé xem phim'; //nội dung thanh toán
+        $vnp_OrderType = 'Phimmoi Ticket';
+        $vnp_Amount = $data['total'] * 100000;
+        $vnp_Locale = 'VN';
+        $vnp_BankCode = 'NCB';
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        //var_dump($inputData);
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        $returnData = array(
+            'code' => '00'
+            ,
+            'message' => 'success'
+            ,
+            'data' => $vnp_Url
+        );
+        if (isset($_POST['redirect'])) {
+            header('Location: ' . $vnp_Url);
+            die();
+        } else {
+            echo json_encode($returnData);
+        }
+        // vui lòng tham khảo thêm tại code demo
+
+
+    }
 }

@@ -271,7 +271,7 @@ InfoBox.prototype.addClickHandler_ = function () {
 };
 
 /**
- * Returns the function to call when the theme clicks the close box of an InfoBox.
+ * Returns the function to call when the user clicks the close box of an InfoBox.
  * @private
  */
 InfoBox.prototype.getCloseClickHandler_ = function () {
@@ -470,7 +470,7 @@ InfoBox.prototype.draw = function () {
   var pixPosition = this.getProjection().fromLatLngToDivPixel(this.position_);
 
   this.div_.style.left = (pixPosition.x + this.pixelOffset_.width) + "px";
-
+  
   if (this.alignBottom_) {
     this.div_.style.bottom = -(pixPosition.y + this.pixelOffset_.height) + "px";
   } else {
