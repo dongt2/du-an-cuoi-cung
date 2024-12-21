@@ -16,103 +16,50 @@
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
 @endsection
-<div class="main-content">
 
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
             <!-- start page title -->
-            <form action="{{ route('admin.movie.update', $movie->movie_id) }}" method="post" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="mb-3">
-                    <label for="" class="form-label">Tên Phim :</label>
-                    <input type="text" class="form-control" id="" name="title" placeholder="Mời nhập tên" value="{{ $movie->title }}" disabled>
-                </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Trường dữ liệu</th>
+                                            <th>Giá trị</th>
+                                        </tr>
+                                    </thead>
 
-                <div class="mb-3">
-                    <label for="" class="form-label">Thời Lượng :</label>
-                    <input type="text" class="form-control" id="" name="duration"
-                        placeholder="Mời nhập thời lượng" value="{{ $movie->duration }}" disabled>
-                </div>
+                                    <tbody>
+                                        @foreach ($movie->toArray() as $key=>$value)
+                                            <tr>
+                                                <td>{{ strtoupper($key) }}</td>
+                                                <td>{{ $value }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div>
+                                    <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary">Quay lại</a>
+                                </div>
+                            </div>
 
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Quốc Gia :</label>
-                    <input type="text" class="form-control" id="" name="country"
-                        placeholder="Mời nhập quốc gia" value="{{ $movie->country }}" disabled>
-                </div>
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Mô Tả :</label>
-                    <textarea class="form-control" id="" rows="3" name="description" disabled>{{ $movie->description }} </textarea>
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Năm Xuất Bản:</label>
-                    <input type="text" class="form-control" id="" name="year" placeholder="YYYY"
-                        min="1900" max="2099" value="{{ $movie->year }}" disabled>
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Ngày Phát Hành :</label>
-                    <input type="date" class="form-control" id="" name="release_date" value="{{ $movie->release_date }}" disabled>
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Diễn Viên:</label>
-                    <input type="text" class="form-control" id="" name="actors"
-                        placeholder="Mời nhập diễn viên" value="{{ $movie->actors }}" disabled>
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Trailer:</label>
-                    <input type="text" class="form-control" id="" name="trailer_url" placeholder="Link..." value="{{ $movie->trailer_url }}" disabled>
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Thể Loại:</label>
-                    <select class="form-select" name="category_id" disabled>
-                        @foreach ($category as $cat)
-                            <option value="{{ $cat->category_id }}" @selected($cat->category_id == $movie->category_id)>{{ $cat->category_name }}</option>
-                        @endforeach
-                    </select>
-
-                </div>
-
-
-
-                <div class="mb-3">
-                    <label for="" class="form-label">Hình Ảnh:</label>
-                    {{-- <input type="file" class="form-control" id="" name="image"> --}}
-                    <img src="{{ asset($movie->cover_image) }}" alt="" width="400" class="mt-4" disabled>
-
-
-                </div>
-
-
-                <a href="{{ route('admin.movie.index') }}" class="btn btn-secondary mt-5 mb-5">Quay lại</a>
-
-            </form>
+                        </div>
+                    </div>
+                </div> <!-- end col -->
+            </div> <!-- end row -->
             <!-- end page title -->
 
 
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')

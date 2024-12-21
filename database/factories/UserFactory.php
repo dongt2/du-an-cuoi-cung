@@ -25,12 +25,10 @@ class UserFactory extends Factory
     {
         return [
             'username' => fake()->Name(),
-            'avata' => fake()->imageUrl(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => fake()->boolean(80) ? now() : null, // 80% xác nhận email
             'password' => '123456', // bcrypt('password'), // Mật khẩu đã mã hóa
             'phone' => fake()->phoneNumber(), // Số điện thoại có thể không có
-            'address' => fake()->address(),
             'role' => fake()->randomElement(['Admin', 'Nhan Vien', 'khach Hang']),
             'is_active' => fake()->boolean(),
             'is_vip' => fake()->boolean(20), // 20% người dùng VIP

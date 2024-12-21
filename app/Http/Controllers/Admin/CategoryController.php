@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateCategoryRequest;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -13,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $category = Category::paginate(5);
+        $category = Category::latest()->paginate(5);
 
         return view('admin.category.index', compact('category'));
     }
@@ -29,32 +31,15 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'category_name' => [
-                'required',
-                'string',
-                'min:1',
-                'max:25',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
-                'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`
-            ],
-        ],
-            [
-                'category_name.required' => 'Trường tên không được bỏ trống',
-                'category_name.string' => 'Trường tên phải là chuỗi ký tự.',
-                'category_name.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-                'category_name.max' => 'Trường tên không được vượt quá 25 ký tự.',
-                'category_name.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-                'category_name.unique' => 'Tên danh mục đã tồn tại.', // Thông báo lỗi khi bị trùng
-            ]);
+
         $data = $request->all();
 
         Category::create($data);
 
-        // dd($data);
-        return redirect()->route('admin.category.index')->with('success', 'Thêm sản phẩm thành công. ');
+        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công. ');
+
     }
 
     /**
@@ -80,33 +65,15 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
         $category = Category::findOrFail($id);
 
-        $request->validate([
-            'category_name' => [
-                'required',
-                'string',
-                'min:1',
-                'max:25',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
-                'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`
-            ],
-        ],
-            [
-                'category_name.required' => 'Trường tên không được bỏ trống',
-                'category_name.string' => 'Trường tên phải là chuỗi ký tự.',
-                'category_name.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-                'category_name.max' => 'Trường tên không được vượt quá 25 ký tự.',
-                'category_name.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-                'category_name.unique' => 'Tên danh mục đã tồn tại.', // Thông báo lỗi khi bị trùng
-            ]);
-        $data = $request->all();
+        $data = $request->validated();
 
         $category->update($data);
 
-        return redirect()->route('admin.category.index')->with('success', 'Sửa thể loại thành công. ');
+        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công. ');
     }
 
     /**
@@ -114,12 +81,17 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::findOrFail($id);
+        $category = Category::findOrFail(id: $id);
 
-        if($category->movies()->count() == 0){
+
+        $movieCount = $category->movies()->count();
+
+        if($movieCount == 0){
             $category->delete();
-            return redirect()->route('admin.category.index')->with('success', 'Xóa thể loại thành công. ');
+
+            return back()->with('success', 'Thao tác thành công');
         }
-        return redirect()->route('admin.category.index')->with('errors', 'Không thể xóa. ');
+        return back()->with('error', 'Thao tác không thành công vì thể loại này vẫn còn liên kết');
+
     }
 }

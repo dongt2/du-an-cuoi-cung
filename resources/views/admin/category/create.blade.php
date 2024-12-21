@@ -15,9 +15,13 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
-@endsection
-<div class="main-content">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@endsection
+
+@section('content')
     <div class="page-content">
         <div class="container-fluid">
 
@@ -25,27 +29,24 @@
             <form action="{{ route('admin.category.store') }}" method="post">
                 @csrf
                 <div class="mb-3">
-                    <label for="" class="form-label">Name Category :</label>
+                    <label for="" class="form-label">Tên Thể Loại :</label>
                     <input type="text" class="form-control" id="" name="category_name"
-                        placeholder="Mời nhập tên">
+                        placeholder="text..." value="{{ old('category_name') }}">
                 </div>
 
                 @if ($errors->has('category_name'))
-                <div class="text-danger mb-3">
-                    {{ $errors->first('category_name') }}
-                </div>
+                    <div class="text-danger mb-3">
+                        {{ $errors->first('category_name') }}
+                    </div>
                 @endif
-                <a href="{{ route('admin.category.index') }}" class="btn btn-primary">Quay lại</a>
+                <a href="{{ route('admin.category.index') }}" class="btn btn-secondary">Quay lại</a>
                 <button type="submit" class="btn btn-success">Thêm thể loại</button>
             </form>
             <!-- end page title -->
 
-
         </div> <!-- container-fluid -->
     </div>
     <!-- End Page-content -->
-</div>
-@section('content')
 @endsection
 
 @section('javascript')

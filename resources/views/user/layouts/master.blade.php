@@ -2,9 +2,10 @@
 <html>
 
 <head>
-
     @extends('user.layouts.head.head')
     @include('user.assets.css.css')
+
+    @yield('style')
 </head>
 
 <body>
@@ -41,7 +42,7 @@
 <div class="overlay overlay-hugeinc">
     @include('user.layouts.open_close.open-close')
 </div>
-
+@yield('script')
 @extends('user.assets.js.jsAll')
 @extends('user.assets.js.js')
 

@@ -15,6 +15,14 @@
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
     <link href="assets/css/app.min.css" id="app-style" rel="stylesheet" type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    {{-- font icons --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 @endsection
 
 @section('content')
@@ -43,86 +51,48 @@
                             <div class="table-responsive">
 
                                 <div class="d-flex justify-content-end mb-5">
-                                    <a href="{{ route('admin.category.create') }}" class="btn btn-success">Thêm mới</a>
+                                    <a href="{{ route('admin.category.create') }}" class="btn btn-success"><i
+                                            class="fa-solid fa-plus"></i> Thêm mới</a>
                                 </div>
-                                @if (session('success'))
-                                    <div class="alert alert-success" role="alert">
-                                        <p class="text-success">{{ session('success') }}</p>
-                                    </div>
-                                @endif
-
-                                @if (session('errors'))
-                                    <div class="alert alert-danger" role="alert">
-                                        <p class="text-danger">{{ session('errors') }}</p>
-                                    </div>
-                                @endif
 
                                 <table id="datatable" class="table table-bordered dt-responsive nowrap"
-                                       style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                     <thead>
-                                    <tr>
-                                        <th>STT</th>
-                                        <th>Tên Thể Loại</th>
-                                        <th>Tổng Thể Loại</th>
-                                        <th>Hành Động</th>
-                                    </tr>
+                                        <tr style="text-align: center; font-family: 'Times New Roman', Times, serif">
+                                            <th>STT</th>
+                                            <th>Tên Thể Loại</th>
+                                            <th>Tổng Thể Loại</th>
+                                            <th>Hành Động</th>
+                                        </tr>
                                     </thead>
 
                                     <tbody>
-                                    @foreach ($category as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->category_name }}</td>
-                                            <td>{{ $item->movies()->count() }}</td>
-                                            <td class="text-nowrap" style="width: 0px;">
-                                                <a href="{{ route('admin.category.show', $item->category_id) }}"
-                                                   class="btn btn-primary">Xem</a>
-                                                <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                   class="btn btn-warning">Sửa</a>
-                                                <!-- Button to Open the Modal -->
-                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#myModal">
-                                                    Xóa
-                                                </button>
+                                        @foreach ($category as $item)
+                                            <tr>
+                                                <td><strong>{{ $loop->iteration }}</strong></td>
+                                                <td>{{ $item->category_name }}</td>
+                                                <td>{{ $item->movies()->count() }}</td>
 
-                                                <!-- The Modal -->
-                                                <div class="modal" id="myModal">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
+                                                <td class="text-nowrap" style="width: 0px;">
+                                                    <a href="{{ route('admin.category.show', $item->category_id) }}"
+                                                        class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
 
-                                                            <!-- Modal Header -->
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title">Modal Heading</h4>
-                                                                <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"></button>
-                                                            </div>
+                                                    <a href="{{ route('admin.category.edit', $item->category_id) }}"
+                                                        class="btn btn-warning"><i
+                                                            class="fa-solid fa-triangle-exclamation"></i></a>
 
-                                                            <!-- Modal body -->
-                                                            <div class="modal-body">
-                                                                Bạn có chắc muốn xóa?
-                                                            </div>
+                                                    <form action="{{ route('admin.category.destroy', $item->category_id) }}"
+                                                        method="post" class="mt-2">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" onclick="return confirm('Bạn có chắc muốn xóa không?')"
+                                                            class="btn btn-danger"><i
+                                                                class="fa-solid fa-trash"></i></button>
 
-                                                            <!-- Modal footer -->
-                                                            <div class="modal-footer">
-                                                                <form
-                                                                    action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                                    method="post">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit"
-                                                                            class="btn btn-danger">Xóa</button>
-                                                                </form>
-                                                                <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                                 {{ $category->links() }}

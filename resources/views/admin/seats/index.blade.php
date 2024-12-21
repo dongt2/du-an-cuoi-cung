@@ -230,6 +230,15 @@
                     </option>
                 @endforeach
             </select>
+
+            <label for="screen_name">Chọn Xuất Chiếu:</label>
+            <select id="screen_name" name="screen_name">
+                @foreach ($screen as $item)
+                    <option value="{{ $item->screen_id }}" {{ $item->screen_id == $screen_id ? 'selected' : '' }}>
+                        {{ $item->screen_id . '. ' . $item->screen_name }}
+                    </option>
+                @endforeach
+            </select>
             <button type="submit">Xác nhận</button>
         </form>
 
