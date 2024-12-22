@@ -31,7 +31,7 @@ Route::get('/', [HomeController::class, 'listMovie'])->name('home');
 Route::resource('/movie', HomeController::class);
 
 
-// Routes dành cho User
+// Routes dành cho User ewqeq
 Route::prefix('user')->name('user.')->group(function () {
     Route::get('/bookingStore1/{id}', [BookingController::class, 'bookingStore1'])->name('bookingStore1');
     Route::get('/booking1', [BookingController::class, 'viewBooking1'])->name('booking1');

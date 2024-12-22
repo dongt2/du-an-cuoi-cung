@@ -11,7 +11,7 @@
     <meta content="telephone=no" name="format-detection">
 
     <!-- Fonts -->
-    <!-- Font awesome - icon font -->
+    <!-- Font awesome - icon font e -->
     <link href="{{ asset('../netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet">
     <!-- Roboto -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,700' rel='stylesheet' type='text/css'>
