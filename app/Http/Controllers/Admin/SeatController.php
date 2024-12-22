@@ -20,7 +20,7 @@ class SeatController extends Controller
         }
         $screen_id = $request->input('screen');
 
-        // Lấy tất cả các ghế đã có trong cơ sở dữ liệu
+        // Lấy tất cả các ghế đã có trong cơ sở dữ liệu ew
         $seats = Seat::where('showtime_id', $screen_id)->pluck('place')->toArray();
 
         // Lấy danh sách các hàng đã đầy
