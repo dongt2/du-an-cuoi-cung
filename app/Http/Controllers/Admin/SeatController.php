@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class SeatController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resources.
      */
     public function index(Request $request)
     {
