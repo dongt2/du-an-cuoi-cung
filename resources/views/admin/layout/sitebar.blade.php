@@ -236,6 +236,23 @@
                     </div>
                 </li>
                 <li>
+                    <a href="#sidebarShowtime" data-bs-toggle="collapse">
+                        <i data-feather="pie-chart"></i>
+                        <span> Xuất chiếu </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarShowtime">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.showtime.index') }}'>Danh sách Xuất chiếu</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.showtime.create') }}'>Thêm Xuất chiếu mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
                     <a class='tp-link' href='widgets.html'>
                         <i data-feather="aperture"></i>
                         <span> Widgets </span>
