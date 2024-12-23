@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\SeatController;
+use App\Http\Controllers\Admin\ScreenController;
 use App\Http\Controllers\User\BookingController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LoginController;
@@ -57,4 +58,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/category', CategoryController::class);
     Route::resource('/seat', SeatController::class);
     Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+    Route::resource('/screen', ScreenController::class);
+
+    
 });

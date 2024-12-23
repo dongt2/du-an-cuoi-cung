@@ -218,7 +218,23 @@
                         </ul>
                     </div>
                 </li>
-
+                <li>
+                    <a href="#sidebarScreen" data-bs-toggle="collapse">
+                        <i data-feather="pie-chart"></i>
+                        <span> Phòng </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarScreen">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.screen.index') }}'>Danh sách phòng</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.screen.create') }}'>Thêm phòng mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
                 <li>
                     <a class='tp-link' href='widgets.html'>
                         <i data-feather="aperture"></i>
