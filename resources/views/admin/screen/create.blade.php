@@ -46,7 +46,7 @@
                                             <label class="form-label">Tên phòng phim</label>
                                             <input type="text" class="form-control" id="" name="screen_name"
                                                 placeholder="Tên phòng phim">
-                                            @error('title')
+                                            @error('screen_name')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
