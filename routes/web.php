@@ -60,7 +60,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('/seat', SeatController::class);
     Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
     Route::resource('/screen', ScreenController::class);
-    Route::resource('/showtime', ShowtimeController::class);
+    Route::resource('/showtime', ShowtimeController::class)->middleware('clean.expired.showtime');
+    // Route::get('/showtime', [ShowtimeController::class, 'index'])->middleware('clean.expired.showtime');
 
 
     

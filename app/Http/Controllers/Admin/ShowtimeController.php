@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\ShowtimeUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShowtimeRequest;
 use App\Models\Movie;
@@ -70,7 +71,7 @@ class ShowtimeController extends Controller
         ];
         Showtime::create($data);
         // Phát sự kiện
-        // event(new ShowtimesUpdated());
+        // event(new ShowtimeUpdated());
 
         return redirect()->route('admin.showtime.index');
     }

@@ -110,7 +110,7 @@
             </div>
         </div> <!-- container-fluid -->
 
-    </div> <!-- content -->
+    </div> <!-- content --> 
 @endsection
 
 @push('script')
