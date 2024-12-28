@@ -12,6 +12,7 @@
     <meta name="description" content="A Template by Gozha.net">
     <meta name="keywords" content="HTML, CSS, JavaScript">
     <meta name="author" content="Gozha.net">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Mobile Specific Metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,9 +39,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                                                                                                                                                                                                                                                                                                                                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                                                                                                                                                                                                                                                                                                                                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                                                                                                                                                                                                                                                                                                                                                                                        <![endif]-->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <![endif]-->
     <style>
         /* Modal background */
         .modal {
@@ -120,6 +121,24 @@
             font-size: 18px;
             font-weight: bold;
         }
+
+        .voucher {
+            float: left;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: calc(100% - 120px);
+        }
+
+        .btnVoucher {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -158,10 +177,10 @@
                         <div class="modal-body">
                             @foreach ($combos as $item)
                                 <div style="display: flex;">
-                                    <img src="{{ $item->image_url }}" alt="Hình ảnh combo"
-                                        style="flex: 1; max-width: 100px;">
+                                    <img src="{{ Storage::url($item->image) }}" alt="Hình ảnh combo"
+                                        style="flex: 1; padding-right: 5px; max-width: 150px;">
                                     <div style="flex: 3;">
-                                        <strong>{{ $item->combo_name }} - {{ number_format($item->price) }} VNĐ</strong>
+                                        <strong style="font-size: 18px;">{{ $item->combo_name }} - {{ number_format($item->price) }} VNĐ</strong>
                                         <p>{{ $item->short_description }}</p>
                                         <input type="number" class="combo-quantity" data-price="{{ $item->price }}"
                                             data-combo-id="{{ $item->combo_id }}" value="0" min="0"
@@ -177,21 +196,17 @@
                         </div>
                     </div>
                 </div>
-
+                <!-- Voucher -->
                 <h2 class="page-heading" style="clear: both;">Voucher</h2>
                 <div class="container" style="float: left; max-width: 600px;">
-                    <form action="" method="get">
-                        <div class="input-group">
-                            <input type="text" name="voucher" placeholder="Nhập mã giảm giá"
-                                style="float: left; padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; width: calc(100% - 120px);">&emsp;
-                            <button class="btn" type="submit"
-                                style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                Xác nhận
-                            </button>
-                        </div>
-                    </form>
+                    <div class="input-group">
+                        <input type="text" name="voucher" id="voucher" value="{{ old('voucher') }}"
+                            placeholder="Nhập mã giảm giá" class="voucher">&emsp;
+                        <button id="submit-voucher" class="btn btnVoucher"> Xác nhận </button>
+                    </div>
                 </div>
                 <br>
+                <!-- Tổng -->
                 <h2 class="page-heading" style="clear: both;">Tổng</h2>
                 <ul class="book-result">
                     <li class="book-result__item">Phim: <span
@@ -219,17 +234,25 @@
                             class="book-result__count booking-cost price-combo">{{ number_format(session('booking.price_combo'), 0, ',', '.') }}
                             VNĐ</span></li>
 
+                    <li class="book-result__item">Giảm giá voucher: <span
+                            class="book-result__count booking-cost price-combo">{{ number_format(session('booking.price_voucher'), 0, ',', '.') }}
+                            VNĐ</span></li>
+
+                    @php
+                        $total =
+                            session('booking.price_ticket') +
+                            session('booking.price_combo') -
+                            session('booking.price_voucher');
+                    @endphp
+
                     <li class="book-result__item">Tổng: <span class="book-result__count booking-cost price-total"
-                            id="total">{{ number_format(session('booking.price_ticket') + session('booking.price_combo'), 0, ',', '.') }}
-                            VNĐ</span>
+                            id="total">{{ number_format($total, 0, ',', '.') }} VNĐ</span>
                     </li>
                 </ul>
 
 
                 @php
                     // dd(session()->get('booking'));
-                    // echo session('booking.price_ticket').'</br>';
-                    // echo session('booking.price_total').'</br>';
                 @endphp
 
                 <h2 class="page-heading">Chọn phương thức thanh toán</h2>
@@ -257,18 +280,13 @@
                     </a>
 
                     <h2>Thanh toán qua VNPay</h2>
-                    <form action="{{ route('payment.create') }}" method="POST">
+                    <form method="POST" action="{{ url('/vnpay') }}">
                         @csrf
-                        <label for="order_desc">Mô tả đơn hàng:</label>
-                        <input type="text" name="order_desc" id="order_desc" required><br>
-                        <label for="amount">Số tiền (VND):</label>
-                        <input type="number" name="amount" id="amount" required><br>
-                        <label for="bank_code">Ngân hàng (tùy chọn):</label>
-                        <input type="text" name="bank_code" id="bank_code"><br>
+                        <input type="text" name="amount" placeholder="Số tiền" required>
                         <button type="submit">Thanh toán</button>
                     </form>
 
-                    
+
                     <h2>Thanh toán qua PayPal</h2>
 
                     <!-- PayPal button container -->
@@ -401,6 +419,33 @@
                 }
             });
             updateTotalPrice();
+        });
+        $(document).ready(function() {
+            $('#submit-voucher').on('click', function(e) {
+                e.preventDefault();
+                var voucherCode = $('#voucher').val();
+
+                $.ajax({
+                    url: "{{ route('user.get.price-voucher') }}",
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        voucher: voucherCode
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.success); // Hiển thị thông báo thành công
+                        } else if (response.error) {
+                            alert(response.error); // Hiển thị thông báo lỗi
+                        }
+                        location.reload(); // Tải lại trang sau khi áp dụng mã giảm giá
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Có lỗi xảy ra:', error);
+                        alert('Có lỗi xảy ra khi áp dụng mã giảm giá.');
+                    }
+                });
+            });
         });
     </script>
 

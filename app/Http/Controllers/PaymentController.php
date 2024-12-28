@@ -3,93 +3,82 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class PaymentController extends Controller
 {
-    public function index()
+    public function paymentPage()
     {
-        return view('payment');
+        // Hiển thị trang thanh toán
+        return view('vnpay.payment');
     }
 
     public function createPayment(Request $request)
     {
-        $vnp_TmnCode = "1IJERKAF"; // Mã website của bạn tại VNPAY
-        $vnp_HashSecret = "7A9I9HBCKQQVLM252A4Z4I37FXH2CUNW"; // Chuỗi bí mật
-        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"; // URL VNPAY
-        $vnp_Returnurl = route('payment.return');
+        $vnpayData = $this->createVnpayData($request);
+        $vnpayUrl = env('VNPAY_URL') . '?' . http_build_query($vnpayData);
 
-        $vnp_TxnRef = rand(100000, 999999); // Mã giao dịch
-        $vnp_OrderInfo = $request->input('order_desc');
-        $vnp_OrderType = 'billpayment';
-        $vnp_Amount = $request->input('amount') * 100; // Số tiền tính bằng VND
-        $vnp_Locale = 'vn';
-        $vnp_BankCode = $request->input('bank_code');
-        $vnp_IpAddr = $request->ip();
-
-        $inputData = [
-            "vnp_Version" => "2.1.0",
-            "vnp_TmnCode" => $vnp_TmnCode,
-            "vnp_Amount" => $vnp_Amount,
-            "vnp_Command" => "pay",
-            "vnp_CreateDate" => date('YmdHis'),
-            "vnp_CurrCode" => "VND",
-            "vnp_IpAddr" => $vnp_IpAddr,
-            "vnp_Locale" => $vnp_Locale,
-            "vnp_OrderInfo" => $vnp_OrderInfo,
-            "vnp_OrderType" => $vnp_OrderType,
-            "vnp_ReturnUrl" => $vnp_Returnurl,
-            "vnp_TxnRef" => $vnp_TxnRef,
-        ];
-
-        if ($vnp_BankCode != null && $vnp_BankCode != "") {
-            $inputData['vnp_BankCode'] = $vnp_BankCode;
-        }
-
-        ksort($inputData);
-        $query = "";
-        $hashdata = "";
-        foreach ($inputData as $key => $value) {
-            $hashdata .= urlencode($key) . "=" . urlencode($value) . "&";
-            $query .= urlencode($key) . "=" . urlencode($value) . "&";
-        }
-
-        $vnp_Url = $vnp_Url . "?" . $query;
-        $vnp_Url = rtrim($vnp_Url, "&");
-        if ($vnp_HashSecret) {
-            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
-            $vnp_Url .= '&vnp_SecureHash=' . $vnpSecureHash;
-        }
-
-        return redirect($vnp_Url);
+        return redirect($vnpayUrl);
     }
 
     public function returnPayment(Request $request)
     {
-        $vnp_HashSecret = "7A9I9HBCKQQVLM252A4Z4I37FXH2CUNW"; // Chuỗi bí mật
-        $inputData = [];
-        foreach ($request->all() as $key => $value) {
-            if (substr($key, 0, 4) == "vnp_") {
-                $inputData[$key] = $value;
-            }
-        }
-        unset($inputData['vnp_SecureHash']);
-        ksort($inputData);
-        $hashData = "";
-        foreach ($inputData as $key => $value) {
-            $hashData .= $key . '=' . $value . '&';
-        }
-        $hashData = rtrim($hashData, '&');
+        $vnpayData = $request->all();
+        $this->verifyPayment($vnpayData);
 
-        $secureHash = hash_hmac('sha512', $hashData, $vnp_HashSecret);
+        return view('vnpay.return', compact('vnpayData'));
+    }
 
-        if ($secureHash == $request->input('vnp_SecureHash')) {
-            if ($request->input('vnp_ResponseCode') == '00') {
-                return "Transaction Success";
-            } else {
-                return "Transaction Failed";
-            }
+    private function createVnpayData(Request $request)
+    {
+        $vnp_TxnRef = date('YmdHis');
+        $vnp_Amount = $request->amount * 100; // Convert to VND (cents)
+        $vnp_Currency = 'VND';
+        $vnp_OrderInfo = 'Thanh toán hóa đơn';
+        $vnp_OrderType = 'billpayment';
+        $vnp_Locale = 'vn';
+        $vnp_Returnurl = env('VNPAY_RETURN_URL');
+        $vnp_TmnCode = env('VNPAY_MERCHANT_ID');
+        $vnp_HashSecret = env('VNPAY_SECRET_KEY');
+
+        $vnp_Data = [
+            'vnp_Version' => '2.1.0',
+            'vnp_TmnCode' => $vnp_TmnCode,
+            'vnp_Amount' => $vnp_Amount,
+            'vnp_Command' => 'pay',
+            'vnp_CreateDate' => Carbon::now()->format('YmdHis'),
+            'vnp_Currency' => $vnp_Currency,
+            'vnp_Locale' => $vnp_Locale,
+            'vnp_OrderInfo' => $vnp_OrderInfo,
+            'vnp_OrderType' => $vnp_OrderType,
+            'vnp_ReturnUrl' => $vnp_Returnurl,
+            'vnp_TxnRef' => $vnp_TxnRef,
+        ];
+
+        ksort($vnp_Data);
+        $query = http_build_query($vnp_Data);
+        $vnp_SecureHash = hash('sha256', $query . '&' . $vnp_HashSecret);
+
+        $vnp_Data['vnp_SecureHash'] = $vnp_SecureHash;
+
+        return $vnp_Data;
+    }
+
+    private function verifyPayment($vnpayData)
+    {
+        $vnp_HashSecret = env('VNPAY_SECRET_KEY');
+        $secureHash = $vnpayData['vnp_SecureHash'];
+        unset($vnpayData['vnp_SecureHash']);
+        ksort($vnpayData);
+        $query = http_build_query($vnpayData);
+        $hashData = hash('sha256', $query . '&' . $vnp_HashSecret);
+
+        if ($secureHash == $hashData) {
+            // Payment is valid
+            // Process the payment and update order status
         } else {
-            return "Invalid Signature";
+            // Payment is invalid
         }
     }
 }

@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới combo
+    Sửa combo
 @endsection
 
 @push('style')
@@ -34,27 +34,32 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Thêm mới</h5>
+                            <h5 class="card-title mb-0">Sửa</h5>
                         </div><!-- end card header -->
 
-                        <form action="{{ route('admin.combo.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('admin.combo.update', $id = $data->combo_id) }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
+                            @method('PUT')
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="mb-3">
                                             <label class="form-label">Tên combo</label>
                                             <input type="text" class="form-control" id="" name="combo_name"
-                                                placeholder="Tên combo">
+                                                value="{{ $data->combo_name }}" placeholder="Tên combo">
                                             @error('combo_name')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Ảnh</label>
+                                            <label class="form-label">Ảnh</label><br>
+                                            <img src="{{ Storage::url($data->image) }}" alt="" class="img-fluid"
+                                                width="230px" height="130px">
+                                            <br><br>
                                             <input type="file" class="form-control" id="" name="image"
-                                                placeholder="Thêm hình ảnh">
+                                                value="{{ $data->image }}" placeholder="Thêm hình ảnh">
                                             @error('image')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -63,7 +68,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="short_description">Mô tả</label>
                                             <textarea class="form-control" id="short_description" name="short_description" rows="3"
-                                                placeholder="Nhập mô tả combo"></textarea>
+                                                placeholder="Nhập mô tả combo">{{ $data->short_description }}</textarea>
                                             @error('short_description')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -72,14 +77,14 @@
                                         <div class="mb-3">
                                             <label class="form-label">Giá</label>
                                             <input type="text" class="form-control" name="price"
-                                                placeholder="Nhập giá">
-                                            @error('price')
+                                                value="{{ $data->price }}" placeholder="Nhập giá">
+                                            @error('year')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary">Thêm</button>
+                                <button class="btn btn-primary">Sửa</button>
                             </div>
                         </form>
                     </div>

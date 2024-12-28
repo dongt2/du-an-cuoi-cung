@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Category
+    User
 @endsection
 
 @push('style')
@@ -27,7 +27,7 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
+                    <h4 class="fs-18 fw-semibold m-0">User</h4>
                 </div>
 
                 {{-- <div class="text-end">
@@ -44,7 +44,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách thể loại</h5>
+                            <h5 class="card-title mb-0">Danh sách người dùng</h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -52,7 +52,12 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tên thể loại</th>
+                                        <th>Tên người dùng</th>
+                                        <th>Email</th>
+                                        <th>Số điện thoại</th>
+                                        <th>Vai trò</th>
+                                        <th>Trạng thái hoạt động</th>
+                                        <th>Trạng thái vip</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -60,12 +65,17 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->category_name }}</td>
+                                            <td>{{ $item->username }}</td>
+                                            <td>{{ $item->email }}</td>
+                                            <td>{{ $item->phone }}</td>
+                                            <td>{{ $item->role }}</td>
+                                            <td>{{ $item->is_active }}</td>
+                                            <td>{{ $item->is_vip }}</td>
                                             <td>
-                                                <a href="{{ route('admin.category.edit', $item->category_id) }}"
+                                                <a href="{{ route('admin.user.edit', $item->user_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>
-                                                <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                    method="post" class="d-inline">
+                                                <form action="{{ route('admin.user.destroy', $item->user_id) }}" method="post"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger"

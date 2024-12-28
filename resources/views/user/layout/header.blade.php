@@ -141,7 +141,11 @@
                 <div class="auth auth--home">
                     <div class="auth__show">
                         <span class="auth__image">
-                            <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
+                            @if (session('user.avata'))
+                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
+                            @else
+                                <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
+                            @endif
                         </span>
                     </div>
                     <a href="#" class="btn btn--sign btn--singin">
@@ -150,6 +154,11 @@
                     <ul class="auth__function">
                         <li><a href="#" class="auth__function-item">Tài khoản</a></li>
                         <li><a href="#" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li>
+                            @if (session('user.role') == 'Admin')
+                            <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
+                            @endif
+                        </li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf

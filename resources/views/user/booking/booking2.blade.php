@@ -15,6 +15,7 @@
     <link href="{{ asset('../netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet">
     <!-- Roboto -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Stylesheets -->
 
@@ -78,6 +79,7 @@
         }
 
         .grid-container {
+            margin-bottom: 4px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -227,198 +229,36 @@
                     </div>
                 </div>
                 <div class="grid-container">
-                    <!-- 4 hàng đầu -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'A') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'B') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'C') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'D') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-
-                    <!-- 4 hàng giữa -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'E') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'F') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'G') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'H') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-
-                    <!-- 3 hàng cuối -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'I') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'J') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'K') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
+                    <!-- hàng chữ -->
+                    @foreach (range('A', 'K') as $row)
+                        <div class="grid-row">
+                            @foreach ($data as $item)
+                                @if (strpos($item->place, $row) === 0)
+                                    @php
+                                        if ($item->status === 'Đã đặt') {
+                                            $class = 'color-4';
+                                        } elseif ($item->status === 'Đã hỏng') {
+                                            $class = 'color-5';
+                                        } elseif ($item->price === '30000') {
+                                            $class = 'color-1';
+                                        } elseif ($item->price === '50000') {
+                                            $class = 'color-2';
+                                        } elseif ($item->price === '70000') {
+                                            $class = 'color-3';
+                                        } else {
+                                            $class = 'color-5';
+                                        }
+                                    @endphp
+                                    {{-- <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
+                                        {{ $item->place }}
+                                    </div> --}}
+                                    <div class="grid-cell click {{ $class }}" data-seat-id="{{ $item->seat_id }}" data-price="{{ $item->price }}">
+                                        {{ $item->place }}
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    @endforeach
                     <!-- hàng số -->
                     <div class="grid-row" style="padding-top: 30px;">
                         <div class="grid-cell grid-number">1</div>

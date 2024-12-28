@@ -137,7 +137,7 @@
 
                         <div class="movie__btns">
                             <a href="{{ route('movie.show', $item->movie_id) }}" class="btn btn-md btn--warning">Đặt vé
-                                <a href="#" class="watchlist">Add to watchlist</a>
+                                <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
                         </div>
 
                         <div class="preview-footer">
@@ -147,7 +147,7 @@
                             </div>
 
 
-                            <a href="#" class="movie__show-btn">Showtime</a>
+                            {{-- <a href="#" class="movie__show-btn">Showtime</a> --}}
                             
                         </div>
                     </div>

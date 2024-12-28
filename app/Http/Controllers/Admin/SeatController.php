@@ -19,7 +19,7 @@ class SeatController extends Controller
             return redirect()->route('admin.seat.index', ['showtime' => 0]);
         }
 
-        $showtime = Showtime::with(['movie', 'screen'])->get();
+        $showtimes = Showtime::with(['movie', 'screen'])->get();
         $showtime_id = $request->input('showtime');
 
         // Lấy tất cả các ghế đã có trong cơ sở dữ liệu
@@ -40,7 +40,7 @@ class SeatController extends Controller
             ->orderByRaw("SUBSTRING(place, 1, 1), CAST(SUBSTRING(place, 2) AS UNSIGNED)")
             ->get();
 
-        return view("admin.seats.index", compact('data', 'seats', 'fullRows', 'showtime'));
+        return view("admin.seats.index", compact('data', 'seats', 'fullRows', 'showtimes'));
     }
 
 

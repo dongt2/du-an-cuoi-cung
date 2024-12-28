@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Combo
+    Showtime
 @endsection
 
 @push('style')
@@ -27,7 +27,7 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Combo</h4>
+                    <h4 class="fs-18 fw-semibold m-0">Showtime</h4>
                 </div>
 
                 {{-- <div class="text-end">
@@ -44,18 +44,18 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách đồ ăn vặt</h5>
+                            <h5 class="card-title mb-0">Danh sách xuất chiếu</h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Tên đồ ăn</th>
-                                        <th>Hình Ảnh</th>
-                                        <th>Giá</th>
-                                        <th>Mô tả ngắn</th>
+                                        <th>STT</th>
+                                        <th>Tên phim</th>
+                                        <th>Tên phòng</th>
+                                        <th>Ngày chiếu</th>
+                                        <th>Thời gian</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -63,17 +63,17 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->combo_name }}</td>
-                                            <td class="text-center align-middle">
-                                                <img src="{{ Storage::url($item->image) }}" alt=""
-                                                    class="img-fluid" width="120px" height="70px">
-                                            </td>
-                                            <td>{{ number_format($item->price, 0, '', '.') }} vnđ</td>
-                                            <td>{{ $item->short_description }}</td>
+                                            <td>{{ $item->movie_title }}</td>
+
+                                            <td>{{ $item->screen_name }}</td>
+
+                                            <td>{{ \Carbon\Carbon::parse($item->showtime_date)->format('d-m-Y') }}</td>
+
+                                            <td>{{ \Carbon\Carbon::parse($item->time)->format('H:i') }}</td>
                                             <td>
-                                                <a href="{{ route('admin.combo.edit', $item->combo_id) }}"
+                                                <a href="{{ route('admin.showtime.edit', $item->showtime_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>
-                                                <form action="{{ route('admin.combo.destroy', $item->combo_id) }}"
+                                                <form action="{{ route('admin.showtime.destroy', $item->showtime_id) }}"
                                                     method="post" class="d-inline">
                                                     @csrf
                                                     @method('delete')
@@ -86,6 +86,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            {{-- {{ $data->links() }} --}}
                         </div>
 
                     </div>

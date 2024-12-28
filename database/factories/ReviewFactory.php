@@ -20,8 +20,8 @@ class ReviewFactory extends Factory
             'movie_id' => fake()->numberBetween(1, 10),
             'user_id' => fake()->numberBetween(1, 10),
             'review_date' => fake()->date(),
+            'review_time' => fake()->time('H:i'),
             'comment' => fake()->text(500), 
-            'rating' => fake()->randomElement(['1sao', '2sao', '3sao', '4sao', '5sao']),
         ];
     }
 }

@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Category
+    Combo
 @endsection
 
 @push('style')
@@ -27,7 +27,7 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
+                    <h4 class="fs-18 fw-semibold m-0">Combo</h4>
                 </div>
 
                 {{-- <div class="text-end">
@@ -44,7 +44,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách thể loại</h5>
+                            <h5 class="card-title mb-0">Danh sách combo</h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -52,7 +52,10 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Tên thể loại</th>
+                                        <th>Tên combo</th>
+                                        <th>Ảnh</th>
+                                        {{-- <th>Mô tả</th> --}}
+                                        <th>Giá</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -60,12 +63,18 @@
                                     @foreach ($data as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->category_name }}</td>
+                                            <td>{{ $item->combo_name }}</td>
+                                            <td class="text-center align-middle">
+                                                <img src="{{ Storage::url($item->image) }}" alt=""
+                                                    class="img-fluid" width="120px" height="70px">
+                                            </td>
+                                            {{-- <td>{{ $item->short_description }}</td> --}}
+                                            <td>{{ $item->price }}</td>
                                             <td>
-                                                <a href="{{ route('admin.category.edit', $item->category_id) }}"
+                                                <a href="{{ route('admin.combo.edit', $item->combo_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>
-                                                <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                    method="post" class="d-inline">
+                                                <form action="{{ route('admin.combo.destroy', $item->combo_id) }}" method="post"
+                                                    class="d-inline">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger"

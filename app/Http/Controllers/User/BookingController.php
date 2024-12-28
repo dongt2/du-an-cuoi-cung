@@ -8,6 +8,7 @@ use App\Models\Movie;
 use App\Models\Screen;
 use App\Models\Seat;
 use App\Models\Showtime;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -134,65 +135,37 @@ class BookingController extends Controller
 
         session(['booking.price_combo' => $price_combo]);
         session(['booking.combos' => $combos]);
-        $price_total = session('booking.price_ticket') + session('booking.price_combo');
-        session(['booking.price_total' => $price_total]);
 
         return response()->json($combos);
     }
 
-
-
-
-    public function index()
+    public function getPriceVoucher(Request $request)
     {
-        //
-    }
+        $request->validate([
+            'voucher' => 'required|string|max:255',
+        ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $voucherCode = $request->input('voucher');
+        $voucher = Voucher::where('code', $voucherCode)->first();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $priceTicket = session('booking.price_ticket', 0);
+        $priceCombo = session('booking.price_combo', 0);
+        $priceVoucher = 0; // Mặc định không có giảm giá
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        if ($voucher) {
+            $priceVoucher = $voucher->deduct_amount;
+            session(['booking.price_voucher' => $priceVoucher]);
+        } else {
+            session()->forget('booking.price_voucher');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        $priceTotal = $priceTicket + $priceCombo - $priceVoucher;
+        session(['booking.price_total' => $priceTotal]);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($voucher) {
+            return response()->json(['success' => 'Mã giảm giá áp dụng thành công', 'price_total' => $priceTotal]);
+        } else {
+            return response()->json(['error' => 'Mã giảm giá không tồn tại hoặc đã được sử dụng', 'price_total' => $priceTotal]);
+        }
     }
 }

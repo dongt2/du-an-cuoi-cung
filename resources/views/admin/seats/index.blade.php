@@ -228,7 +228,7 @@
             <label for="showtime">Chọn Xuất Chiếu:</label>
             <select id="showtime" name="showtime">
                 <option value="0" selected>Chọn xuất chiếu</option>
-                @foreach ($showtime as $item)
+                @foreach ($showtimes as $item)
                     <option value="{{ $item->showtime_id }}">{{ $item->showtime_id }}--&emsp;Phim:
                         {{ $item->movie->title ?? 'Chưa xác định' }}&emsp;-&emsp;Phòng: {{ $item->screen->screen_name ?? 'Chưa xác định' }}&emsp;-
                         &emsp;Ngày: {{ $item->showtime_date }}&emsp;-&emsp;Giờ: {{ $item->time }}</option>
