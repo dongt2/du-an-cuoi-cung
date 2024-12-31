@@ -1,21 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class MovieController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $movies = Movie::all();
-        // dd(vars: $movies);
-        return view('user.movie-list-full', compact('movies'));
+        return view('admin.review.index');
     }
 
     /**

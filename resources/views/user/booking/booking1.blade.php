@@ -33,11 +33,38 @@
     <!-- Modernizr -->
     <script src="{{ asset('js/external/modernizr.custom.js') }}"></script>
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                                        <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
+    <style>
+        .screen-card {
+            cursor: pointer;
+            border: 1px solid #ddd;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+        }
+
+        .screen-name {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .screen-overflow {
+            min-height: 60px;
+            max-height: 200px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -46,15 +73,11 @@
         <div class="order-container">
             <div class="order">
                 <img class="order__images" alt='' src="{{ asset('images/tickets.png') }}">
-                <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span></p>
-                <div class="order__control">
-                    <a href="#" class="order__control-btn active">Purchase</a>
-                    <a href="#" class="order__control-btn">Reserve</a>
-                </div>
+                <p class="order__title">Đặt vé <br><span class="order__descript">chúc bạn có thời gian xem phim vui vẻ</span></p>
             </div>
         </div>
         <div class="order-step-area">
-            <div class="order-step first--step">1. What &amp; Where &amp; When</div>
+            <div class="order-step first--step">1. Chọn phim &amp; phòng &amp; xuất chiếu</div>
         </div>
 
         <h2 class="page-heading heading--outcontainer">Phim</h2>
@@ -65,20 +88,20 @@
             <div class="swiper-wrapper">
                 @if (count($data) == 1)
                     <div class="choose-container choose-container--short">
-                        <div class="datepicker">
-                            @foreach ($data as $item)
-                                <img alt="" src="{{ Storage::url($item->cover_image) }}" width="180"
-                                    height="260" style="margin-left: 150px;">
-                                <p class="choose-film__title"></p>
-                            @endforeach
-                        </div>
+                        @foreach ($data as $item)
+                            <img alt="" src="{{ Storage::url($item->cover_image) }}" width="180" height="260"
+                                 style="margin-left: 210px;" data-film="{{ $item->title }}"
+                                 data-movie-id="{{ $item->movie_id }}">
+                            <p class="choose-film__title"></p>
+                        @endforeach
                     </div>
                 @else
                     @foreach ($data as $item)
-                        <div class="swiper-slide" data-film="{{ $item->movie_id }}">
+                        <div class="swiper-slide" data-film="{{ $item->title }}" data-movie-id="{{ $item->movie_id }}"
+                             onclick="getScreens(this)">
                             <div class="film-images">
                                 <img alt="" src="{{ Storage::url($item->cover_image) }}" width="260"
-                                    height="260">
+                                     height="260">
                             </div>
                             <p class="choose-film__title">{{ $item->title }}</p>
                         </div>
@@ -88,10 +111,15 @@
         </div>
     </div>
 
+    {{-- @php
+        echo session('movie.movie_id');
+        echo session('movie.title');
+    @endphp --}}
+
     <section class="container">
         <div class="col-sm-12">
             <div class="choose-indector choose-indector--film">
-                <strong>Choosen: </strong><span class="choosen-area">
+                <strong>Chọn: </strong><span class="choosen-area">
                     @if (count($data) == 1)
                         @foreach ($data as $item)
                             {{ $item->title }}
@@ -102,45 +130,42 @@
 
             <h2 class="page-heading">Chọn phòng</h2>
 
-            <div class="choose-container choose-container--short">
-                <div class="row" style="min-height: 150px;">
-                    <div class="row">
-                        @foreach ($screens as $item)
-                            <div class="col-md-2 mb-4" style="padding: 10px">
-                                <div class="screen-card" data-id="{{ $item->id }}"
-                                    onclick="setScreen('{{ $item->screen_id }}', '{{ $item->screen_name }}')"
-                                    style="cursor: pointer; border: 1px solid #ddd; height: 50px; display: flex; justify-content: center; align-items: center; background-color: #f8f9fa;">
-                                    <span class="screen-name"
-                                        style="font-size: 18px; font-weight: bold;">{{ $item->screen_name }}</span>
+            @if (session('movie.movie_id'))
+                @if (count($screens) > 0)
+                    <div class="row screen-overflow" id="screen-list-container">
+                        <div class="row" style="width: 100%; box-sizing: border-box;" id="screen-list">
+                            @foreach ($screens as $item)
+                                <div class="col-md-2 mb-4" style="padding: 10px; box-sizing: border-box;">
+                                    <div class="screen-card" data-screen-id="{{ $item->screen_id }}"
+                                         data-screen-name="{{ $item->screen_name }}" onclick="getShowtimes(this)">
+                                        <span class="screen-name">{{ $item->screen_name }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div><br>
-
-            <h2 class="page-heading" style="clear: both;">Chọn thời gian chiếu</h2>
-
-            <div id="showtimes-container">
-                <div class="time-select time-select--wide">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-3">
-                            <p class="time-select__place">date</p>
+                            @endforeach
                         </div>
-                        <ul class="col-sm-6 items-wrap">
-                            <li class="time-select__item" data-time="time">time1</li>
-                            <li class="time-select__item" data-time="time">time2</li>
-                            <li class="time-select__item" data-time="time">time3</li>
-                            <li class="time-select__item" data-time="time">time4</li>
-                            <li class="time-select__item" data-time="time">time5</li>
-                        </ul>
                     </div>
+                @else
+                    <p>&emsp;Không có phòng chiếu cho bộ phim này.</p>
+                @endif
+            @endif
+            <div class="row screen-overflow" id="screen-list-container" style="display: none;">
+                <div class="row" style="width: 100%; box-sizing: border-box;" id="screen-list">
+                    <!-- Các phòng chiếu sẽ được hiển thị ở đây -->
+
                 </div>
             </div>
+            <div class="choose-indector choose-indector-screen">
+                <strong>Chọn: </strong><span class="choosen-area" id="choosen-screen"></span>
+            </div>
 
+            <h2 class="page-heading" style="clear: both;">Chọn xuất chiếu</h2>
 
-            <div class="choose-indector choose-indector--time">
-                <strong>Choosen: </strong><span class="choosen-area"></span>
+            <div class="time-select time-select--wide">
+                <!-- Đây sẽ là nơi các nhóm ngày và giờ sẽ được hiển thị -->
+            </div>
+
+            <div class="choose-indector">
+                <strong>Chọn: </strong><span class="choosen-area" id="choosen-time"></span>
             </div>
         </div>
 
@@ -150,12 +175,17 @@
 
     <form id='film-and-time' class="booking-form" method='post' action='{{ route('user.bookingStore2') }}'>
         @csrf
-        <input type="text" name="movie_id" class="choosen-movie"
-            @if (count($data) == 1) value="{{ $data->first()->movie_id }}" @endif>
-        <input type='text' name='screen_id' class="choosen-screen">
-        <input type='text' name='showtime_date' class="choosen-cinema">
-        <input type='text' name='showtime_time' class="choosen-time">
+        <input type="text" name="movie_id" class="choosen-movie-id" id="chosen-movie-id"
+               @if (count($data) === 1) value="{{ $data->first()->movie_id }}" @endif>
+        <input type='text' name='screen_id' class="choosen-screen" id="chosen-screen-id">
+        <input type='text' name='showtime_date' class="choosen-cinema" id="chosen-showtime-date">
+        <input type='text' name='showtime_time' class="choosen-time" id="chosen-time">
 
+        <style>
+            /* #film-and-time input {
+                        display: block;
+                    } */
+        </style>
 
         <div class="booking-pagination">
             <a href="#" class="booking-pagination__prev hide--arrow">
@@ -163,71 +193,213 @@
                 <span class="arrow__info"></span>
             </a>
             <a href="#" class="booking-pagination__next" id="submit-form">
-                <span class="arrow__text arrow--next">next step</span>
-                <span class="arrow__info">choose a sit</span>
+                <span class="arrow__text arrow--next">Bước tiếp theo</span>
+                <span class="arrow__info">Chọn ghế ngồi</span>
             </a>
         </div>
+
     </form>
-    <script>
-        document.getElementById('submit-form').addEventListener('click', function(e) {
-            e.preventDefault(); 
-            document.getElementById('film-and-time').submit();
-        });
-    </script>
 @endsection
 
 @section('script')
     <script>
-        function setScreen(screenId, screenName) {
-            document.querySelector('.choosen-screen').value = screenId;
+        document.getElementById('submit-form').addEventListener('click', function(event) {
+            event.preventDefault();
 
-            var movieId = '{{ session('movie.movie_id') }}' ? '{{ session('movie.movie_id') }}' : document.querySelector(
-                '.choosen-movie').value;
-            console.log(movieId);
-            console.log(screenId);
+            var movieId = document.querySelector('input[name="movie_id"]');
+            var screenId = document.querySelector('input[name="screen_id"]');
+            var showtimeDate = document.querySelector('input[name="showtime_date"]');
+            var showtimeTime = document.querySelector('input[name="showtime_time"]');
+
+            if (!movieId.value) {
+                alert("Bạn chưa chọn phim.");
+                return;
+            }
+
+            if (!screenId.value) {
+                alert("Bạn chưa chọn phòng.");
+                return;
+            }
+
+            if (!showtimeTime.value) {
+                alert("Bạn chưa chọn xuất chiếu.");
+                return;
+            }
+
+            document.getElementById('film-and-time').submit();
+        });
+    </script>
+
+    <script>
+        let movieIdGlobal = null;
+
+        function getScreens(element) {
+            const movieId = element.getAttribute('data-movie-id');
+            movieIdGlobal = movieId; // Lưu movieId vào biến toàn cục
+            document.getElementById('chosen-movie-id').value = movieId;
+
+            // Reset các input về trạng thái rỗng
+            document.getElementById('chosen-screen-id').value = '';
+            document.getElementById('chosen-showtime-date').value = '';
+            document.getElementById('chosen-time').value = '';
+            document.getElementById('choosen-screen').textContent = '';
+            document.getElementById('choosen-time').textContent = '';
+
+            // Ẩn phần xuất chiếu
+            document.querySelector('.time-select').style.display = 'none';
 
             $.ajax({
-                url: '{{ route('user.get-showtimes') }}',
+                url: '{{ route('user.get.screens') }}',
                 method: 'POST',
                 data: {
-                    screen_id: screenId,
                     movie_id: movieId,
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    let showtimesHtml = '<div class="time-select time-select--wide">';
-                    $.each(response, function(date, times) {
-                        showtimesHtml += `<div class="time-select__group group--first">
-                                <div class="col-sm-3">
-                                    <p class="time-select__place">${date}</p>
-                                </div>
-                                <ul class="col-sm-6 items-wrap">`;
-                        $.each(times, function(index, time) {
-                            showtimesHtml += `<li class="time-select__item" data-time="${time.time}" data-date="${date}">
-                                    ${time.time}
-                                </li>`;
-                        });
-                        showtimesHtml += '</ul></div>';
-                    });
-                    showtimesHtml += '</div>';
-                    $('#showtimes-container').html(showtimesHtml);
-                    $('.time-select__item').on('click', function() {
-                        $('.time-select__item').removeClass('active');
-                        $(this).addClass('active');
-                        var selectedDate = $(this).data('date');
-                        var selectedTime = $(this).data('time');
-                        $('.choosen-cinema').val(selectedDate);
-                        $('.choosen-time').val(selectedTime);
-                        $('.choosen-area').html(selectedDate + ' - ' + selectedTime);
-                    });
+                    console.log(response); // In ra danh sách phòng chiếu
+                    showScreens(response); // Gọi hàm showScreens để hiển thị phòng chiếu
                 },
                 error: function(xhr, status, error) {
-                    console.error("Error: " + error);
+                    console.error('Có lỗi xảy ra:', error);
                 }
             });
         }
-    </script>
 
+        function showScreens(screens) {
+            const screenListContainer = document.getElementById('screen-list-container');
+            const screenList = document.getElementById('screen-list');
+
+            // Xóa các phòng chiếu cũ trước khi thêm mới
+            screenList.innerHTML = '';
+
+            if (screens.length === 0) {
+                screenList.innerHTML = '<p>&emsp;&emsp;&emsp;Không có phòng chiếu cho bộ phim này.</p>';
+            } else {
+                // Tạo danh sách phòng chiếu từ dữ liệu trả về
+                screens.forEach(function(screen) {
+                    const screenDiv = document.createElement('div');
+                    screenDiv.classList.add('col-md-2', 'mb-4');
+                    screenDiv.style.padding = '10px';
+                    screenDiv.innerHTML = `
+                <div class="screen-card" data-screen-id="${screen.screen_id}" data-screen-name="${screen.screen_name}" onclick="getShowtimes(this)">
+                    <span class="screen-name">${screen.screen_name}</span>
+                </div>
+            `;
+                    screenList.appendChild(screenDiv);
+                });
+            }
+
+            // Hiển thị phần danh sách phòng chiếu
+            screenListContainer.style.display = 'block';
+        }
+
+        function getShowtimes(element) {
+            const screenId = element.getAttribute('data-screen-id'); // Lấy screen_id
+            const screenName = element.getAttribute('data-screen-name'); // Lấy screen_name
+            @if (session('movie.movie_id'))
+                movieIdGlobal = @json(session('movie.movie_id'));
+            @endif
+            console.log(movieIdGlobal);
+            console.log(screenId);
+
+            // Reset các input về trạng thái rỗng
+            document.getElementById('chosen-showtime-date').value = '';
+            document.getElementById('chosen-time').value = '';
+            document.getElementById('choosen-time').textContent = '';
+
+            // Hiển thị tên phòng chiếu
+            document.getElementById('chosen-screen-id').value = screenId;
+            const chosenScreen = document.getElementById('choosen-screen');
+            if (chosenScreen) {
+                chosenScreen.textContent = screenName;
+            }
+
+            $.ajax({
+                url: '{{ route('user.get.showtimes') }}',
+                method: 'POST',
+                data: {
+                    movie_id: movieIdGlobal,
+                    screen_id: screenId,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response);
+                    showShowtimes(response); // Gọi hàm showShowtimes để hiển thị xuất chiếu
+                },
+                error: function(xhr, status, error) {
+                    console.error('Có lỗi xảy ra:', error);
+                }
+            });
+
+            // Hiển thị phần xuất chiếu
+            document.querySelector('.time-select').style.display = 'block';
+        }
+
+        function showShowtimes(showtimes) {
+            const timeSelectContainer = document.querySelector('.time-select');
+
+            // Xóa tất cả các nhóm suất chiếu cũ trong giao diện
+            timeSelectContainer.innerHTML = '';
+
+            // Lặp qua các ngày và hiển thị các suất chiếu tương ứng
+            Object.keys(showtimes).forEach(function(date) {
+                const showtimeGroup = showtimes[date]; // Lấy các suất chiếu trong ngày
+                const groupElement = document.createElement('div');
+                groupElement.classList.add('time-select__group');
+
+                // Thêm ngày vào nhóm
+                const dateElement = document.createElement('div');
+                dateElement.classList.add('col-sm-3');
+                dateElement.innerHTML = `<p class="time-select__place">${date}</p>`;
+                groupElement.appendChild(dateElement);
+
+                // Thêm các suất chiếu (theo giờ) vào nhóm
+                const listElement = document.createElement('ul');
+                listElement.classList.add('col-sm-6', 'items-wrap');
+
+                showtimeGroup.forEach(function(showtime) {
+                    // Chỉ lấy giờ và phút, bỏ qua giây
+                    const timeOnly = showtime.time.substring(0, 5); // Giữ lại phần "HH:MM"
+
+                    const timeElement = document.createElement('li');
+                    timeElement.classList.add('time-select__item');
+                    timeElement.setAttribute('data-time', timeOnly);
+                    timeElement.setAttribute('data-showtime-date', date); // Lưu ngày suất chiếu
+                    timeElement.textContent = timeOnly;
+
+                    timeElement.addEventListener('click', function() {
+                        // Gán giá trị vào các input tương ứng
+                        document.getElementById('chosen-showtime-date').value = date;
+                        document.getElementById('chosen-time').value = timeOnly;
+
+                        // Gán date-time vào phần hiển thị (theo id choosen-time)
+                        const chosenDateTime = `${date} - ${timeOnly}`; // Kết hợp ngày và giờ
+                        document.getElementById('choosen-time').textContent =
+                            chosenDateTime; // Hiển thị lên phần #choosen-time
+
+                        // Loại bỏ class 'active' khỏi tất cả các phần tử trong toàn bộ danh sách
+                        const allTimeElements = timeSelectContainer.querySelectorAll(
+                            '.time-select__item');
+                        allTimeElements.forEach(function(item) {
+                            item.classList.remove('active');
+                        });
+
+                        // Thêm class 'active' vào phần tử vừa click
+                        timeElement.classList.add('active');
+                    });
+
+                    listElement.appendChild(timeElement);
+                });
+
+                groupElement.appendChild(listElement);
+
+                // Thêm nhóm vào container
+                timeSelectContainer.appendChild(groupElement);
+            });
+        }
+
+
+    </script>
     <!-- JavaScript-->
     <!-- jQuery 1.9.1-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -254,7 +426,7 @@
     <script src="{{ asset('js/external/idangerous.swiper.min.js') }}"></script>
 
     <!-- Form element -->
-    <script src="{{ asset('js/external/form-element.js') }}"></script>
+    {{-- <script src="{{ asset('js/external/form-element.js') }}"></script> --}}
 
     <!-- Form validation -->
     <script src="{{ asset('js/form.js') }}"></script>

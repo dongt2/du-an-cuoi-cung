@@ -18,9 +18,9 @@ class ComboFactory extends Factory
     {
         return [
             'combo_name' => fake()->words(3, true),
-            'image' => '',
+            'image' => 'images/combo/1735232372.bap.jpg',
             'short_description' => fake()->sentence(15),
-            'price' => fake()->randomFloat(0, 5, 50),
+            'price' => fake()->numberBetween(50, 300) * 1000,
         ];
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -13,9 +15,8 @@ class UserController extends Controller
      */
     public function index()
     {
-
-        $users = User::paginate(10);
-        return view('admin.users.index', compact('users'));
+        $data = User::all();
+        return view('admin.user.list', compact('data'));
     }
 
     /**
@@ -23,8 +24,7 @@ class UserController extends Controller
      */
     public function create()
     {
-
-        return view('admin.users.create');
+        return view('admin.user.create');
     }
 
     /**
@@ -33,84 +33,39 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' =>[
-                'required',
-                'string',
-                'min:3',
-                'max:255',
-                'regex:/^[\pL\s]+$/u',
-                'unique:users,username'
-            ],
-            'password' => [
-                'required',
-            ],
-            'email' => [
-                'required',
-                'unique:users,email',
-            ],
-            'phone' => [
-                'required',
-                'regex:/^(\+84|0)([3|5|7|8|9])([0-9]{8})$/',
-                'unique:users,phone',
-            ],
-            'address' => [
-                'required',
-            ],
-            'role' => [
-                'required',
-            ],
-            'is_active' => [
-                'required',
-            ],
-            'is_vip' => [
-                'required',
-            ],
-            'imgavata' => [
-                'required',
-            ]
-        ], [
-                'username.required' => 'Không được bỏ trống*',
-                'username.string' => 'Trường tên phải là chuỗi ký tự.',
-                'username.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-                'username.max' => 'Trường tên không được vượt quá 255 ký tự.',
-                'username.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-                'username.unique' => 'Tên đã có trong cơ sở dữ liệu',
-
-                'password.required' => 'Không được bỏ trống*',
-
-
-                'email.required' => 'Không được bỏ trống*',
-                'email.unique' => 'Email đã có trong csdl',
-
-                'phone.required' => 'Không được bỏ trống*',
-                'phone.regex' => 'Số điện thoại không hợp lệ',
-                'phone.unique' => 'Email đã có trong csdl',
-
-                'address.required' => 'Không được bỏ trống*',
-
-                'role.required' => 'Không được bỏ trống*',
-
-                'is_active.required' => 'Không được bỏ trống*',
-
-
-                'imgavata.required' => 'Không được bỏ trống*',
-
+            'username' => 'required|string|min:3|max:50',
+            'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'phone' => 'required|numeric|digits_between:10,15',
+            'address' => 'required|string|max:255',
+            'role' => 'required|in:Admin,Khach Hang,Nguoi Dung',
+            'is_active' => 'required|boolean',
+            'is_vip' => 'required|boolean',
         ]);
 
-        $linkImage = '';
-        if ($request->hasFile('imgavata')) {
-            $image = $request->file('imgavata');
-            $name = time().'.'.$image->getClientOriginalExtension();  // đổi tên trống trùng
-            $destinationPath = 'imageUsers/';  // kho lưu trữ
-            $image->move(public_path($destinationPath), $name);
-            $linkImage = $destinationPath.$name;
 
+        $path = null;
+        if ($request->hasFile('avata')) {
+            $image = $request->file('avata');
+            $newName = time() . '.' . $image->getClientOriginalName();
+
+            $path = $image->storeAs('images/user', $newName, 'public');
         }
 
-        $data = $request->all() + ['avata' => $linkImage];
-        //dd($data);
-        User::query()->create($data);
-        return redirect()->route('admin.users.index')->with('success', 'Thao tác thành công, ');
+        $data = [
+            'username' => $request->username,
+            'avata' => $path,
+            'email' => $request->email,
+            'password' => $request->password,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'role' => $request->role,
+            'is_active' => $request->is_active,
+            'is_vip' => $request->is_vip,
+        ];
+        User::create($data);
+        return redirect()->route('admin.user.index');
     }
 
     /**
@@ -118,8 +73,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.users.show', compact('user'));
+        //
     }
 
     /**
@@ -127,9 +81,8 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.users.update', compact('user'));
-
+        $data = User::where('user_id', $id)->first();
+        return view('admin.user.edit', compact('data'));
     }
 
     /**
@@ -137,91 +90,51 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $data = User::where('user_id', $id)->first();
         $request->validate([
-            'username' =>[
-                'required',
-                'string',
-                'min:3',
-                'max:255',
-                'regex:/^[\pL\s]+$/u',
-
-            ],
-            'password' => [
-                'required',
-                'string',
-            ],
+            'username' => 'required|string|min:3|max:50',
+            'avata' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'email' => [
                 'required',
-
+                'email',
+                Rule::unique('users', 'email')->ignore($data->user_id, 'user_id'),
             ],
-            'phone' => [
-                'required',
-                'regex:/^(\+84|0)([3|5|7|8|9])([0-9]{8})$/',
-
-            ],
-            'address' => [
-                'required',
-            ],
-            'role' => [
-                'required',
-            ],
-            'is_active' => [
-                'required',
-            ],
-            'is_vip' => [
-                'required',
-            ],
-            'imgavata' => [
-                'image',
-            ]
-        ], [
-                'username.required' => 'Không được bỏ trống*',
-                'username.string' => 'Trường tên phải là chuỗi ký tự.',
-                'username.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-                'username.max' => 'Trường tên không được vượt quá 255 ký tự.',
-                'username.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-
-
-                'password.required' => 'Không được bỏ trống*',
-                'password.string'  => 'Chuỗi ký tự',
-
-
-                'email.required' => 'Không được bỏ trống*',
-
-                'phone.required' => 'Không được bỏ trống*',
-                'phone.regex' => 'Số điện thoại không hợp lệ',
-
-
-                'address.required' => 'Không được bỏ trống*',
-
-                'role.required' => 'Không được bỏ trống*',
-
-                'is_active.required' => 'Không được bỏ trống*',
-
-
-                'imgavata.image' => 'Ảnh đại diện phải là một file ảnh.',
-
+            'password' => 'required|string|min:6',
+            'phone' => 'required|numeric|digits_between:10,15',
+            'address' => 'required|string|max:255',
+            'role' => 'required|in:Admin,Khach Hang,Nguoi Dung',
+            'is_active' => 'required|boolean',
+            'is_vip' => 'required|boolean',
         ]);
 
-        $linkImage = $user->avata;
-        if ($request->hasFile('imgavata')) {
-            $image = $request->file('imgavata');
-            $name = time().'.'.$image->getClientOriginalExtension();  // đổi tên trống trùng
-            $destinationPath = 'imageUsers/';  // kho lưu trữ
-            $image->move(public_path($destinationPath), $name);
-            $linkImage = $destinationPath.$name;
+        $user = User::where('user_id', $id)->first();
+        $path = $user->avata;
 
-        }
-        if ($request->hasFile('image')) {
-            if ($user->avata) {
-
+        if ($request->hasFile('avata')) {
+            if ($path && Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
             }
-        }
-        $data = $request->all() + ['avata' => $linkImage];
-        $user->update($data);
-        return redirect()->route('admin.users.index')->with('success', 'Thao tác thành công');
 
+            //Lưu ảnh mới
+            $image = $request->file('avata');
+            $newName = time() . '.' . $image->getClientOriginalName();
+
+            $path = $image->storeAs('images/user', $newName, 'public');
+        }
+
+        $data = [
+            'username' => $request->username,
+            'avata' => $path,
+            'email' => $request->email,
+            'password' => $request->password,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'role' => $request->role,
+            'is_active' => $request->is_active,
+            'is_vip' => $request->is_vip,
+        ];
+        $user->update($data);
+        return redirect()->route('admin.user.index');
     }
 
     /**
@@ -229,14 +142,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::findOrFail($id);
-        if ($user->avata) {
-            $filePath = public_path($user->avata);
-            if (file_exists($filePath)) {
-                unlink($filePath); // Xóa ảnh trực tiếp từ thư mục public
-            }
-        }
-        $user->delete();
-        return back()->with('success', 'Thao tác thành công');
+        User::where('user_id', $id)->delete();
+        return redirect()->route('admin.user.index');
     }
 }

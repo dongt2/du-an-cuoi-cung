@@ -19,7 +19,7 @@ class InvoiceFactory extends Factory
     {
         return [
             'user_id' => fake()->numberBetween(1, 10),
-            'total_amount' => fake()->randomFloat(2, 50, 5000),
+            'total_amount' => fake()->numberBetween(30, 500) * 1000,
             'status' => fake()->randomElement(['paid', 'unpaid', 'canceled']),
             'date' => fake()->dateTime(),
         ];

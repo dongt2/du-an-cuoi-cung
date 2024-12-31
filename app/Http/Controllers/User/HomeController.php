@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Showtime;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,6 +19,9 @@ class HomeController extends Controller
         if (session()->has('movie')) {
             session()->forget('movie');
         }
+        if (session()->has('booking')) {
+            session()->forget('booking');
+        }
         $data = Movie::orderBy('created_at', 'desc')->take(8)->get();
         return view('user.home.home', compact('data'));
     }
@@ -25,6 +30,9 @@ class HomeController extends Controller
     {
         if (session()->has('movie')) {
             session()->forget('movie');
+        }
+        if (session()->has('booking')) {
+            session()->forget('booking');
         }
         $data = Movie::all();
         return view('user.movie.list', compact('data'));
@@ -43,19 +51,83 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        // Nếu muốn kiểm tra bình luận chứa từ ngữ không phù hợp
+        $badWords = ['CỨT', 'Cứt', 'cỨt', 'cứT', 'CỨT'];
+        foreach ($badWords as $badWord) {
+            if (stripos($request->comment, $badWord) !== false) {
+                return back()->withErrors(['errorComment' => 'Bình luận không được chứa từ ngữ không phù hợp.']);
+            }
+        }
+
+        Review::create([
+            'movie_id' => $request->movie_id,
+            'user_id' => auth()->id(),
+            'review_date' => now()->toDateString(),
+            'review_time' => now()->toTimeString(),
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->route('movie.show', ['movie' => $request->movie_id]);
     }
+
 
     /**
      * Display the specified resource.
      */
+
+
+
     public function show(string $id)
     {
         if (session()->has('movie')) {
             session()->forget('movie');
-        }        
+        }
+        if (session()->has('booking')) {
+            session()->forget('booking');
+        }
+        // $time_showtime = Showtime::where('movie_id', $id)
+        // ->select('time')
+        // ->get();
+        
+        // $time_movie = Movie::where('movie_id', $id)
+        // ->select('duration')
+        // ->get();
+        // $time_format = $time_movie[0]->duration;
+        // $time_format = explode(":", $time_format);
+        // $time_format = $time_format[0] * 60 + $time_format[0];
+        // $time_format = $time_format + 15;
+        // $time_format = gmdate("H:i", $time_format);
+        // $time_format = explode(":", $time_format);
+        // $time_format = $time_format[0] * 60 + $time_format[0];
+        // $time_format = $time_format * 60;
+        // $time_format = $time_format + strtotime($time_showtime[0]->time);
+        // $time_format = date("H:i", $time_format);
+        
+
+
+
+        // dd($time_format);
+
         $data = Movie::where('movie_id', $id)->first();
-        return view('user.movie.show', compact('data'));
+        $reviews = Review::where('movie_id', $id)
+            ->with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $showtimes = Showtime::where('movie_id', $id)
+            ->with('screen')
+            ->orderBy('showtime_date')
+            ->orderBy('screen_id')
+            ->orderBy('time')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->showtime_date . ' - ' . $item->screen->screen_name;
+            });
+        $movie_id = $id;
+        return view('user.movie.show', compact('data', 'reviews', 'showtimes', 'movie_id'));
     }
 
     /**

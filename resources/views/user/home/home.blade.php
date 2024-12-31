@@ -290,7 +290,7 @@
                             </div>
 
                             <div class="movie__info">
-                                <a href='' class="movie__title">{{ $item->title }}</a>
+                                <a href="{{ route('movie.show', $item->movie_id) }}" class="movie__title">{{ $item->title }}</a>
 
                                 <p class="movie__time">{{ $item->duration }} min</p>
 
@@ -309,7 +309,7 @@
                     <!-- Movie variant with time -->
 
                     <!-- Movie variant with time -->
-                    <div class="movie movie--test movie--test--light movie--test--left">
+                    {{-- <div class="movie movie--test movie--test--light movie--test--left">
                         <div class="movie__images">
                             <a href="movie-page-left.html" class="movie-beta__link">
                                 <img alt='' src="images/movie/movie-time1.jpg">
@@ -330,12 +330,12 @@
                                 <span class="movie__rating">5.0</span>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                     <!-- Movie variant with time -->
 
 
 
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="social-group">
                             <div class="col-sm-6 col-md-4 col-sm-push-6 col-md-push-4">
                                 <div class="social-group__head">Join <br>our social groups</div>
@@ -362,7 +362,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
 
                 <aside class="col-sm-4 col-md-3">
@@ -399,7 +399,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12">
+        {{-- <div class="col-sm-12">
             <h2 class="page-heading">Latest news</h2>
 
             <div class="col-sm-4 similar-wrap col--remove">
@@ -452,7 +452,7 @@
                     <a href="single-page-left.html" class="btn read-more post--btn">read more</a>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
     </section>
 @endsection
@@ -494,7 +494,7 @@
     <script src="{{ asset('js/external/twitterfeed.js') }}"></script>
 
     <!-- Custom -->
-    <script src="{{ asset('js/custom.js') }}"></script>
+    {{-- <script src="{{ asset('js/custom.js') }}"></script> --}}
 
     <script type="text/javascript">
         $(document).ready(function() {

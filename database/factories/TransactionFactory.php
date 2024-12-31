@@ -21,13 +21,13 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            'voucher_id' => fake()->numberBetween(1, 10), 
+
             'booking_id' => fake()->numberBetween(1, 10),
             'user_id' => fake()->numberBetween(1, 10),
-
-            'payment_method' => fake()->randomElement(['Credit Card', 'PayPal', 'Bank Transfer']),
-            'total' => fake()->randomFloat(2, 10, 1000),
-            'date_time' => fake()->dateTime(),
+            'payment_method' => 'online',
+            'total' => fake()->numberBetween(10000, 100000),
+            'payment_date'  => fake()->date(),
+            'status_payment' => 'completed',
         ];
     }
 }

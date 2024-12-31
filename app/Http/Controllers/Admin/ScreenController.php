@@ -3,67 +3,86 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ScreenRequest;
 use App\Models\Screen;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ScreenController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $listScreens = Screen::query()->latest('screen_id')->paginate(10);
-        return view('admin.screens.index', ['listScreens' => $listScreens]);
+        $data = Screen::all();
+        return view('admin.screen.list', compact('data'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        return view('admin.screens.create');
+        return view('admin.screen.create');
     }
-    public function store(ScreenRequest $request)
-    {
-        try {
-            // Lưu vào data
-            $data = [
-                'screen_name' => $request->screen_name
-            ];
-            // dd($data);
-            Screen::create($data);
 
-            // Redirect với thông báo thành công
-            return redirect()->route('admin.screen.index')->with('message', 'Thêm mới thành công');
-        } catch (\Exception $e) {
-            // Xử lý ngoại lệ nếu có lỗi khi lưu dữ liệu
-            return redirect()->back()->withErrors(['error' => 'Đã xảy ra lỗi trong quá trình lưu dữ liệu.']);
-        }
-    }
-    public function edit($screen_id)
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
     {
-        $screen = Screen::find($screen_id);
-        return view('admin.screens.update', ['screen' => $screen]);
-    }
-    public function update(ScreenRequest $request, $screen_id)
-    {
-        $screen = Screen::find($screen_id);
-        try {
-            // Lưu vào data
-            $data = [
-                'screen_name' => $request->screen_name
-            ];
-            // dd($data);
-            $screen->update($data);
+        $request->validate([
+            'screen_name' => 'required|string|max:255',
+        ]);
 
-            // Redirect với thông báo thành công
-            return redirect()->route('admin.screen.index')->with('message', 'Sửa thành công');
-        } catch (\Exception $e) {
-            // Xử lý ngoại lệ nếu có lỗi khi lưu dữ liệu
-            return redirect()->back()->withErrors(['error' => 'Đã xảy ra lỗi trong quá trình lưu dữ liệu.']);
-        }
+        $data = [
+            'screen_name' => $request->screen_name,
+        ];
+
+        Screen::create($data);
+        return redirect()->route('admin.screen.index');
     }
-    public function destroy($screen_id)
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
     {
-        $screen = Screen::find($screen_id);
-        
-        $screen->delete();
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $data = Screen::where('screen_id', $id)->first();
+        return view('admin.screen.edit', compact('data'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $request->validate([
+            'screen_name' => 'required|string|max:255',
+        ]);
+
+        $screen = Screen::where('screen_id', $id)->first();
+
+        $data = [
+            'screen_name' => $request->screen_name,
+        ];
+        $screen->update($data);
+        return redirect()->route('admin.screen.index');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        Screen::where('Screen_id', $id)->delete();
         return redirect()->route('admin.screen.index');
     }
 }

@@ -6,11 +6,10 @@
 @section('content')
     <form  method='POST' novalidate='' action="{{ route('auth.login') }}">
         @csrf
-<<<<<<< HEAD
+
         <p class="login__title">Dang nhap <br><span class="login-edition">welcome to A.Movie</span></p>
-=======
-        <p class="login__title">Đăng Nhập <br><span class="login-edition">welcome to A.Movie</span></p>
->>>>>>> 257d8252b2967f4fbe361751b7aabd220d3731fa
+
+
 
         <div class="field-wrap">
             <input type='email' placeholder='{{ __('Email') }}' class="login__input @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus >
@@ -39,11 +38,9 @@
             @endif
 
 
-<<<<<<< HEAD
+
             <p class="login__tracker">Ban chua co tai khoan? <a href="{{ route('auth.register') }}" class="btn btn-md btn--warning btn--wider">{{__('Tao tai khoan')}}</a></p>
-=======
-            <p class="login__tracker">Bạn chưa có tài khoản? <a href="{{ route('auth.register') }}" class="btn btn-md btn--warning btn--wider">{{__('Tao tai khoan')}}</a></p>
->>>>>>> 257d8252b2967f4fbe361751b7aabd220d3731fa
+
 
         </div>
 

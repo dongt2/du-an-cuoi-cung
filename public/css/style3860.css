@@ -2825,7 +2825,8 @@ ul#navigation a:hover {
   padding-left: 30px;
   margin-top: 56px;
   margin-bottom: 27px;
-  font: 20px 'aleobold', sans-serif;
+  font: 20px Verdana;
+    font-weight: bold;
   color: #4c4145;
   text-transform: uppercase;
   background-image: url(../images/components/scarf.png);
@@ -2891,7 +2892,8 @@ ul#navigation a:hover {
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.16), inset 0 2px rgba(255, 255, 255, 0.2);
   -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.16), inset 0 2px rgba(255, 255, 255, 0.2);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.16), inset 0 2px rgba(255, 255, 255, 0.2);
-  font: 12px 'aleobold', sans-serif;
+  font: 12px Tahoma;
+    font-weight: bold;
   text-transform: uppercase;
   -webkit-transition: 0.3s;
   transition: 0.3s;
@@ -6127,7 +6129,7 @@ ul#navigation li.mega-menu__nav-item:hover:before {
   width: 76px;
 }
 .order .order__title {
-  font: 30px 'aleobold', sans-serif;
+  font: 30px 'Gill Sans', sans-serif;
   text-transform: uppercase;
   line-height: 26px;
   margin-top: 5px;
@@ -9972,4 +9974,14 @@ ul#navigation li.mega-menu__nav-item:hover:before {
   .post--preview .post__image {
     width: 100%;
   }
+}
+
+.display-price {
+  text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: #fe505a ;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
 }

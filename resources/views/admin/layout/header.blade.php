@@ -9,8 +9,10 @@
                 </li>
                 <li class="d-none d-lg-block">
                     <div class="position-relative topbar-search">
-                        <input type="text" class="form-control bg-light bg-opacity-75 border-light ps-4" placeholder="Tìm kiếm...">
-                        <i class="mdi mdi-magnify fs-16 position-absolute text-muted top-50 translate-middle-y ms-2"></i>
+                        <input type="text" class="form-control bg-light bg-opacity-75 border-light ps-4"
+                            placeholder="Tìm kiếm...">
+                        <i
+                            class="mdi mdi-magnify fs-16 position-absolute text-muted top-50 translate-middle-y ms-2"></i>
                     </div>
                 </li>
             </ul>
@@ -24,7 +26,8 @@
                 </li>
 
                 <li class="dropdown notification-list topbar-dropdown">
-                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+                        aria-haspopup="false" aria-expanded="false">
                         <i data-feather="bell" class="noti-icon"></i>
                         <span class="badge bg-danger rounded-circle noti-icon-badge">3</span>
                     </a>
@@ -44,30 +47,34 @@
                         <div class="noti-scroll" data-simplebar>
 
                             <!-- item-->
-                            <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary active">
+                            <a href="javascript:void(0);"
+                                class="dropdown-item notify-item text-muted link-primary active">
                                 <div class="notify-icon">
-                                    <img src="{{ asset('assets/images/users/user-12.jpg') }}" class="img-fluid rounded-circle" alt="" />
+                                    <img src="{{ asset('assets/images/users/user-12.jpg') }}"
+                                        class="img-fluid rounded-circle" alt="" />
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <p class="notify-details">Tokuda</p>
                                     <small class="text-muted">5 min ago</small>
                                 </div>
                                 <p class="mb-0 user-msg">
-                                    <small class="fs-14">Bạn có khỏe không? <span class="text-reset">Tôi nhớ bạn quá</span></small>
+                                    <small class="fs-14">Bạn có khỏe không? <span class="text-reset">Tôi nhớ bạn
+                                            quá</span></small>
                                 </p>
                             </a>
 
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary">
                                 <div class="notify-icon">
-                                    <img src="{{ asset('assets/images/users/user-2.jpg') }}" class="img-fluid rounded-circle" alt="" />
+                                    <img src="{{ asset('assets/images/users/user-2.jpg') }}"
+                                        class="img-fluid rounded-circle" alt="" />
                                 </div>
                                 <div class="notify-content">
                                     <div class="d-flex align-items-center justify-content-between">
                                         <p class="notify-details">Miria Odawa</p>
                                         <small class="text-muted">1 min ago</small>
                                     </div>
-                        
+
                                     <div class="d-flex mt-2 align-items-center">
                                         <div class="notify-sub-icon">
                                             <i class="mdi mdi-download-box text-dark"></i>
@@ -100,14 +107,16 @@
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary">
                                 <div class="notify-icon">
-                                    <img src="{{ asset('assets/images/users/user-8.jpg') }}" class="img-fluid rounded-circle" alt="" />
+                                    <img src="{{ asset('assets/images/users/user-8.jpg') }}"
+                                        class="img-fluid rounded-circle" alt="" />
                                 </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <p class="notify-details">Yua Mikami</p>
                                     <small class="text-muted">5 min ago</small>
                                 </div>
                                 <p class="mb-0 user-msg">
-                                    <small class="fs-14">Tối<span class="text-reset"> bạn rảnh không qua phòng tôi chơi nhé</span></small>
+                                    <small class="fs-14">Tối<span class="text-reset"> bạn rảnh không qua phòng tôi chơi
+                                            nhé</span></small>
                                 </p>
                             </a>
 
@@ -141,7 +150,8 @@
                         </div>
 
                         <!-- All-->
-                        <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+                        <a href="javascript:void(0);"
+                            class="dropdown-item text-center text-primary notify-item notify-all">
                             View all
                             <i class="fe-arrow-right"></i>
                         </a>
@@ -150,10 +160,12 @@
                 </li>
 
                 <li class="dropdown notification-list topbar-dropdown">
-                    <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="{{ asset('assets/images/users/user-11.jpg') }}" alt="user-image" class="rounded-circle">
+                    <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#"
+                        role="button" aria-haspopup="false" aria-expanded="false">
+                        <img src="{{ asset('assets/images/users/user-11.jpg') }}" alt="user-image"
+                            class="rounded-circle">
                         <span class="pro-user-name ms-1">
-                            Nguyễn Quang Anh <i class="mdi mdi-chevron-down"></i> 
+                            Nguyễn Quang Anh <i class="mdi mdi-chevron-down"></i>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
@@ -174,12 +186,22 @@
                             <span>Màn hình khóa</span>
                         </a>
 
+                        <!-- item-->
+                        <a class='dropdown-item notify-item' href='{{ route('home') }}'>
+                            <i class="mdi mdi-lock-outline fs-16 align-middle"></i>
+                            <span>Trang chủ</span>
+                        </a>
+
                         <div class="dropdown-divider"></div>
 
                         <!-- item-->
-                        <a class='dropdown-item notify-item' href='auth-logout.html'>
+                        <a class='dropdown-item notify-item' href='#' style="display: flex;">
                             <i class="mdi mdi-location-exit fs-16 align-middle"></i>
-                            <span>Đăng xuất</span>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="auth__function-item"
+                                    style="background: none; border: none;">Đăng xuất</button>
+                            </form>
                         </a>
 
                     </div>
@@ -189,5 +211,5 @@
         </div>
 
     </div>
-   
+
 </div>

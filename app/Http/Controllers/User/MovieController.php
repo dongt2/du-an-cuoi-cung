@@ -1,24 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
-class DetailMovieController extends Controller
+class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($movie_id)
+    public function index()
     {
-        $detail = Movie::query()
-            ->join('categories', 'movies.category_id', '=', 'categories.category_id')
-            ->select('movies.*', 'categories.category_name as category_name')
-            ->where('movie_id', $movie_id)
-            ->first();
-        return view('user.detailmovie.detailMovie', compact('detail'));
+        $movies = Movie::all();
+        // dd(vars: $movies);
+        return view('user.movie-list-full', compact('movies'));
     }
 
     /**

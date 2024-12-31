@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Combo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ComboController extends Controller
 {
@@ -13,9 +14,8 @@ class ComboController extends Controller
      */
     public function index()
     {
-        $data = Combo::paginate(10);
-
-        return view('admin.combos.index', compact('data'));
+        $data = Combo::all();
+        return view('admin.combo.list', compact('data'));
     }
 
     /**
@@ -23,7 +23,7 @@ class ComboController extends Controller
      */
     public function create()
     {
-        return view('admin.combos.create');
+        return view('admin.combo.create');
     }
 
     /**
@@ -32,29 +32,28 @@ class ComboController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'combo_name' => [
-                'required',
-                'unique:combos,combo_name',
-            ],
-            'price' => [
-                'required',
-            ],
-        ],
-            [
-                'combo_name.required' => 'Không được bỏ trống',
-                'combo_name.unique' => 'Tên combo đã tồn tại trong cơ sở dữ liệu',
+            'combo_name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'short_description' => 'required|string|max:1500',
+            'price' => 'required|integer|min:0',
+        ]);
 
-                'price.required' => 'Không được bỏ trống',
+        $path = null;
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $newName = time() . '.' . $image->getClientOriginalName();
 
-            ]
-        );
+            $path = $image->storeAs('images/combo', $newName, 'public');
+        }
 
-        $data = $request->all();
-
-        Combo::query()->create($data);
-
-        //dd($data);
-        return redirect()->route('admin.combos.index')->with('success', 'Thao tác thành công');
+        $data = [
+            'combo_name' => $request->combo_name,
+            'image' => $path,
+            'short_description' => $request->short_description,
+            'price' => $request->price,
+        ];
+        Combo::create($data);
+        return redirect()->route('admin.combo.index');
     }
 
     /**
@@ -70,8 +69,8 @@ class ComboController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Combo::all();
-        return view('admin.combos.edit', compact('data'));
+        $data = Combo::where('combo_id', $id)->first();
+        return view('admin.combo.edit', compact('data'));
     }
 
     /**
@@ -79,7 +78,35 @@ class ComboController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'combo_name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'short_description' => 'required|string|max:1500',
+            'price' => 'required|integer|min:0',
+        ]);
+
+        $combo = Combo::where('combo_id', $id)->first();
+        $path = $combo->image;
+
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ
+            Storage::disk('public')->delete($path);
+
+            //Lưu ảnh mới
+            $image = $request->file('image');
+            $newName = time() . '.' . $image->getClientOriginalName();
+
+            $path = $image->storeAs('images/combo', $newName, 'public');
+        }
+
+        $data = [
+            'combo_name' => $request->combo_name,
+            'image' => $path,
+            'short_description' => $request->short_description,
+            'price' => $request->price,
+        ];
+        $combo->update($data);
+        return redirect()->route('admin.combo.index');
     }
 
     /**
@@ -87,6 +114,7 @@ class ComboController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Combo::where('combo_id', $id)->delete();
+        return redirect()->route('admin.combo.index');
     }
 }

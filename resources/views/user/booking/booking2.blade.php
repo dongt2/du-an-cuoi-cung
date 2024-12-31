@@ -15,6 +15,7 @@
     <link href="{{ asset('../netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css') }}" rel="stylesheet">
     <!-- Roboto -->
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <!-- Stylesheets -->
 
@@ -32,7 +33,7 @@
     <style>
         .choose-sits {
             padding: 10px;
-            width: 50%;
+            width: 55%;
             margin: 0 auto;
         }
 
@@ -78,6 +79,7 @@
         }
 
         .grid-container {
+            margin-bottom: 4px;
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -158,6 +160,16 @@
             pointer-events: none;
             cursor: default;
         }
+
+        #timer-display{
+            text-align: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: #fe505a;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        }
     </style>
 @endsection
 
@@ -167,31 +179,31 @@
         <div class="container">
             <div class="order">
                 <img class="order__images" alt='' src="{{ asset('images/tickets.png') }}">
-                <p class="order__title">Book a ticket <br><span class="order__descript">and have fun movie time</span></p>
-                <div class="order__control">
-                    <a href="#" class="order__control-btn active">Purchase</a>
-                    <a href="#" class="order__control-btn">Reserve</a>
-                </div>
+                <p class="order__title">Đặt vé <br><span class="order__descript">chúc bạn có thời gian xem phim vui vẻ</span></p>
             </div>
             <br><br>
             <div class="order-step-area">
-                <div class="order-step first--step order-step--disable ">1. What &amp; Where &amp; When</div>
-                <div class="order-step second--step">2. Choose a sit</div>
+                <div class="order-step first--step order-step--disable">1. Chọn phim &amp; phòng &amp; xuất chiếu</div>
+                <div class="order-step second--step">2. Chọn ghế ngồi</div>
             </div>
         </div>
-        <br><br><br>
+        <br><br>
+        <div id="timer-display"></div>
+        <br>
+
+
         <div class="page-content">
             <div class="choose-sits">
                 <ul>
-                    <li class="sits-price"><strong>Price</strong></li>
+                    <li class="sits-price"><strong>Giá ghế</strong></li>
                     <li class="sits-price">
-                        <div class="square color-1"></div>$10
+                        <div class="square color-1"></div>30.000 VNĐ
                     </li>
                     <li class="sits-price">
-                        <div class="square color-2"></div>$20
+                        <div class="square color-2"></div>50.000 VNĐ
                     </li>
                     <li class="sits-price">
-                        <div class="square color-3"></div>$30
+                        <div class="square color-3"></div>70.000 VNĐ
                     </li>&ensp;||&ensp;
                     <li class="sits-price">
                         <div class="square color-4"></div>Ghế đã đặt
@@ -205,8 +217,9 @@
                 </ul>
             </div>
 
+
             <div class="sits-area">
-                <div class="sits-anchor">Screen</div>
+                <div class="sits-anchor">Màn hình</div>
                 <div class="screen"></div>
             </div><br><br>
 
@@ -220,205 +233,43 @@
                         <div class="grid-cell grid-letter">E</div>
                         <div class="grid-cell grid-letter">F</div>
                         <div class="grid-cell grid-letter">G</div>
+                        <div class="grid-cell grid-letter">H</div>
                         <div class="grid-cell grid-letter">I</div>
                         <div class="grid-cell grid-letter">J</div>
                         <div class="grid-cell grid-letter">K</div>
-                        <div class="grid-cell grid-letter">L</div>
                     </div>
                 </div>
                 <div class="grid-container">
-                    <!-- 4 hàng đầu -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'A') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'B') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'C') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'D') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-1';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-
-                    <!-- 4 hàng giữa -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'E') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'F') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'G') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'I') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-2';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-
-                    <!-- 3 hàng cuối -->
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'J') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'K') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
-                    <div class="grid-row">
-                        @foreach ($data as $item)
-                            @if (strpos($item->place, 'L') === 0)
-                                @php
-                                    if ($item->status === 'Đã đặt') {
-                                        $class = 'color-4';
-                                    } elseif ($item->status === 'Đã hỏng') {
-                                        $class = 'color-5';
-                                    } else {
-                                        $class = 'color-3';
-                                    }
-                                @endphp
-                                <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
-                                    {{ $item->place }}</div>
-                            @endif
-                        @endforeach
-                    </div>
+                    <!-- hàng chữ -->
+                    @foreach (range('A', 'K') as $row)
+                        <div class="grid-row">
+                            @foreach ($data as $item)
+                                @if (strpos($item->place, $row) === 0)
+                                    @php
+                                        if ($item->status === 'Đã đặt') {
+                                            $class = 'color-4';
+                                        } elseif ($item->status === 'Đã hỏng') {
+                                            $class = 'color-5';
+                                        } elseif ($item->price === '30000') {
+                                            $class = 'color-1';
+                                        } elseif ($item->price === '50000') {
+                                            $class = 'color-2';
+                                        } elseif ($item->price === '70000') {
+                                            $class = 'color-3';
+                                        } else {
+                                            $class = 'color-5';
+                                        }
+                                    @endphp
+                                    {{-- <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
+                                        {{ $item->place }}
+                                    </div> --}}
+                                    <div class="grid-cell ghe click {{ $class }}" data-seat-id="{{ $item->seat_id }}" data-price="{{ $item->price }}">
+                                        {{ $item->place }}
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    @endforeach
                     <!-- hàng số -->
                     <div class="grid-row" style="padding-top: 30px;">
                         <div class="grid-cell grid-number">1</div>
@@ -442,35 +293,35 @@
                     </div>
                 </div>
             </div>
-
-            <div id="price-display" style="text-align: center;">Giá: 0</div>
+            <br>
+            <div id="price-display" class="display-price">Giá: 0 VNĐ</div>
 
 
             <form id='film-and-time' class="booking-form" method='post' action='{{ route('user.bookingStore3') }}'>
                 @csrf
-                <input type="text" id="total-price" name="total_price" value="0" readonly />
+                <input type="text" id="price_ticket" name="price_ticket" value="0" readonly />
                 <div id="input-container"></div>
 
                 <div class="booking-pagination booking-pagination--margin">
                     <a href="javascript:void(0);" class="booking-pagination__prev" onclick="history.back()">
-                        <span class="arrow__text arrow--prev">prev step</span>
-                        <span class="arrow__info">what&amp;where&amp;when</span>
+                        <span class="arrow__text arrow--prev">Quay lại</span>
+                        <span class="arrow__info">1. Chọn phim &amp; phòng &amp; xuất chiếu</span>
                     </a>
                     <a href="javascript:void(0);" class="booking-pagination__next" id="submit-form">
-                        <span class="arrow__text arrow--next">next step</span>
-                        <span class="arrow__info">checkout</span>
+                        <span class="arrow__text arrow--next">Bước tiếp theo</span>
+                        <span class="arrow__info">Chọn combo &amp; thanh toán</span>
                     </a>
                 </div>
             </form>
             <script>
                 document.getElementById('submit-form').addEventListener('click', function(e) {
-                    e.preventDefault(); // Ngăn việc gửi form mặc định
+                    e.preventDefault();
 
-                    // Kiểm tra xem có bất kỳ input nào trong container không (tức là người dùng đã chọn ghế)
+                    // Kiểm tra xem ghế đã được chọn chưa
                     const inputContainer = document.getElementById('input-container');
                     if (inputContainer.children.length === 0) {
                         alert("Vui lòng chọn ít nhất một ghế.");
-                        return; // Dừng không gửi form nếu không có ghế được chọn
+                        return;
                     }
 
                     // Nếu có ghế được chọn, tiến hành gửi form
@@ -479,33 +330,65 @@
             </script>
 
 
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    fetch('{{ route('booking.timeLimit') }}')
+                        .then(response => response.json())
+                        .then(data => {
+                            const timeLimit = data.time_limit;
+
+                            if (timeLimit === -1) {
+                                alert("Không có thời gian để sắp xếp chỗ ngồi. Hệ thống sẽ tự động hủy bước xếp chỗ ngồi.");
+                                window.location.href = '{{ route('user.booking1') }}';
+                            } else if (timeLimit > 0) {
+                                let timeRemaining = timeLimit * 60; // Convert minutes to seconds
+                                const warningTime = 2 * 60; // 2 minutes before time limit
+
+                                const timerInterval = setInterval(() => {
+                                    timeRemaining--;
+
+
+                                        if (timeRemaining === warningTime) {
+                                            alert("Bạn còn 2 phút để chọn chỗ ngồi.");
+                                        }
+
+
+                                    if (timeRemaining <= 0) {
+                                        clearInterval(timerInterval);
+                                        alert("Đã hết thời gian! Hệ thống sẽ tự động hủy bước xếp chỗ ngồi.");
+                                        window.location.href = '{{ route('user.booking1') }}';
+                                    }
+
+                                    // Update the timer display (if you have one)
+                                    document.getElementById('timer-display').textContent = `Thời gian chờ: ${Math.floor(timeRemaining / 60)}:${timeRemaining % 60}`;
+                                }, 1000);
+                            }
+                        });
+                });
+            </script>
         </div>
     </div>
 @endsection
 
 @section('script')
     <script>
-        // click
         const cells = document.querySelectorAll('.click');
         const maxSeats = 9; // Giới hạn số ghế
         let selectedSeats = [];
 
         cells.forEach(cell => {
-            // Lưu nội dung ban đầu cho mỗi ô trong vòng lặp
             const originalContent = cell.textContent.trim();
 
             cell.addEventListener('click', function() {
                 const row = originalContent.charAt(0);
                 const col = parseInt(originalContent.slice(1));
-
-                // Lấy giá trị data-price từ ô đã click
                 const price = this.getAttribute('data-price');
 
                 if (this.classList.contains('active')) {
                     // Nếu đã active, xóa active và khôi phục nội dung ban đầu
-                    this.classList.remove('active'); // Xóa class active
-                    this.style.removeProperty('color'); // Xóa thuộc tính color
-                    this.textContent = originalContent; // Khôi phục lại nội dung ban đầu
+                    this.classList.remove('active');
+                    this.style.removeProperty('color');
+                    this.textContent = originalContent;
 
                     // Xóa ghế đã chọn khỏi mảng
                     selectedSeats = selectedSeats.filter(seat => seat.row !== row || seat.col !== col);
@@ -513,30 +396,55 @@
                     // Xóa thẻ input đã thêm
                     const inputElement = document.getElementById(`input-${row}${col}`);
                     if (inputElement) {
-                        inputElement.remove(); // Xóa thẻ input
+                        inputElement.remove();
                     }
-
                 } else {
-                    // Nếu chưa active, kiểm tra số ghế đã chọn
+                    // Kiểm tra số ghế đã chọn
                     if (selectedSeats.length >= maxSeats) {
-                        alert("Bạn chỉ được chọn nhiều nhất 8 ghế!");
-                        return; // Dừng không cho chọn thêm
+                        alert("Bạn chỉ được chọn nhiều nhất 9 ghế!");
+                        return;
                     }
 
-                    // Kiểm tra khoảng cách với các ghế đã chọn
-                    for (let seat of selectedSeats) {
-                        const rowDiff = Math.abs(seat.row.charCodeAt(0) - row.charCodeAt(
-                            0)); // Khoảng cách hàng
-                        const colDiff = Math.abs(seat.col - col); // Khoảng cách cột
-                        if (rowDiff > 3 || colDiff > 3) {
-                            alert("Vui lòng chọn ghế cách nhau tối đa 3 ô!");
-                            return; // Dừng không cho chọn thêm
+                    // Kiểm tra tính hợp lệ của ghế được chọn
+                    if (selectedSeats.length > 0) {
+                        const isSameRow = selectedSeats.every(seat => seat.row === row);
+                        const isSameCol = selectedSeats.every(seat => seat.col === col);
+
+                        if (isSameRow) {
+                            // Kiểm tra tính liền kề trong cùng hàng
+                            const cols = selectedSeats.map(seat => seat.col).sort((a, b) => a - b);
+                            const minCol = cols[0];
+                            const maxCol = cols[cols.length - 1];
+                            if (col < minCol - 1 || col > maxCol + 1) {
+                                alert("Các ghế cùng hàng phải liền kề nhau!");
+                                return;
+                            }
+                        } else if (isSameCol) {
+                            // Kiểm tra tính liền kề trong cùng cột
+                            const rows = selectedSeats.map(seat => seat.row.charCodeAt(0)).sort((a, b) =>
+                                a - b);
+                            const minRow = rows[0];
+                            const maxRow = rows[rows.length - 1];
+                            if (row.charCodeAt(0) < minRow - 1 || row.charCodeAt(0) > maxRow + 1) {
+                                alert("Các ghế cùng cột phải liền kề nhau!");
+                                return;
+                            }
+                        } else {
+                            // Kiểm tra khoảng cách giữa các ghế không cùng hàng/cột
+                            for (let seat of selectedSeats) {
+                                const rowDiff = Math.abs(seat.row.charCodeAt(0) - row.charCodeAt(0));
+                                const colDiff = Math.abs(seat.col - col);
+                                if (rowDiff > 2 || colDiff > 2) {
+                                    alert("Vui lòng chọn ghế cách nhau không quá 2 ô!");
+                                    return;
+                                }
+                            }
                         }
                     }
 
                     // Thêm active và hiện hình ảnh
-                    this.classList.add('active'); // Thêm class active
-                    this.style.color = 'white'; // Thiết lập màu chữ
+                    this.classList.add('active');
+                    this.style.color = 'white';
                     this.textContent = originalContent;
 
                     // Thêm ghế vào mảng đã chọn
@@ -547,34 +455,35 @@
 
                     // Tạo thẻ input
                     const input = document.createElement('input');
-                    input.type = 'text'; // Đặt loại input là text
+                    input.type = 'text';
                     input.value = originalContent;
                     input.id = `input-${row}${col}`;
                     input.name = originalContent;
-                    // input.style.display = 'block';
-
-                    // Thêm data-price vào input
-                    input.setAttribute('data-price', price); // Gán giá trị data-price cho input
-
-                    // Thêm input vào vùng chứa chính
+                    input.setAttribute('data-price', price);
                     document.getElementById('input-container').appendChild(input);
                 }
 
-                // Tính tổng data-price của các ô input đã tạo
+                // Tính tổng giá trị data-price
                 const inputs = document.querySelectorAll('#input-container input');
                 let totalPrice = 0;
 
                 inputs.forEach(input => {
                     const price = parseFloat(input.getAttribute('data-price'));
                     if (!isNaN(price)) {
-                        totalPrice += price; // Cộng dồn giá trị của data-price
+                        totalPrice += price;
                     }
                 });
 
-                // console.log('Tổng giá trị của các ghế đã chọn: ' + totalPrice);
-                document.getElementById('total-price').value = totalPrice;
-                document.getElementById('price-display').textContent = `Giá: ${totalPrice}`;
+                // Định dạng số với dấu chấm phân cách hàng nghìn và thêm "đ" vào cuối
+                const formattedPrice = new Intl.NumberFormat('vi-VN').format(totalPrice);
+
+                document.getElementById('price_ticket').value = totalPrice;
+                document.getElementById('price-display').textContent = `Giá: ${formattedPrice} VNĐ`;
+
             });
         });
+
+
     </script>
+
 @endsection

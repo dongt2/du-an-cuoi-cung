@@ -12,5 +12,5 @@
     @endif
 
 </div>
-<a href="{{ route('booking') }}" class="btn btn-md btn--warning btn--book btn-control--home">Book a
+<a href="{{ route('user.booking1') }}" class="btn btn-md btn--warning btn--book btn-control--home">Book a
     ticket</a>

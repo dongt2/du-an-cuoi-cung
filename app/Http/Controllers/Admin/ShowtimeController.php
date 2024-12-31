@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\ShowtimesUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShowtimeRequest;
+use App\Http\Requests\StoreShowtimeRequest;
+use App\Http\Requests\UpdateShowtimeRequest;
 use App\Models\Movie;
 use App\Models\Screen;
 use App\Models\Showtime;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ShowtimeController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $data = Showtime::query()
@@ -22,7 +24,7 @@ class ShowtimeController extends Controller
             ->join('screens', 'screens.screen_id', '=', 'showtimes.screen_id')
             ->select('showtimes.showtime_id', 'movies.title as movie_title', 'screens.screen_name as screen_name', 'showtimes.showtime_date', 'showtimes.time')
             ->orderByDesc('showtimes.showtime_id')
-            ->paginate(10);
+            ->get();
 
         // Kiểm tra nếu không có dữ liệu
         if ($data->isEmpty()) {
@@ -35,16 +37,24 @@ class ShowtimeController extends Controller
 
 
 
-        return view('admin.showtimes.index', compact('data'));
+        return view('admin.showtime.list', compact('data'));
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
         $listScreens = DB::table('screens')->get();
         $listMovies = DB::table('movies')->get();
         // dd($listScreens);
-        return view('admin.showtimes.create', compact('listScreens', 'listMovies'));
+        return view('admin.showtime.create', compact('listScreens', 'listMovies'));
     }
-    public function store(ShowtimeRequest $request)
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreShowtimeRequest $request)
     {
         // Debugging: Kiểm tra dữ liệu nhận được
         // dd($request->all());
@@ -53,17 +63,31 @@ class ShowtimeController extends Controller
         // $request->merge(['showtime_date' => ...]);
 
         // Lưu vào cơ sở dữ liệu
-        Showtime::create([
+
+        $data = [
             'movie_id' => $request->movie_id,
             'screen_id' => $request->screen_id,
             'showtime_date' => $request->showtime_date,
             'time' => $request->time, // Lưu tổng thời gian tính bằng giây
-        ]);
+        ];
+        Showtime::create($data);
         // Phát sự kiện
-        event(new ShowtimesUpdated());
+        // event(new ShowtimesUpdated());
 
-        return redirect()->route('admin.showtime.index')->with('message', 'Thêm lịch chiếu thành công');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit($showtime_id)
     {
         // Tìm Showtime dựa trên ID
@@ -79,23 +103,19 @@ class ShowtimeController extends Controller
         $listMovies = Movie::all();
 
         // Trả về view với dữ liệu cần thiết
-        return view('admin.showtimes.update', [
+        return view('admin.showtime.edit', [
             'showtime' => $showtime, // Giữ nguyên đối tượng showtime, bao gồm thời gian
             'listScreens' => $listScreens,
             'listMovies' => $listMovies,
         ]);
     }
 
-    public function update(ShowtimeRequest $request, $showtime_id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(UpdateShowtimeRequest $request, $showtime_id)
     {
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'movie_id' => 'required|exists:movies,movie_id',
-            'screen_id' => 'required|exists:screens,screen_id',
-            'showtime_date' => 'required|date',
-            'time' => 'required|string' // giả định time là định dạng chuỗi 'H:i:s'
-        ]);
-
+        
         // Tìm Showtime dựa trên ID
         $showtime = Showtime::find($showtime_id);
 
@@ -113,13 +133,13 @@ class ShowtimeController extends Controller
         // Lưu thay đổi
         $showtime->save();
 
-        return redirect()->route('admin.showtime.index')->with('message', 'Cập nhật thành công');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
 
-
-
-
-    public function destroy($showtime_id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $showtime_id)
     {
         // Tìm bản ghi Showtime dựa trên ID
         $showtime = Showtime::find($showtime_id);
@@ -133,6 +153,6 @@ class ShowtimeController extends Controller
         $showtime->delete();
 
         // Chuyển hướng với thông báo thành công
-        return redirect()->route('admin.showtime.index')->with('message', 'Xóa lịch chiếu thành công.');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
 }

@@ -10,14 +10,15 @@ class Transaction extends Model
     use HasFactory;
 
     protected $table = 'transactions'; // Tên bảng trong cơ sở dữ liệu
+    protected $primaryKey = 'transaction_id'; //
 
     protected $fillable = [
-        'voucher_id',
         'booking_id',
         'user_id',
         'payment_method',
         'total',
-        'date_time',
+        'payment_date',
+        'status_payment',
     ];
 
     // Các quan hệ với các model khác (nếu cần)
@@ -28,7 +29,7 @@ class Transaction extends Model
 
     public function booking()
     {
-        return $this->belongsTo(Booking::class);
+        return $this->belongsTo(Booking::class, 'booking_id');
     }
 
     public function user()
