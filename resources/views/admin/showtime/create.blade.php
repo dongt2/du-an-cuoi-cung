@@ -77,8 +77,8 @@
                                     <div class="col-xl-6">
                                         <div class="mb-3">
                                             <label for="showtime_date" class="form-label">Ngày chiếu phim</label>
-                                            <input type="date" name="showtime_date" id="showtime_date"
-                                                class="form-control" placeholder="dd/mm/yyyy" required>
+                                            <input type="date" name="showtime_date" id="inline-datepicker"
+                                                class="form-control" placeholder="dd/mm/yyyy">
                                             @error('showtime_date')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -88,7 +88,7 @@
                                         <div class="mb-3">
                                             <label for="time" class="form-label">Thời gian</label>
                                             <input type="time" name="time" id="time" min="0"
-                                                max="23" class="form-control" required>
+                                                max="23" class="form-control">
                                             @error('time')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

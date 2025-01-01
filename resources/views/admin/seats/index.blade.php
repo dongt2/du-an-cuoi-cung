@@ -20,11 +20,10 @@
 @endpush
 
 @section('content')
-    
     <style>
         .choose-sits {
             padding: 10px;
-            width: 50%;
+            width: 60%;
             margin: 0 auto;
         }
 
@@ -222,32 +221,34 @@
 
     <div class="page-content">
         @php
-            $screen_id = request()->input('screen', 1);
+            $showtime_id = request()->input('showtime');
+            // echo $showtime_id;
         @endphp
-
         <form action="{{ route('admin.seat.index') }}" method="GET">
-            <label for="screen">Chọn Phòng Chiếu:</label>
-            <select id="screen" name="screen">
-                @foreach ($screen as $item)
-                    <option value="{{ $item->screen_id }}" {{ $item->screen_id == $screen_id ? 'selected' : '' }}>
-                        {{ $item->screen_id . '. ' . $item->screen_name }}
-                    </option>
+            <label for="showtime">Chọn Xuất Chiếu:</label>
+            <select id="showtime" name="showtime">
+                <option value="0" selected>Chọn xuất chiếu</option>
+                @foreach ($showtimes as $item)
+                    <option value="{{ $item->showtime_id }}">{{ $item->showtime_id }}--&emsp;Phim:
+                        {{ $item->movie->title ?? 'Chưa xác định' }}&emsp;-&emsp;Phòng: {{ $item->screen->screen_name ?? 'Chưa xác định' }}&emsp;-
+                        &emsp;Ngày: {{ $item->showtime_date }}&emsp;-&emsp;Giờ: {{ $item->time }}</option>
                 @endforeach
             </select>
             <button type="submit">Xác nhận</button>
         </form>
 
+
         <div class="choose-sits">
             <ul>
                 <li class="sits-price"><strong>Price</strong></li>
                 <li class="sits-price">
-                    <div class="square color-1"></div>$10
+                    <div class="square color-1"></div>30.000 VNĐ
                 </li>
                 <li class="sits-price">
-                    <div class="square color-2"></div>$20
+                    <div class="square color-2"></div>50.000 VNĐ
                 </li>
                 <li class="sits-price">
-                    <div class="square color-3"></div>$30
+                    <div class="square color-3"></div>70.000 VNĐ
                 </li>&ensp;||&ensp;
                 <li class="sits-price">
                     <div class="square color-4"></div>Ghế đã đặt
@@ -276,194 +277,42 @@
                     <div class="grid-cell grid-letter">E</div>
                     <div class="grid-cell grid-letter">F</div>
                     <div class="grid-cell grid-letter">G</div>
+                    <div class="grid-cell grid-letter">H</div>
                     <div class="grid-cell grid-letter">I</div>
                     <div class="grid-cell grid-letter">J</div>
                     <div class="grid-cell grid-letter">K</div>
-                    <div class="grid-cell grid-letter">L</div>
                 </div>
             </div>
             <div class="grid-container">
-                <!-- 4 hàng đầu -->
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'A') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-1';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'B') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-1';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'C') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-1';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'D') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-1';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
+                <!-- hàng chữ -->
+                @php
+                    $rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+                @endphp
 
-                <!-- 4 hàng giữa -->
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'E') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-2';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'F') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-2';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'G') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-2';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'I') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-2';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-
-                <!-- 3 hàng cuối -->
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'J') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-3';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'K') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-3';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
-                <div class="grid-row">
-                    @foreach ($data as $item)
-                        @if (strpos($item->place, 'L') === 0)
-                            @php
-                                if ($item->status === 'Đã đặt') {
-                                    $class = 'color-4';
-                                } elseif ($item->status === 'Đã hỏng') {
-                                    $class = 'color-5';
-                                } else {
-                                    $class = 'color-3';
-                                }
-                            @endphp
-                            <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
-                        @endif
-                    @endforeach
-                </div>
+                @foreach ($rows as $row)
+                    <div class="grid-row">
+                        @foreach ($data as $item)
+                            @if (strpos($item->place, $row) === 0)
+                                @php
+                                    if ($item->status === 'Đã đặt') {
+                                        $class = 'color-4';
+                                    } elseif ($item->status === 'Đã hỏng') {
+                                        $class = 'color-5';
+                                    } elseif ($item->price === '30000') {
+                                        $class = 'color-1';
+                                    } elseif ($item->price === '50000') {
+                                        $class = 'color-2';
+                                    } elseif ($item->price === '70000') {
+                                        $class = 'color-3';
+                                    } else {
+                                        $class = 'color-5';
+                                    }
+                                @endphp
+                                <div class="grid-cell click {{ $class }}">{{ $item->place }}</div>
+                            @endif
+                        @endforeach
+                    </div>
+                @endforeach
                 <!-- hàng số -->
                 <div class="grid-row" style="margin-top: auto;">
                     <div class="grid-cell grid-number">1</div>
@@ -491,27 +340,25 @@
         <div class="btn-seat">
             <div class="action-button" id="btn-add-seat" style="background-color: #800080;" onclick="showModal()">Thêm
                 ghế</div>
-            <form action="{{ route('admin.seat.update', $screen_id) }}" style="display: flex;" method="POST">
+            <form action="{{ route('admin.seat.update', $showtime_id) }}" style="display: flex;" method="POST">
                 @csrf
                 @method('PUT')
                 <div id="input-container"></div>
-                <input type="hidden" name="screen_id" value="{{ $screen_id }}">
-                <div class="action-button" id="btn-update-seat" style="background-color: #20B2AA;"
-                    onclick="editModal()">Sửa ghế</div>
+                <input type="hidden" name="showtime_id" value="{{ $showtime_id }}">
+                <div class="action-button" id="btn-update-seat" style="background-color: #20B2AA;" onclick="editModal()">Sửa
+                    ghế</div>
                 <div class="action-button" id="btn-empty" style="background-color: #00BFFF;"
                     onclick="setInputValue('Còn trống')">Còn trống</div>
                 <div class="action-button" id="btn-occupied" style="background-color: #008000;"
                     onclick="setInputValue('Đã đặt')">Đã đặt</div>
                 <div class="action-button" id="btn-broken" style="background-color: #FFD700;"
                     onclick="setInputValue('Đã hỏng')">Đã hỏng</div>
-                <button hidden class="action-button auto-submit" style="background-color: #FFA500;" type="submit">Cập
-                    nhật</button>
+                <button hidden class="action-button auto-submit" type="submit">Cập nhật</button>
             </form>&emsp;&emsp;
-            <form action="{{ route('admin.seat.destroy', $screen_id) }}" method="POST" id="delete-form">
+            <form action="{{ route('admin.seat.destroy', $showtime_id) }}" method="POST" id="delete-form">
                 @csrf
                 @method('delete')
                 <div id="input-container-destroy"></div>
-                <input type="hidden" name="screen_id" value="{{ $screen_id }}">
                 <button type="button" class="action-button" style="background-color: #FF4500;"
                     onclick="checkInputsAndSubmit()">Xóa ghế</button>
             </form>
@@ -535,8 +382,13 @@
                     <!-- Các cột sẽ được điền vào qua JavaScript -->
                 </select>
                 <br>
-                <label for="price">Nhập Giá:</label>
-                <input type="text" name="price" id="price">
+                <label for="price">Chọn Giá:</label>
+                <select for="price" name="price" id="price">
+                    <option value=""></option>
+                    <option value="30000">30000</option>
+                    <option value="50000">50000</option>
+                    <option value="70000">70000</option>
+                </select>
                 <br>
                 <label for="stt">Trạng thái:</label>
                 <select id="stt" name="status">
@@ -567,10 +419,10 @@
                     <option value="E">E</option>
                     <option value="F">F</option>
                     <option value="G">G</option>
+                    <option value="H">H</option>
                     <option value="I">I</option>
                     <option value="J">J</option>
                     <option value="K">K</option>
-                    <option value="L">L</option>
                 </select>
                 <br>
                 <label for="edit-column">Chọn Cột:</label>
@@ -596,8 +448,13 @@
                     <option value="18">18</option>
                 </select>
                 <br>
-                <label for="edit-price">Nhập Giá:</label>
-                <input type="text" name="edit-price" id="edit-price">
+                <label for="edit-price">Chọn Giá:</label>
+                <select for="edit-price" name="edit-price" id="edit-price">
+                    <option value=""></option>
+                    <option value="30000">30000</option>
+                    <option value="50000">50000</option>
+                    <option value="70000">70000</option>
+                </select>
                 <br>
                 <label for="edit-stt">Trạng thái:</label>
                 <select id="edit-stt" name="edit-status">
@@ -611,106 +468,17 @@
                     onclick="updateSeat()">Cập nhật</button>
             </div>
         </div>
+    </div>
+@endsection
 
-        {{-- js chi tiết ghế --}}
-        <script>
-            function editModal() {
-                let inputElements = document.querySelectorAll('#input-container input');
-
-                // Kiểm tra nếu chưa chọn ghế
-                if (inputElements.length === 0) {
-                    alert('Bạn chưa chọn ghế');
-                    return; // Ngừng thực thi hàm nếu không có input
-                }
-
-                // Kiểm tra số lượng input
-                if (inputElements.length === 1) {
-                    let inputName = inputElements[0].getAttribute('name');
-                    let row = inputName.charAt(0); // Hàng từ tên ghế
-                    let column = inputName.slice(1); // Cột từ tên ghế
-                    let place = row + column;
-                    let screen_id = {{ $screen_id }};
-
-                    // Gửi yêu cầu đến server để lấy thông tin ghế
-                    fetch(`admin/seat/${place}?screen_id=${screen_id}`, {
-                            method: 'GET',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            }
-                        })
-                        .then(response => {
-                            if (!response.ok) {
-                                return response.json().then(data => {
-                                    throw new Error(data.message);
-                                });
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            // Hiển thị modal sửa ghế
-                            document.getElementById("edit-seat-modal").style.display = "block";
-
-                            // Di chuyển modal sửa ghế
-                            const editModal = document.getElementById('edit-seat-modal');
-                            let isEditDragging = false;
-                            let editStartX, editStartY, editInitialMouseX, editInitialMouseY;
-
-                            editModal.querySelector('.modal-content').addEventListener('mousedown', function(e) {
-                                isEditDragging = true;
-                                editStartX = editModal.offsetLeft;
-                                editStartY = editModal.offsetTop;
-                                editInitialMouseX = e.clientX;
-                                editInitialMouseY = e.clientY;
-                            });
-
-                            document.addEventListener('mousemove', function(e) {
-                                if (isEditDragging) {
-                                    const editDx = e.clientX - editInitialMouseX;
-                                    const editDy = e.clientY - editInitialMouseY;
-                                    editModal.style.left = editStartX + editDx + 'px';
-                                    editModal.style.top = editStartY + editDy + 'px';
-                                }
-                            });
-
-                            document.addEventListener('mouseup', function() {
-                                isEditDragging = false;
-                            });
-
-                            // Điền dữ liệu vào các trường trong modal
-                            document.getElementById("edit-row").value = row; // Hàng
-                            document.getElementById("edit-column").value = column; // Cột
-                            document.getElementById("edit-price").value = data.price; // Giá
-                            document.getElementById("edit-stt").value = data.status; // Trạng thái
-                        })
-                        .catch(error => {
-                            console.error('Error:', error.message);
-                            alert(error.message);
-                        });
-                } else {
-                    alert("Chỉ được chọn một ghế.");
-                }
-            }
-
-            // Hàm để đóng modal
-            function closeEditModal() {
-                document.getElementById("edit-seat-modal").style.display = "none";
-            }
-        </script>
-
-        {{-- js modal thêm ghế --}}
-        <script>
-            function showModal() {
-                document.getElementById('add-seat-modal').style.display = 'flex'; // Hiện modal
-            }
-
-            function closeModal() {
-                document.getElementById('add-seat-modal').style.display = 'none'; // Ẩn modal
-            }
-
-            // Di chuyển modal
-            const modal = document.getElementById('add-seat-modal');
-            let isDragging = false;
-            let startX, startY, initialMouseX, initialMouseY;
+@push('script')
+    {{-- js thêm , chi tiết ghế --}}
+    <script>
+        // Hàm kéo thả modal
+        function enableDrag(modalId) {
+            let modal = document.getElementById(modalId);
+            let isDragging = false,
+                startX, startY, initialMouseX, initialMouseY;
 
             modal.querySelector('.modal-content').addEventListener('mousedown', function(e) {
                 isDragging = true;
@@ -722,291 +490,268 @@
 
             document.addEventListener('mousemove', function(e) {
                 if (isDragging) {
-                    const dx = e.clientX - initialMouseX;
-                    const dy = e.clientY - initialMouseY;
-                    modal.style.left = startX + dx + 'px';
-                    modal.style.top = startY + dy + 'px';
+                    modal.style.left = startX + (e.clientX - initialMouseX) + 'px';
+                    modal.style.top = startY + (e.clientY - initialMouseY) + 'px';
                 }
             });
 
             document.addEventListener('mouseup', function() {
                 isDragging = false;
             });
+        }
 
-            function addSeat() {
-                var row = document.getElementById("row").value;
-                var column = document.getElementById("column").value;
-                var price = document.getElementById("price").value;
-                var status = document.getElementById("stt").value;
-                var place = row + column;
-
-                if (row === "" || column === "" || price === "" || status === "") {
-                    alert("Vui lòng điền đầy đủ thông tin!");
-                    return;
-                }
-
-                // Gửi dữ liệu đến controller của Laravel
-                fetch('admin/seat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                'content') // Thêm CSRF token
-                        },
-                        body: JSON.stringify({
-                            screen_id: {{ $screen_id }},
-                            place: place,
-                            price: price,
-                            status: status
-                        })
-                    })
-                    .then(response => {
-                        const contentType = response.headers.get("content-type");
-                        if (!contentType || !contentType.includes("application/json")) {
-                            throw new Error("Server trả về HTML thay vì JSON.");
-                        }
-                        // Kiểm tra mã lỗi HTTP
-                        if (!response.ok) {
-                            return response.json().then(data => {
-                                throw new Error(data.message || "Có lỗi xảy ra.");
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Dữ liệu đã được lưu:", data);
-                        location.reload();
-                        closeModal();
-                    })
-                    .catch((error) => {
-                        alert(error.message); // Hiển thị thông báo lỗi
-                        console.error("Có lỗi xảy ra:", error);
-                    });
+        // Hàm chỉnh sửa modal ghế
+        function editModal() {
+            let inputElements = document.querySelectorAll('#input-container input');
+            if (inputElements.length === 0) {
+                alert('Bạn chưa chọn ghế');
+                return;
             }
 
-            // loại bỏ row và colum đã có
-            const seats = @json($seats);
-            const fullRows = @json($fullRows);
+            if (inputElements.length === 1) {
+                let inputName = inputElements[0].getAttribute('name');
+                let row = inputName.charAt(0);
+                let column = inputName.slice(1);
+                let place = row + column;
+                let showtime_id = {{ $showtime_id }};
+                console.log(place, showtime_id);
 
-            // Hàm điền các hàng vào dropdown, loại bỏ hàng đã đầy
-            function populateRowOptions() {
-                const rowSelect = document.getElementById('row');
-
-                // Xóa tất cả các tùy chọn cũ
-                rowSelect.innerHTML = '<option value=""></option>';
-
-                // Thêm các hàng chưa đầy vào dropdown
-                const allRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'I', 'J', 'K', 'L'];
-                allRows.forEach(row => {
-                    if (!fullRows.includes(row)) {
-                        const option = document.createElement('option');
-                        option.value = row;
-                        option.textContent = row;
-                        rowSelect.appendChild(option);
+                // Gửi yêu cầu đến server để lấy thông tin ghế
+                $.ajax({
+                    url: `seat/${place}`,
+                    method: 'GET',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        showtime_id: showtime_id
+                    },
+                    success: function(data) {
+                        document.getElementById("edit-seat-modal").style.display = "block";
+                        fillEditModal(data, row, column);
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON?.message || 'Đã xảy ra lỗi khi lấy thông tin ghế!');
                     }
                 });
+            } else {
+                alert("Chỉ được chọn một ghế.");
+            }
+        }
+
+        function fillEditModal(data, row, column) {
+            document.getElementById("edit-row").value = row;
+            document.getElementById("edit-column").value = column;
+            document.getElementById("edit-price").value = data.price;
+            document.getElementById("edit-stt").value = data.status;
+        }
+
+        // Hàm đóng modal
+        function closeEditModal() {
+            document.getElementById("edit-seat-modal").style.display = "none";
+        }
+
+        // Hàm hiển thị modal thêm ghế
+        function showModal() {
+            document.getElementById('add-seat-modal').style.display = 'flex';
+        }
+
+        // Hàm đóng modal thêm ghế
+        function closeModal() {
+            document.getElementById('add-seat-modal').style.display = 'none';
+        }
+
+        // Hàm thêm ghế
+        function addSeat() {
+            let row = document.getElementById("row").value;
+            let column = document.getElementById("column").value;
+            let price = document.getElementById("price").value;
+            let status = document.getElementById("stt").value;
+            let place = row + column;
+
+            if (!row || !column || !price || !status) {
+                alert("Vui lòng điền đầy đủ thông tin!");
+                return;
             }
 
-            // Hàm điền các cột vào dropdown
-            function populateColumnOptions() {
-                const row = document.getElementById('row').value;
-                const columnSelect = document.getElementById('column');
+            $.ajax({
+                url: '{{ route('admin.seat.store') }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    showtime_id: {{ $showtime_id }},
+                    place: place,
+                    price: price,
+                    status: status
+                },
+                success: function(response) {
+                    console.log("Dữ liệu đã được lưu:", response);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Chi tiết lỗi:", error);
+                }
+            });
+        }
 
-                // Xóa tất cả các tùy chọn cũ
-                columnSelect.innerHTML = '<option value=""></option>';
+        // Hàm điền dữ liệu vào các dropdown (hàng và cột)
+        const seats = @json($seats);
+        const fullRows = @json($fullRows);
 
-                // Kiểm tra các cột đã có trong cơ sở dữ liệu
-                const takenColumns = seats
-                    .filter(seat => seat.startsWith(row)) // Lọc ghế có cùng hàng
-                    .map(seat => seat.slice(1)); // Lấy số cột của ghế
+        function populateRowOptions() {
+            const rowSelect = document.getElementById('row');
+            rowSelect.innerHTML = '<option value=""></option>';
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'].forEach(row => {
+                if (!fullRows.includes(row)) {
+                    const option = document.createElement('option');
+                    option.value = row;
+                    option.textContent = row;
+                    rowSelect.appendChild(option);
+                }
+            });
+        }
 
-                // Thêm các cột vào dropdown, loại bỏ các cột đã có
-                for (let i = 1; i <= 18; i++) { // Giới hạn từ 1 đến 18
-                    if (!takenColumns.includes(i.toString())) {
-                        const option = document.createElement('option');
-                        option.value = i;
-                        option.textContent = i;
-                        columnSelect.appendChild(option);
-                    }
+        function populateColumnOptions() {
+            const row = document.getElementById('row').value;
+            const columnSelect = document.getElementById('column');
+            columnSelect.innerHTML = '<option value=""></option>';
+
+            const takenColumns = seats
+                .filter(seat => seat.startsWith(row))
+                .map(seat => seat.slice(1)); // Lấy số cột của ghế
+
+            for (let i = 1; i <= 18; i++) {
+                if (!takenColumns.includes(i.toString())) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = i;
+                    columnSelect.appendChild(option);
                 }
             }
+        }
 
-            // Gọi hàm mỗi khi trang được tải
-            populateRowOptions();
+        // Gọi hàm mỗi khi trang được tải hoặc khi hàng được chọn
+        window.addEventListener('load', populateRowOptions);
+        document.getElementById('row').addEventListener('change', populateColumnOptions);
 
-            // Gọi hàm mỗi khi hàng được chọn
-            document.getElementById('row').addEventListener('change', populateColumnOptions);
-        </script>
+        // Kích hoạt tính năng kéo thả cho các modal
+        enableDrag('edit-seat-modal');
+        enableDrag('add-seat-modal');
+    </script>
 
-        {{-- js  modal sửa ghế --}}
-        <script>
-            function updateSeat() {
-                var row = document.getElementById("edit-row").value;
-                var column = document.getElementById("edit-column").value;
-                var price = document.getElementById("edit-price").value;
-                var status = document.getElementById("edit-stt").value;
-                var place = row + column;
+    {{-- js sửa ghế --}}
+    <script>
+        function updateSeat() {
+            let row = document.getElementById("edit-row").value;
+            let column = document.getElementById("edit-column").value;
+            let price = document.getElementById("edit-price").value;
+            let status = document.getElementById("edit-stt").value;
+            let place = row + column;
 
-                if (row === "" || column === "" || price === "" || status === "") {
-                    alert("Vui lòng điền đầy đủ thông tin!");
-                    return;
+            if (!row || !column || !price || !status) {
+                alert("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            $.ajax({
+                url: `seat/update/${place}`,
+                method: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    showtime_id: {{ $showtime_id }},
+                    place: place,
+                    price: price,
+                    status: status
+                }),
+                success: function(response) {
+                    console.log("Dữ liệu đã được lưu:", response);
+                    location.reload();
+                    closeEditModal();
+                },
+                error: function(xhr, status, error) {
+                    alert(xhr.responseJSON?.message || 'Có lỗi xảy ra!');
+                    console.error("Có lỗi xảy ra:", error);
                 }
+            });
+        }
+    </script>
 
-                // Gửi dữ liệu đến controller của Laravel
-                fetch(`admin/seat/update/${place}`, {
-                        method: 'PUT', // Đảm bảo là PUT
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({
-                            screen_id: {{ $screen_id }},
-                            place: place,
-                            price: price,
-                            status: status
-                        })
-                    })
-                    .then(response => {
-                        const contentType = response.headers.get("content-type");
-                        if (!contentType || !contentType.includes("application/json")) {
-                            throw new Error("Server trả về HTML thay vì JSON.");
-                        }
-                        // Kiểm tra mã lỗi HTTP
-                        if (!response.ok) {
-                            return response.json().then(data => {
-                                throw new Error(data.message || "Có lỗi xảy ra.");
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Dữ liệu đã được lưu:", data);
-                        location.reload();
-                        closeModal();
-                    })
-                    .catch((error) => {
-                        alert(error.message); // Hiển thị thông báo lỗi
-                        console.error("Có lỗi xảy ra:", error);
+    {{-- js xóa ghế --}}
+    <script>
+        function checkInputsAndSubmit() {
+            const inputs = document.querySelectorAll('#input-container-destroy input');
+            if (inputs.length === 0) {
+                alert('Bạn chưa chọn ghế');
+            } else {
+                if (confirm('Bạn có chắc chắn muốn xóa')) {
+                    document.getElementById('delete-form').submit();
+                }
+            }
+        }
+    </script>
+
+    {{-- js status --}}
+    <script>
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.action-button')) {
+                document.querySelectorAll('.action-button').forEach(btn => btn.classList.remove('active-btn'));
+                e.target.classList.add('active-btn');
+            }
+        });
+
+        document.querySelectorAll('.click').forEach(cell => {
+            const originalContent = cell.textContent.trim();
+
+            cell.addEventListener('click', function() {
+                if (this.classList.toggle('active')) {
+                    this.style.color = 'white';
+                    this.innerHTML = originalContent;
+
+                    const input = Object.assign(document.createElement('input'), {
+                        type: 'text',
+                        name: originalContent,
+                        hidden: true
                     });
-            }
-        </script>
+                    const inputClone = input.cloneNode(true);
 
-        {{-- js xóa ghế --}}
-        <script>
-            function checkInputsAndSubmit() {
-                const inputs = document.querySelectorAll('#input-container-destroy input');
-                if (inputs.length === 0) {
-                    alert('Bạn chưa chọn ghế');
+                    document.getElementById('input-container').appendChild(input);
+                    document.getElementById('input-container-destroy').appendChild(inputClone);
+
+                    Object.assign(this, {
+                        inputElement: input,
+                        inputElementClone: inputClone
+                    });
                 } else {
-                    if (confirm('Bạn có chắc chắn muốn xóa')) {
-                        document.getElementById('delete-form').submit();
-                    }
+                    this.style.removeProperty('color');
+                    this.innerHTML = originalContent;
+                    this.inputElement?.remove();
+                    this.inputElementClone?.remove();
+                    this.inputElement = this.inputElementClone = null;
                 }
+            });
+        });
+
+        function setSeatStatus(status) {
+            const inputs = document.querySelectorAll('#input-container input');
+            if (!inputs.length) return alert('Bạn chưa chọn ghế');
+
+            inputs.forEach(input => input.value = status);
+            if (confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`)) {
+                document.querySelector('.auto-submit').click();
             }
-        </script>
+        }
 
-        {{-- js status --}}
-        <script>
-            // css
-            document.querySelectorAll('.action-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    // Loại bỏ class 'active-btn' khỏi các nút khác
-                    document.querySelectorAll('.action-button').forEach(btn => btn.classList.remove(
-                        'active-btn'));
-                    // Thêm class 'active-btn' vào nút đã nhấn
-                    this.classList.add('active-btn');
-                });
-            });
+        ['btn-empty', 'btn-occupied', 'btn-broken'].forEach((id, i) => {
+            const statuses = ['Còn trống', 'Đã đặt', 'Đã hỏng'];
+            document.getElementById(id).onclick = () => setSeatStatus(statuses[i]);
+        });
+    </script>
 
-            // click
-            const cells = document.querySelectorAll('.click');
-
-            cells.forEach(cell => {
-                // Lưu nội dung ban đầu cho mỗi ô trong vòng lặp
-                const originalContent = cell.textContent.trim(); // Sử dụng textContent để lấy nội dung văn bản
-
-                cell.addEventListener('click', function() {
-                    if (this.classList.contains('active')) {
-                        // Nếu đã active, xóa active và khôi phục nội dung ban đầu
-                        this.classList.remove('active'); // Xóa class active
-                        this.style.removeProperty('color'); // Xóa thuộc tính color
-                        this.innerHTML = originalContent; // Đổi về nội dung ban đầu
-
-                        // Xóa ô input nếu có
-                        if (this.inputElement) {
-                            this.inputElement.remove(); // Xóa input từ input-container
-                            this.inputElementClone.remove(); // Xóa input clone từ input-container-destroy
-                            this.inputElement = null;
-                            this.inputElementClone = null;
-                        }
-                    } else {
-                        // Nếu chưa active, thêm active và hiện hình ảnh
-                        this.classList.add('active'); // Thêm class active
-                        this.style.color = 'white'; // Thiết lập màu chữ
-                        this.innerHTML = originalContent;
-
-                        const input = document.createElement('input'); // Tạo thẻ input mới
-                        input.type = 'text'; // Đặt loại input là text
-                        input.name = originalContent; // Gán thuộc tính name cho input
-                        // input.hidden = true;
-
-                        // Thêm input vào vùng chứa chính
-                        document.getElementById('input-container').appendChild(input);
-
-                        // Tạo và thêm input clone vào vùng chứa xóa
-                        const inputClone = input.cloneNode(true);
-                        document.getElementById('input-container-destroy').appendChild(inputClone);
-
-                        // Lưu tham chiếu đến ô input trong cell
-                        this.inputElement = input;
-                        this.inputElementClone = inputClone; // Lưu tham chiếu đến input clone
-                    }
-                });
-
-                function setInputValue(value) {
-                    const inputs = document.querySelectorAll('#input-container input');
-                    if (inputs.length === 0) {
-                        alert('Bạn chưa chọn ghế');
-                        return;
-                    }
-                    inputs.forEach(input => {
-                        input.value = value;
-                    });
-                }
-
-                document.getElementById('btn-empty').onclick = function() {
-                    const status = 'Còn trống';
-                    setInputValue(status);
-                    if (document.querySelectorAll('#input-container input').length === 0)
-                        return;
-                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
-                        '.auto-submit').click();
-                };
-
-                document.getElementById('btn-occupied').onclick = function() {
-                    const status = 'Đã đặt';
-                    setInputValue(status);
-                    if (document.querySelectorAll('#input-container input').length === 0)
-                        return;
-                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
-                        '.auto-submit').click();
-                };
-
-                document.getElementById('btn-broken').onclick = function() {
-                    const status = 'Đã hỏng';
-                    setInputValue(status);
-                    if (document.querySelectorAll('#input-container input').length === 0)
-                        return;
-                    confirm(`Bạn có muốn thay đổi trạng thái ghế thành "${status}"?`) && document.querySelector(
-                        '.auto-submit').click();
-                };
-
-            });
-        </script>
-    </div>
-@endsection
-
-@push('script')
     <!-- Datatables js -->
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 

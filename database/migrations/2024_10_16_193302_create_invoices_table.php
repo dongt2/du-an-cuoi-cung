@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             
-            $table->decimal('total_amount', 10, 2);
+            $table->integer('total_amount');
             $table->enum('status', ['paid', 'unpaid', 'canceled']);
             $table->dateTime('date');
             

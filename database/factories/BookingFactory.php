@@ -22,7 +22,7 @@ class BookingFactory extends Factory
             'showtime_id' => fake()->numberBetween(1, 10), 
             'seat_name' => 'ghế',
             'combo_id' => fake()->numberBetween(1, 10), 
-            'total_price' => fake()->randomFloat(0, 10, 500),
+            'total_price' => fake()->numberBetween(30, 500) * 1000,
         ];
     }
 }

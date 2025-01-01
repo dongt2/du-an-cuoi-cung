@@ -16,10 +16,14 @@ class Booking extends Model
     protected $fillable = [
         'user_id',
         'movie_id',
-        'showtime_id',
-        'seat_name',
-        'combo_id',
+        'order_code',
+
+        'showtime_date',
+        'showtime_time',
         'total_price',
+
+        'order_combo',
+        'voucher',
     ];
 
     public function user()

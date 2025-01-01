@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 class ScreenRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * Determine if the theme is authorized to make this request.
      */
     public function authorize(): bool
     {
@@ -22,16 +22,15 @@ class ScreenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'screen_name' => ['required', 'string', 'max:255'], // Thêm các quy tắc bổ sung
+            'screen_name' => ['required']
         ];
     }
+    // thông báo
 
-    public function messages()
-    {
+    public function messages(){
         return [
             'screen_name.required' => 'Phòng phim không được để trống',
-            'screen_name.string' => 'Phòng phim phải là chuỗi ký tự',
-            'screen_name.max' => 'Phòng phim không được vượt quá 255 ký tự',
+            'screen_name.min' => 'Phòng phim phải có ít nhất 10 ký tự',
         ];
     }
 }

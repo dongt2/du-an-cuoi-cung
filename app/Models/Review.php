@@ -17,8 +17,8 @@ class Review extends Model
         'movie_id',
         'user_id',
         'review_date',
+        'review_time',
         'comment',
-        'rating',
     ];
 
     public function movie()

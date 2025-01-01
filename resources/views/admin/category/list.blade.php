@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Movie
+    Category
 @endsection
 
 @push('style')

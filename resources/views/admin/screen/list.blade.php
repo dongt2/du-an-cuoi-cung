@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Screen
+    Movie
 @endsection
 
 @push('style')
@@ -44,7 +44,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách phòng</h5>
+                            <h5 class="card-title mb-0">Danh sách thể loại</h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">

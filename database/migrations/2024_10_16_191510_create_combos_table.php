@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('image'); 
             $table->string('combo_name', 255); 
             $table->string('short_description', 800);
-            $table->decimal('price', 10, 2); 
+            $table->integer('price');
             $table->timestamps();
         });
     }

@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới phim
+    Sửa phim
 @endsection
 
 @push('style')

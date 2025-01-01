@@ -412,4 +412,6 @@
 @endsection
 
 @push('script')
+    <!-- Widgets Init Js -->
+    <script src="{{ asset('assets/js/pages/analytics-dashboard.init.js') }}"></script>
 @endpush

@@ -2,25 +2,26 @@
 
 namespace App\Listeners;
 
-use App\Events\ExpiredShowtimesCleaned;
-use App\Services\ShowtimeService;
+use App\Events\ShowtimesUpdated;
+use App\Models\Showtime;
+use Carbon\Carbon;
 
 class CleanExpiredShowtimesListener
 {
-    protected $showtimeService;
-
-    public function __construct(ShowtimeService $showtimeService)
-    {
-        $this->showtimeService = $showtimeService;
-    }
-
     /**
      * Handle the event.
      *
+     * @param  mixed  $event
      * @return void
      */
-    public function handle(ExpiredShowtimesCleaned $event)
+    public function handle()
     {
-        $this->showtimeService->deleteExpiredShowtimes();
+        // Lấy tất cả các suất chiếu đã hết hạn
+        $expiredShowtimes = Showtime::where('showtime_date', '<', Carbon::now())->get();
+
+        // Nếu có suất chiếu đã hết hạn, xóa chúng
+        if ($expiredShowtimes->isNotEmpty()) {
+            Showtime::where('showtime_date', '<', Carbon::now())->delete();
+        }
     }
 }

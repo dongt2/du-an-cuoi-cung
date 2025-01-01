@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\ShowtimeUpdated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ShowtimeRequest;
+use App\Http\Requests\StoreShowtimeRequest;
+use App\Http\Requests\UpdateShowtimeRequest;
 use App\Models\Movie;
 use App\Models\Screen;
 use App\Models\Showtime;
@@ -53,7 +54,7 @@ class ShowtimeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ShowtimeRequest $request)
+    public function store(StoreShowtimeRequest $request)
     {
         // Debugging: Kiểm tra dữ liệu nhận được
         // dd($request->all());
@@ -71,9 +72,9 @@ class ShowtimeController extends Controller
         ];
         Showtime::create($data);
         // Phát sự kiện
-        // event(new ShowtimeUpdated());
+        // event(new ShowtimesUpdated());
 
-        return redirect()->route('admin.showtime.index');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -112,16 +113,9 @@ class ShowtimeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ShowtimeRequest $request, $showtime_id)
+    public function update(UpdateShowtimeRequest $request, $showtime_id)
     {
-        // Xác thực dữ liệu đầu vào
-        $request->validate([
-            'movie_id' => 'required|exists:movies,movie_id',
-            'screen_id' => 'required|exists:screens,screen_id',
-            'showtime_date' => 'required|date',
-            'time' => 'required|string' // giả định time là định dạng chuỗi 'H:i:s'
-        ]);
-
+        
         // Tìm Showtime dựa trên ID
         $showtime = Showtime::find($showtime_id);
 
@@ -139,7 +133,7 @@ class ShowtimeController extends Controller
         // Lưu thay đổi
         $showtime->save();
 
-        return redirect()->route('admin.showtime.index')->with('message', 'Cập nhật thành công');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -159,6 +153,6 @@ class ShowtimeController extends Controller
         $showtime->delete();
 
         // Chuyển hướng với thông báo thành công
-        return redirect()->route('admin.showtime.index');
+        return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
     }
 }

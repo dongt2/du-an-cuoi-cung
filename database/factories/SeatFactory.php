@@ -42,16 +42,16 @@ class SeatFactory extends Factory
             $places[] = 'G' . $i;
         }
         foreach (range(3, 16) as $i) {
+            $places[] = 'H' . $i;
+        }
+        foreach (range(5, 14) as $i) {
             $places[] = 'I' . $i;
         }
         foreach (range(5, 14) as $i) {
             $places[] = 'J' . $i;
         }
-        foreach (range(5, 14) as $i) {
-            $places[] = 'K' . $i;
-        }
         foreach (range(6, 13) as $i) {
-            $places[] = 'L' . $i;
+            $places[] = 'K' . $i;
         }
 
         // Đảm bảo chỉ số không vượt quá số lượng phần tử trong mảng places
@@ -62,10 +62,10 @@ class SeatFactory extends Factory
         // Xác định giá trị dựa trên chữ cái đầu tiên của place
         $firstLetter = substr($place, 0, 1);
         $price = match ($firstLetter) {
-            'A', 'B', 'C', 'D' => '10',
-            'E', 'F', 'G', 'I' => '20',
-            'J', 'K', 'L' => '30',
-            default => '10', // Mặc định là 10 nếu không khớp
+            'A', 'B', 'C', 'D' => '30000',
+            'E', 'F', 'G', 'H' => '50000',
+            'I', 'J', 'K' => '70000',
+            default => '30000', // Mặc định là 30000 nếu không khớp
         };
 
         return [

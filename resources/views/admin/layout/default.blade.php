@@ -14,6 +14,8 @@
         <meta name="author" content="Zoyothemes"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
+        {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+
 
         <!-- App favicon -->
         <link rel="shortcut icon" href="{{ asset('assets/images/favicon.ico') }}">
@@ -75,9 +77,6 @@
 
         <!-- for basic area chart -->
         <script src="../../../apexcharts.com/samples/assets/stock-prices.js"></script>
-
-        <!-- Widgets Init Js -->
-        <script src="{{ asset('assets/js/pages/analytics-dashboard.init.js') }}"></script>
 
         <!-- App js-->
         <script src="{{ asset('assets/js/app.js') }}"></script>

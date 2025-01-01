@@ -26,10 +26,10 @@
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Trang</a>
                     <ul>
-                        <li class="menu__nav-item"><a href="movie-page-left.html">Single movie (rigth sidebar)</a></li>
-                        <li class="menu__nav-item"><a href="movie-page-right.html">Single movie (left sidebar)</a></li>
-                        <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a></li>
-                        <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth sidebar)</a></li>
+                        <li class="menu__nav-item"><a href="{{ route('movie.categories') }}">Thể loại</a></li>
+                        <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li>
+                        {{-- <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a></li> --}}
+                        {{-- <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth sidebar)</a></li>
                         <li class="menu__nav-item"><a href="movie-list-right.html">Movies list (left sidebar)</a></li>
                         <li class="menu__nav-item"><a href="movie-list-full.html">Movies list (full widht)</a></li>
                         <li class="menu__nav-item"><a href="single-cinema.html">Single cinema</a></li>
@@ -42,7 +42,7 @@
                         <li class="menu__nav-item"><a href="contact.html">Contact us</a></li>
                         <li class="menu__nav-item"><a href="404.html">404 error</a></li>
                         <li class="menu__nav-item"><a href="coming-soon.html">Coming soon</a></li>
-                        <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li>
+                        <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li> --}}
                     </ul>
                 </li>
                 <li>
@@ -141,15 +141,24 @@
                 <div class="auth auth--home">
                     <div class="auth__show">
                         <span class="auth__image">
-                            <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
+                            @if (session('user.avata'))
+                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
+                            @else
+                                <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
+                            @endif
                         </span>
                     </div>
                     <a href="#" class="btn btn--sign btn--singin">
                         {{ session('user.user_name') }} <!-- Hiển thị user_name -->
                     </a>
                     <ul class="auth__function">
-                        <li><a href="#" class="auth__function-item">Tài khoản</a></li>
-                        <li><a href="#" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li><a href="{{ route('account.info') }}" class="auth__function-item">Tài khoản</a></li>
+                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li>
+                            @if (session('user.role') == 'Admin')
+                            <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
+                            @endif
+                        </li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
@@ -163,11 +172,30 @@
                 <a href="{{ route('login.index') }}" class="btn btn-md btn--warning btn--book btn-control--home">Đăng
                     nhập</a>
             @endif
-            <a href="{{ route('user.booking1') }}"
-                class="btn btn-md btn--warning btn--book btn-control--home">Đặt
-                vé</a>
-        </div>
 
+            <a href="{{ route('user.booking1') }}" class="btn btn-md btn--warning btn--book btn-control--home">Đặt
+                vé</a>
+
+        </div>
 
     </div>
 </header>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lấy phần tử ảnh và nút tên
+        const authShow = document.querySelector('.auth__show');
+        const btnSignIn = document.querySelector('.btn--singin');
+        const authFunction = document.querySelector('.auth__function');
+
+        if (authShow && btnSignIn && authFunction) {
+            // Hàm thêm hoặc gỡ bỏ class 'open-function'
+            const toggleAuthFunction = () => {
+                authFunction.classList.toggle('open-function');
+            };
+
+            // Gắn sự kiện click vào ảnh và tên
+            authShow.addEventListener('click', toggleAuthFunction);
+            btnSignIn.addEventListener('click', toggleAuthFunction);
+        }
+    });
+</script>

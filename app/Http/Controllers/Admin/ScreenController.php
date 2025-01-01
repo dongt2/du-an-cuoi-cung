@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ScreenRequest;
 use App\Models\Screen;
 use Illuminate\Http\Request;
 
@@ -29,11 +28,11 @@ class ScreenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ScreenRequest $request)
+    public function store(Request $request)
     {
-        // $request->validate([
-        //     'screen_name' => 'required|string|max:255',
-        // ]);
+        $request->validate([
+            'screen_name' => 'required|string|max:255',
+        ]);
 
         $data = [
             'screen_name' => $request->screen_name,
@@ -63,12 +62,12 @@ class ScreenController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ScreenRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
-        // $request->validate([
-        //     'screen_name' => 'required|string|max:255',
-        // ]);
-        
+        $request->validate([
+            'screen_name' => 'required|string|max:255',
+        ]);
+
         $screen = Screen::where('screen_id', $id)->first();
 
         $data = [
@@ -83,7 +82,7 @@ class ScreenController extends Controller
      */
     public function destroy(string $id)
     {
-        Screen::where('screen_id', $id)->delete();
+        Screen::where('Screen_id', $id)->delete();
         return redirect()->route('admin.screen.index');
     }
 }

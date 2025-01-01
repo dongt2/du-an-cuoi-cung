@@ -19,6 +19,9 @@ class TicketFactory extends Factory
     {
         return [
             'transaction_id' => fake()->numberBetween(1, 10),
+            'booking_id' => fake()->numberBetween(1, 10),
+            'qr_code' => 'qr_code',
+
         ];
     }
 }

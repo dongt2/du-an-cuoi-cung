@@ -30,9 +30,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script>
-                <![endif]-->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script>
+                    <![endif]-->
 @endsection
 
 @section('content')
@@ -50,6 +50,9 @@
         <p class="login__tracker">or</p>
 
         <div class="field-wrap">
+            @if (session('messageError'))
+                <h5 style="color: red;">{{ session('messageError') }}</h5>
+            @endif
             <input type='email' placeholder='Email' name='email' class="login__input">
             @error('email')
                 <span style="color: red;">{{ $message }}</span>
@@ -59,8 +62,10 @@
                 <span style="color: red;">{{ $message }}</span>
             @enderror
 
-            <input type='checkbox' id='#informed' class='login__check styled'>
-            <label for='#informed' class='login__check-info'>Ghi nhớ</label>
+            <div>
+                <input type='checkbox' id='#informed' class='login__check styled'>
+                <label for='#informed' class='login__check-info'>Ghi nhớ</label>
+            </div>
         </div>
 
         <div class="login__control">

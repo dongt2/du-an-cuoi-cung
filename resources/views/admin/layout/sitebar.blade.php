@@ -5,7 +5,7 @@
         <div id="sidebar-menu">
 
             <div class="logo-box">
-                <a class='logo logo-light' href='index.html'>
+                <a class='logo logo-light' href='{{ route('admin.dashboard') }}'>
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -13,7 +13,7 @@
                         <img src="{{ asset('assets/images/logo-light.png') }}" alt="" height="24">
                     </span>
                 </a>
-                <a class='logo logo-dark' href='index.html'>
+                <a class='logo logo-dark' href='{{ route('admin.dashboard') }}'>
                     <span class="logo-sm">
                         <img src="{{ asset('assets/images/logo-sm.png') }}" alt="" height="22">
                     </span>
@@ -28,18 +28,18 @@
                 <li class="menu-title">Menu</li>
 
                 <li>
-                    <li>
-                        <a class='tp-link' href='{{ route('admin.dashboard')}}'>
-                            <i data-feather="calendar"></i>
-                            <span> Dashboard </span>
-                        </a>
-                    </li>
-                    {{-- <a href="#sidebarDashboards" data-bs-toggle="collapse">
+                <li>
+                    <a class='tp-link' href='{{ route('admin.dashboard') }}'>
+                        <i data-feather="calendar"></i>
+                        <span> Dashboard </span>
+                    </a>
+                </li>
+                {{-- <a href="#sidebarDashboards" data-bs-toggle="collapse">
                         <i data-feather="home"></i>
                         <span> Dashboard </span>
                         <span class="menu-arrow"></span>
                     </a> --}}
-                    {{-- <div class="collapse" id="sidebarDashboards">
+                {{-- <div class="collapse" id="sidebarDashboards">
                         <ul class="nav-second-level">
                             <li>
                                 <a class='tp-link' href='index.html'>Analytical</a>
@@ -50,7 +50,7 @@
                         </ul>
                     </div> --}}
                 </li>
-    
+
                 <!-- <li>
                     <a href="landing.html" target="_blank">
                         <i data-feather="globe"></i>
@@ -167,6 +167,23 @@
                 </li> --}}
 
                 {{-- <li class="menu-title mt-2">Tổng quan</li> --}}
+                <li>
+                    <a href="#sidebarAuth" data-bs-toggle="collapse">
+                        <i data-feather="users"></i>
+                        <span> User </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarAuth">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.user.index') }}'>Danh sách user</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.user.create') }}'>Thêm user mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
                 <li>
                     <a href="#sidebarMovie" data-bs-toggle="collapse">
@@ -188,7 +205,7 @@
 
                 <li>
                     <a href="#sidebarCategory" data-bs-toggle="collapse">
-                        <i data-feather="pie-chart"></i>
+                        <i data-feather="alert-octagon"></i>
                         <span> Danh mục </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -206,7 +223,7 @@
 
                 <li>
                     <a href="#sidebarSeat" data-bs-toggle="collapse">
-                        <i data-feather="pie-chart"></i>
+                        <i data-feather="calendar"></i>
                         <span>Ghế</span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -215,48 +232,103 @@
                             <li>
                                 <a class='tp-link' href='{{ route('admin.seat.index') }}'>Quản lí ghế</a>
                             </li>
+                            {{-- <li>
+                                <a class='tp-link' href=''>Thêm bảng ghế</a>
+                            </li> --}}
                         </ul>
                     </div>
                 </li>
+
                 <li>
                     <a href="#sidebarScreen" data-bs-toggle="collapse">
-                        <i data-feather="pie-chart"></i>
-                        <span> Phòng </span>
+                        <i data-feather="file-text"></i>
+                        <span> Phòng chiếu </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="sidebarScreen">
                         <ul class="nav-second-level">
                             <li>
-                                <a class='tp-link' href='{{ route('admin.screen.index') }}'>Danh sách phòng</a>
+                                <a class='tp-link' href='{{ route('admin.screen.index') }}'>Danh sách phòng chiếu</a>
                             </li>
                             <li>
-                                <a class='tp-link' href='{{ route('admin.screen.create') }}'>Thêm phòng mới</a>
+                                <a class='tp-link' href='{{ route('admin.screen.create') }}'>Thêm phòng chiếu mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li>
                     <a href="#sidebarShowtime" data-bs-toggle="collapse">
-                        <i data-feather="pie-chart"></i>
-                        <span> Xuất chiếu </span>
+                        <i data-feather="briefcase"></i>
+                        <span> Xuất Chiếu </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="sidebarShowtime">
                         <ul class="nav-second-level">
                             <li>
-                                <a class='tp-link' href='{{ route('admin.showtime.index') }}'>Danh sách Xuất chiếu</a>
+                                <a class='tp-link' href='{{ route('admin.showtime.index') }}'>Danh sách xuất
+                                    chiếu</a>
                             </li>
                             <li>
-                                <a class='tp-link' href='{{ route('admin.showtime.create') }}'>Thêm Xuất chiếu mới</a>
+                                <a class='tp-link' href='{{ route('admin.showtime.create') }}'>Thêm xuất chiếu
+                                    mới</a>
                             </li>
                         </ul>
                     </div>
                 </li>
+
                 <li>
-                    <a class='tp-link' href='widgets.html'>
+                    <a href="#sidebarCombo" data-bs-toggle="collapse">
                         <i data-feather="aperture"></i>
-                        <span> Widgets </span>
+                        <span> Combo </span>
+                        <span class="menu-arrow"></span>
                     </a>
+                    <div class="collapse" id="sidebarCombo">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.combo.index') }}'>Danh sách combo</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.combo.create') }}'>Thêm combo mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="#sidebarVoucher" data-bs-toggle="collapse">
+                        <i data-feather="table"></i>
+                        <span> Voucher </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarVoucher">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.voucher.index') }}'>Danh sách voucher</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.voucher.create') }}'>Thêm voucher mới</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="#sidebarReview" data-bs-toggle="collapse">
+                        <i data-feather="pie-chart"></i>
+                        <span> Review </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarReview">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.review.index') }}'>Danh sách review</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.review.create') }}'>Thêm review mới</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
 
                 <li>

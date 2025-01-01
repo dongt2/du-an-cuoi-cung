@@ -34,24 +34,24 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-
             $user = Auth::user();
-
-            // Lưu thông tin người dùng vào session
             session([
                 'user' => [
                     'user_id' => $user->user_id,
                     'user_name' => $user->username,
                     'email' => $user->email,
+                    'avata' => $user->avata,
+                    'role' => $user->role,
                 ]
             ]);
 
-            // Đăng nhập thành công, chuyển đến trang chủ
+            if ($user->role === 'Admin') {
+                return redirect()->route('admin.dashboard');
+            }
             return redirect()->route('home');
         }
-
         return back()->withErrors([
-            'email' => 'Thông tin đăng nhập không chính xác.',
+            'password' => 'Thông tin đăng nhập không chính xác.',
         ]);
     }
 

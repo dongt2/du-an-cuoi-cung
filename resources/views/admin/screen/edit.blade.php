@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới phòng
+    Thêm mới phim
 @endsection
 
 @push('style')
@@ -45,9 +45,9 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Tên phòng</label>
+                                            <label class="form-label">Tên danh mục</label>
                                             <input type="text" class="form-control" id="" name="screen_name"
-                                                value="{{ $data->screen_name }}" placeholder="Tên phòng phim">
+                                                value="{{ $data->screen_name }}" placeholder="Tên danh mục">
                                             @error('screen_name')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
