@@ -152,8 +152,8 @@
                         {{ session('user.user_name') }} <!-- Hiển thị user_name -->
                     </a>
                     <ul class="auth__function">
-                        <li><a href="#" class="auth__function-item">Tài khoản</a></li>
-                        <li><a href="#" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li><a href="{{ route('account.info') }}" class="auth__function-item">Tài khoản</a></li>
+                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt vé</a></li>
                         <li>
                             @if (session('user.role') == 'Admin')
                             <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
