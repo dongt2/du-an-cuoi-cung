@@ -34,9 +34,50 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                            <![endif]-->
+                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                                                                                <![endif]-->
+    <style>
+        /* Đặt chung cho form */
+        form {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Đảm bảo các phần tử nằm trên một hàng */
+            gap: 10px;
+            /* Khoảng cách giữa các phần tử */
+            align-items: center;
+            /* Canh giữa theo chiều dọc */
+            margin-bottom: 20px;
+        }
+
+        /* Styling cho các ô chọn */
+        form select {
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            /* Tùy chỉnh kích thước */
+        }
+
+        /* Styling cho nút lọc */
+        form button {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            /* Đảm bảo không bị xuống dòng */
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -48,7 +89,7 @@
                 <form method="GET" action="{{ route('movie.categories') }}" class="mb-4">
 
                     <!-- Bộ lọc thể loại -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="category" class="form-control">
                             <option value="" hidden>Thể Loại</option>
                             @foreach ($categories as $category)
@@ -61,7 +102,7 @@
                     </div>
 
                     <!-- Bộ lọc năm -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="year" class="form-control">
                             <option value="">Năm</option>
                             @for ($year = now()->year; $year >= 2000; $year--)
@@ -72,7 +113,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="director" class="form-control">
                             <option value="" hidden>Đạo Diễn</option>
                             @foreach ($movies->unique('director')->pluck('director') as $director)
@@ -84,7 +125,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="actors" class="form-control">
                             <option value="" hidden>Diễn Viên</option>
                             @foreach ($movies->unique('actors')->pluck('actors') as $actors)
@@ -94,21 +135,19 @@
                             @endforeach
                         </select>
                     </div>
-
-
-
                     <!-- Nút lọc -->
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
                     </div>
                 </form>
             </div>
         </div>
+        <hr style="border: 1px solid #ccc; margin: 20px 0;">
         <!-- Danh sách phim -->
         <div class="row">
             @foreach ($movies as $movie)
-                <div class="movie movie--preview movie--full release">
-                    <div class="col-sm-3 col-md-2 col-lg-2">
+                <div class="movie movie--preview movie--full release" style="margin-top:0px;">
+                    <div class="col-sm-3 col-md-2  col-lg-2">
                         <div class="movie__images">
                             {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
                             <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
@@ -122,9 +161,9 @@
                     </div>
 
                     <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                        <a href='movie-page-full.html' class="movie__title link--huge">{{ $movie->title }}</a>
+                        <a href='movie-page-full.html' class="movie__title link--huge" style="margin-bottom: 7px">{{ $movie->title }}</a>
 
-                        <p class="movie__time">{{ $movie->duration }} min</p>
+                        <p class="movie__time" style="margin-bottom: 7px">{{ $movie->duration }} min</p>
 
                         <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a></p>
                         <p class="movie__option"><strong>Thể loại: </strong><a
@@ -144,21 +183,21 @@
                                 <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
                         </div>
 
-                        <div class="preview-footer">
-                            <div class="movie__rate">
-                                <div class="score"></div><span class="movie__rate-number">170 votes</span> <span
-                                    class="movie__rating">5.0</span>
+                        <div class="preview-footer" style=" background-color: #ffffff; margin-top: 20px;">
+                            <div class="movie__rate" style="display: flex; align-items: center; gap: 7px;">
+                                <div class="star" style="color: #FFD700; font-size: 30px; margin-top: 0px;">★</div><div class="rating" style="font-size:30px">8.5</div>
+                                <span class="movie__rate-number" style="font-size: 14px; color: #000000;">(170 votes)</span>
+                                {{-- <span class="movie__rating"
+                                    style="font-size: 16px; font-weight: bold; color: #333;">5.0</span> --}}
                             </div>
-
-
-                            {{-- <a href="#" class="movie__show-btn">Showtime</a> --}}
-
                         </div>
                     </div>
 
                     <div class="clearfix"></div>
+                    
 
                 </div>
+                <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">
             @endforeach
         </div>
 

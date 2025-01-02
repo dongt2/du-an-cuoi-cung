@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Review;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -45,7 +46,7 @@ class HomeController extends Controller
         if ($request->has('director') && $request->director) {
             $movies->where('director', $request->director);
         }
-        
+
         if ($request->has('actors') && $request->actors) {
             $movies->where('actors', $request->actors);
         }
@@ -63,26 +64,58 @@ class HomeController extends Controller
         return view('user.movie.categories', compact('categories', 'movies'));
     }
 
-    // Bộ lọc phim
-    // public function filter(Request $request)
-    // {
-    //     $query = Movie::query();
+    public function upcoming(Request $request)
+    {
+        // Lấy ngày hiện tại
+        $today = Carbon::now();
 
-    //     if ($request->has('actor') && $request->actor) {
-    //         $query->where('actors', 'like', '%' . $request->actor . '%');
-    //     }
+        // Query phim sắp chiếu (release_date lớn hơn ngày hiện tại)
+        $movies = Movie::query()
+            ->where('release_date', '>', $today);
 
-    //     if ($request->has('director') && $request->director) {
-    //         $query->where('director', 'like', '%' . $request->director . '%');
-    //     }
+        // dd($movies);
+        // Lọc theo thể loại
+        if ($request->has('category') && $request->category) {
+            $movies->where('category_id', $request->category);
+        }
 
-    //     if ($request->has('year') && $request->year) {
-    //         $query->whereYear('release_date', $request->year);
-    //     }
+        // Lọc theo năm
+        if ($request->has('year') && $request->year) {
+            $movies->whereYear('release_date', $request->year);
+        }
 
-    //     $movies = $query->with('category')->get();
-    //     return view('movie.filter', compact('movies'));
-    // }
+        // Lọc theo đạo diễn
+        if ($request->has('director') && $request->director) {
+            $movies->where('director', $request->director);
+        }
+
+        if ($request->has('actors') && $request->actors) {
+            $movies->where('actors', $request->actors);
+        }
+
+        // Sắp xếp nếu có yêu cầu
+        if ($request->has('sort') && $request->sort) {
+            if ($request->sort === 'most_viewed') {
+                $movies->orderBy('views', 'desc');
+            } elseif ($request->sort === 'newest') {
+                $movies->orderBy('release_date', 'desc');
+            }
+        }
+
+        // Lấy danh sách thể loại để hiển thị
+        $categoriesUpcoming = Category::all();
+
+        // Lấy danh sách đạo diễn và diễn viên duy nhất
+        $directors = Movie::select('director')->distinct()->pluck('director');
+        $actors = Movie::select('actors')->distinct()->pluck('actors');
+
+        // Phân trang kết quả
+        // $movies = $movies->paginate(10);
+        $movies = $movies->get();
+
+        // Trả về view kèm danh sách phim sắp chiếu
+        return view('user.movie.upcoming', compact('movies', 'categoriesUpcoming', 'directors', 'actors'));
+    }
 
     public function index()
     {

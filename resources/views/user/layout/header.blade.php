@@ -20,14 +20,18 @@
             <ul id="navigation">
                 <li>
                     <span class="sub-nav-toggle plus"></span>
-                    <a href="{{ route('movie.index') }}">Danh sách phim</a>
+                    <a href="#">Phim</a>
+                    <ul>
+                        <li class="menu__nav-item"><a href="{{ route('movie.index') }}">Danh sách phim</a></li>
+                        <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li>
+                    </ul>
                 </li>
                 <li>
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Trang</a>
                     <ul>
                         <li class="menu__nav-item"><a href="{{ route('movie.categories') }}">Thể loại</a></li>
-                        <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li>
+                        {{-- <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li> --}}
                         {{-- <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a></li> --}}
                         {{-- <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth sidebar)</a></li>
                         <li class="menu__nav-item"><a href="movie-list-right.html">Movies list (left sidebar)</a></li>
@@ -87,7 +91,7 @@
                         <li class="menu__nav-item"><a href="single-page-full.html">Single post (full widht)</a></li>
                     </ul>
                 </li>
-                <li>
+                {{-- <li>
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Thực đơn Mega</a>
                     <ul class="mega-menu container">
@@ -131,7 +135,7 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </nav>
 
@@ -142,7 +146,8 @@
                     <div class="auth__show">
                         <span class="auth__image">
                             @if (session('user.avata'))
-                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
+                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid"
+                                    style="border-radius: 4px;">
                             @else
                                 <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
                             @endif
@@ -153,10 +158,11 @@
                     </a>
                     <ul class="auth__function">
                         <li><a href="{{ route('account.info') }}" class="auth__function-item">Tài khoản</a></li>
-                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt
+                                vé</a></li>
                         <li>
                             @if (session('user.role') == 'Admin')
-                            <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
+                                <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
                             @endif
                         </li>
                         <li>

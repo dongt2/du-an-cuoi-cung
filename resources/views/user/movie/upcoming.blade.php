@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    AMovie - Movie list
+    AMovie - Upcoming Movie
 @endsection
 
 @section('style')
@@ -33,212 +33,191 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-            <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-            <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-        <![endif]-->
+                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                                            <![endif]-->
+    <style>
+        /* Đặt chung cho form */
+        form {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Đảm bảo các phần tử nằm trên một hàng */
+            gap: 10px;
+            /* Khoảng cách giữa các phần tử */
+            align-items: center;
+            /* Canh giữa theo chiều dọc */
+            margin-bottom: 20px;
+        }
+
+        /* Styling cho các ô chọn */
+        form select {
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            /* Tùy chỉnh kích thước */
+        }
+
+        /* Styling cho nút lọc */
+        form button {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            /* Đảm bảo không bị xuống dòng */
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 @endsection
 
 @section('content')
     <section class="container">
         <div class="col-sm-12">
-            <h2 class="page-heading">Movies</h2>
-
-            <div class="select-area">
-                <form class="select" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="1" selected='selected'>London</option>
-                        <option value="2">New York</option>
-                        <option value="3">Paris</option>
-                        <option value="4">Berlin</option>
-                        <option value="5">Moscow</option>
-                        <option value="3">Minsk</option>
-                        <option value="4">Warsawa</option>
-                        <option value="5">Kiev</option>
-                    </select>
-                </form>
-
-                <div class="datepicker">
-                    <span class="datepicker__marker"><i class="fa fa-calendar"></i>Date</span>
-                    <input type="text" id="datepicker" value='03/10/2014' class="datepicker__input">
-                </div>
-
-                <form class="select select--cinema" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="1" selected='selected'>Cineworld</option>
-                        <option value="2">Empire</option>
-                        <option value="3">Everyman</option>
-                        <option value="4">Odeon</option>
-                        <option value="5">Picturehouse</option>
-                    </select>
-                </form>
-
-                <form class="select select--film-category" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="2" selected='selected'>Children's</option>
-                        <option value="3">Comedy</option>
-                        <option value="4">Drama</option>
-                        <option value="5">Fantasy</option>
-                        <option value="6">Horror</option>
-                        <option value="7">Thriller</option>
-                    </select>
-                </form>
-
-            </div>
-
-            <div class="tags-area">
-                <div class="tags tags--unmarked">
-                    <span class="tags__label">Sorted by:</span>
-                    <ul>
-                        <li class="item-wrap"><a href="#" class="tags__item item-active" data-filter='all'>all</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='release'>release date</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='popularity'>popularity</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='comments'>comments</a></li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='ending'>ending soon</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <br><br>
-            <!-- Movie preview item -->
-            @foreach ($data as $item)
-                <div class="movie movie--preview movie--full release">
-                    <div class="col-sm-3 col-md-2 col-lg-2">
-                        <div class="movie__images">
-                            {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
-                            <img alt='' src="{{ Storage::url($item->cover_image) }}" width="170px" height="260px">
-                        </div>
-                        <div class="movie__feature">
-                            <a href="#" class="movie__feature-item movie__feature--comment">123</a>
-                            <a href="#" class="movie__feature-item movie__feature--video">7</a>
-                            <a href="#" class="movie__feature-item movie__feature--photo">352</a>
-                        </div>
+            <h2>Phim sắp chiếu</h2>
+            <div class="p-3 mb-2 bg-secondary text-white">
+                <form method="GET" action="{{ route('movie.upcoming') }}" class="mb-4">
+                    <!-- Bộ lọc thể loại -->
+                    <div class="col-md-3">
+                        <select name="category" class="form-control">
+                            <option value="" hidden>Thể Loại</option>
+                            @foreach ($categoriesUpcoming as $category)
+                                <option value="{{ $category->category_id }}"
+                                    {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                    {{ $category->category_name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
-                    <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                        <a href='movie-page-full.html' class="movie__title link--huge">{{ $item->title }}</a>
-
-                        <p class="movie__time">{{ $item->duration }} min</p>
-
-                        <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $item->country }}</a></p>
-                        <p class="movie__option"><strong>Thể loại: </strong><a
-                                href="#">{{ $item->category->category_name }}</a></p>
-                        <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $item->release_date }}</p>
-                        <p class="movie__option"><strong>Đạo diễn: </strong><a href="#">{{ $item->director }}</a>
-                        </p>
-                        <p class="movie__option"><strong>Diễn viên: </strong><a href="#">{{ $item->actors }}</a>, <a
-                                href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                                href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                                href="#">Jerry
-                                Ferrara</a>, <a href="#">Romany Malco</a> <a href="#">...</a></p>
-                        <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p>
-
-                        <div class="movie__btns">
-                            <a href="{{ route('movie.show', $item->movie_id) }}" class="btn btn-md btn--warning">Đặt vé
-                                <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
-                        </div>
-
-                        <div class="preview-footer">
-                            <div class="movie__rate">
-                                <div class="score"></div><span class="movie__rate-number">170 votes</span> <span
-                                    class="movie__rating">5.0</span>
-                            </div>
-
-
-                            {{-- <a href="#" class="movie__show-btn">Showtime</a> --}}
-                            
-                        </div>
+                    <!-- Bộ lọc năm -->
+                    <div class="col-md-3">
+                        <select name="year" class="form-control">
+                            <option value="">Năm</option>
+                            @for ($year = now()->year; $year >= 2000; $year--)
+                                <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endfor
+                        </select>
                     </div>
 
-                    <div class="clearfix"></div>
+                    <!-- Bộ lọc đạo diễn -->
+                    <div class="col-md-3">
+                        <select name="director" class="form-control">
+                            <option value="" hidden>Đạo Diễn</option>
+                            @foreach ($directors as $director)
+                                <option value="{{ $director }}"
+                                    {{ request('director') == $director ? 'selected' : '' }}>
+                                    {{ $director }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                    <!-- Time table (choose film start time)-->
-                    {{-- <div class="time-select">
-                        <div class="time-select__group group--first">
-                            <div class="col-sm-4">
-                                <p class="time-select__place">Cineworld</p>
-                            </div>
-                            <ul class="col-sm-8 items-wrap">
-                                <li class="time-select__item" data-time='09:40'>09:40</li>
-                                <li class="time-select__item" data-time='13:45'>13:45</li>
-                                <li class="time-select__item active" data-time='15:45'>15:45</li>
-                                <li class="time-select__item" data-time='19:50'>19:50</li>
-                                <li class="time-select__item" data-time='21:50'>21:50</li>
-                            </ul>
-                        </div>
+                    <!-- Bộ lọc diễn viên -->
+                    <div class="col-md-3">
+                        <select name="actors" class="form-control">
+                            <option value="" hidden>Diễn Viên</option>
+                            @foreach ($actors as $actor)
+                                <option value="{{ $actor }}" {{ request('actors') == $actor ? 'selected' : '' }}>
+                                    {{ $actor }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="time-select__group">
-                            <div class="col-sm-4">
-                                <p class="time-select__place">Empire</p>
-                            </div>
-                            <ul class="col-sm-8 items-wrap">
-                                <li class="time-select__item" data-time='10:45'>10:45</li>
-                                <li class="time-select__item" data-time='16:00'>16:00</li>
-                                <li class="time-select__item" data-time='19:00'>19:00</li>
-                                <li class="time-select__item" data-time='21:15'>21:15</li>
-                                <li class="time-select__item" data-time='23:00'>23:00</li>
-                            </ul>
-                        </div>
-
-                        <div class="time-select__group">
-                            <div class="col-sm-4">
-                                <p class="time-select__place">Curzon</p>
-                            </div>
-                            <ul class="col-sm-8 items-wrap">
-                                <li class="time-select__item" data-time='09:00'>09:00</li>
-                                <li class="time-select__item" data-time='11:00'>11:00</li>
-                                <li class="time-select__item" data-time='13:00'>13:00</li>
-                                <li class="time-select__item" data-time='15:00'>15:00</li>
-                                <li class="time-select__item" data-time='17:00'>17:00</li>
-                                <li class="time-select__item" data-time='19:0'>19:00</li>
-                                <li class="time-select__item" data-time='21:0'>21:00</li>
-                                <li class="time-select__item" data-time='23:0'>23:00</li>
-                                <li class="time-select__item" data-time='01:0'>01:00</li>
-                            </ul>
-                        </div>
-
-                        <div class="time-select__group">
-                            <div class="col-sm-4">
-                                <p class="time-select__place">Odeon</p>
-                            </div>
-                            <ul class="col-sm-8 items-wrap">
-                                <li class="time-select__item" data-time='10:45'>10:45</li>
-                                <li class="time-select__item" data-time='16:00'>16:00</li>
-                                <li class="time-select__item" data-time='19:00'>19:00</li>
-                                <li class="time-select__item" data-time='21:15'>21:15</li>
-                                <li class="time-select__item" data-time='23:00'>23:00</li>
-                            </ul>
-                        </div>
-
-                        <div class="time-select__group group--last">
-                            <div class="col-sm-4">
-                                <p class="time-select__place">Picturehouse</p>
-                            </div>
-                            <ul class="col-sm-8 items-wrap">
-                                <li class="time-select__item" data-time='17:45'>17:45</li>
-                                <li class="time-select__item" data-time='21:30'>21:30</li>
-                                <li class="time-select__item" data-time='02:20'>02:20</li>
-                            </ul>
-                        </div>
-                    </div> --}}
-                    <!-- end time table-->
-
-                </div>
-            @endforeach
-            <!-- end movie preview item -->
-
-
-            <div class="coloum-wrapper">
-                <div class="pagination paginatioon--full">
-                    <a href='#' class="pagination__prev">prev</a>
-                    <a href='#' class="pagination__next">next</a>
-                </div>
+                    <!-- Nút lọc -->
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                    </div>
+                </form>
             </div>
-
         </div>
+        <hr style="border: 1px solid #ccc; margin: 20px 0;">
+        <!-- Danh sách phim -->
+        @if ($movies->count() > 0)
+            <div class="row">
+                @foreach ($movies as $movie)
+                    <div class="movie movie--preview movie--full release">
+                        <div class="col-sm-3 col-md-2 col-lg-2">
+                            <div class="movie__images">
+                                {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
+                                <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
+                                    height="260px">
+                            </div>
+                            <div class="movie__feature">
+                                <a href="#" class="movie__feature-item movie__feature--comment">123</a>
+                                <a href="#" class="movie__feature-item movie__feature--video">7</a>
+                                <a href="#" class="movie__feature-item movie__feature--photo">352</a>
+                            </div>
+                        </div>
 
+                        <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
+                            <a href='movie-page-full.html' class="movie__title link--huge">{{ $movie->title }}</a>
+
+                            <p class="movie__time">{{ $movie->duration }} min</p>
+
+                            <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a>
+                            </p>
+                            <p class="movie__option"><strong>Thể loại: </strong><a
+                                    href="#">{{ $movie->category->category_name }}</a></p>
+                            <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}</p>
+                            <p class="movie__option"><strong>Đạo diễn: </strong><a
+                                    href="#">{{ $movie->director }}</a>
+                            </p>
+                            <p class="movie__option"><strong>Diễn viên: </strong><a
+                                    href="#">{{ $movie->actors }}</a>, <a href="#">Michael Douglas</a>, <a
+                                    href="#">Morgan Freeman</a>, <a href="#">Kevin Kline</a>, <a
+                                    href="#">Mary Steenburgen</a>, <a href="#">Jerry
+                                    Ferrara</a>, <a href="#">Romany Malco</a> <a href="#">...</a></p>
+                            {{-- <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p> --}}
+
+                            <div class="movie__btns">
+                                <a href="{{ route('movie.show', $movie->movie_id) }}" class="btn btn-md btn--warning">Đặt
+                                    vé
+                                    <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
+                            </div>
+
+                            <div class="preview-footer" style=" background-color: #ffffff; margin-top: 20px;">
+                                <div class="movie__rate" style="display: flex; align-items: center; gap: 7px;">
+                                    <div class="star" style="color: #FFD700; font-size: 30px; margin-top: 0px;">★</div>
+                                    <div class="rating" style="font-size:30px">8.5</div>
+                                    <span class="movie__rate-number" style="font-size: 14px; color: #000000;">(170
+                                        votes)</span>
+                                    {{-- <span class="movie__rating"
+                                        style="font-size: 16px; font-weight: bold; color: #333;">5.0</span> --}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                    </div>
+                    <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">
+                @endforeach
+            </div>
+            {{-- <div class="d-flex justify-content-center">
+                {{ $movies->links() }}
+            </div> --}}
+        @else
+            <p class="text-center">Hiện tại không có phim sắp chiếu.</p>
+        @endif
+
+        <div class="coloum-wrapper">
+            <div class="pagination paginatioon--full">
+                <a href='#' class="pagination__prev">prev</a>
+                <a href='#' class="pagination__next">next</a>
+            </div>
+        </div>
     </section>
 @endsection
 
