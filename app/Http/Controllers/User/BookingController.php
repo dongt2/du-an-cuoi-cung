@@ -25,7 +25,8 @@ class BookingController extends Controller
      * Display a listing of the resource.
      */
 
-    public function generateRandomOrderCode($length = 8) {
+    public function generateRandomOrderCode($length = 8)
+    {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -38,7 +39,7 @@ class BookingController extends Controller
     public function bookingStore1($id)
     {
         $data = Movie::where('movie_id', $id)->first();
-        if(Auth::user() == null){
+        if (Auth::user() == null) {
             return redirect()->route('login.index');
         } else {
 
@@ -56,12 +57,7 @@ class BookingController extends Controller
 
     public function viewBooking1()
     {
-
-        if (session('movie')) {
-            $data = Movie::where('movie_id', session('movie.movie_id'))->get();
-        } else {
-            $data = Movie::all();
-        }
+        $data = Movie::where('movie_id', session('movie.movie_id'))->get();
 
         $screen_ids = Showtime::where('movie_id', session('movie.movie_id'))->pluck('screen_id');
         $screens = Screen::whereIn('screen_id', $screen_ids)
@@ -89,16 +85,37 @@ class BookingController extends Controller
         $screen_id = $request->input('screen_id');
         $movie_id = $request->input('movie_id');
 
-        // Truy vấn và sắp xếp theo ngày và giờ
-        $showtimes = Showtime::where('movie_id', $movie_id)
-            ->where('screen_id', $screen_id)
+        // Lấy thời gian hiện tại + 15 phút
+        $currentTime = Carbon::now()->addMinutes(15);
+
+        // Truy vấn suất chiếu và thông tin duration từ bảng movies
+        $showtimes = Showtime::select('showtimes.*', 'movies.duration')
+            ->join('movies', 'movies.movie_id', '=', 'showtimes.movie_id')
+            ->where('showtimes.movie_id', $movie_id)
+            ->where('showtimes.screen_id', $screen_id)
+            ->where(function ($query) use ($currentTime) {
+                $query->where('showtime_date', '>', $currentTime->toDateString()) // Ngày lớn hơn ngày hiện tại
+                    ->orWhere(function ($query) use ($currentTime) {
+                        $query->where('showtime_date', '=', $currentTime->toDateString()) // Cùng ngày
+                            ->where('time', '>=', $currentTime->format('H:i:s')); // Thời gian >= hiện tại + 15 phút
+                    });
+            })
             ->orderBy('showtime_date')
             ->orderBy('time')
             ->get()
+            ->map(function ($showtime) {
+                $endTime = Carbon::createFromFormat('H:i:s', $showtime->time)
+                    ->addMinutes($showtime->duration)
+                    ->format('H:i');
+                $showtime->end_time = $endTime;
+                return $showtime;
+            })
             ->groupBy('showtime_date');
 
         return response()->json($showtimes);
     }
+
+
 
 
     public function bookingStore2(Request $request)
@@ -113,7 +130,7 @@ class BookingController extends Controller
                 'showtime_time' => $request->input('showtime_time'),
             ]
         ]);
-//        dd(session()->get('booking'));
+        //        dd(session()->get('booking'));
         return redirect()->route('user.booking2');
     }
 
@@ -141,7 +158,7 @@ class BookingController extends Controller
         session()->push('booking.seats', array_filter($request->all(), fn($key) => $key !== '_token' && $key !== 'price_ticket'));
         session(['booking.seats' => $request->except(['_token', 'price_ticket'])]);
         session(['booking.price_ticket' => $request->input('price_ticket')]);
-//         dd(session()->get('booking'));
+        //         dd(session()->get('booking'));
         return redirect()->route('user.booking3');
     }
 
@@ -155,22 +172,19 @@ class BookingController extends Controller
 
     public function getPriceCombo(Request $request)
     {
-            $combos = $request->input('combos');
+        $combos = $request->input('combos');
 
-            $price_combo = 0;
+        $price_combo = 0;
 
-                foreach ($combos as $combo) {
-                    $price_combo += $combo['price'] * $combo['quantity'];
-                }
-                session(['booking.price_combo' => $price_combo]);
-                session(['booking.combos' => $combos]);
+        foreach ($combos as $combo) {
+            $price_combo += $combo['price'] * $combo['quantity'];
+        }
+        session(['booking.price_combo' => $price_combo]);
+        session(['booking.combos' => $combos]);
 
-                $priceTotal = session(['booking.price_total']) + $price_combo;
-                session(['booking.price_total' => $priceTotal]);
-                return response()->json($combos);
-
-
-
+        $priceTotal = session(['booking.price_total']) + $price_combo;
+        session(['booking.price_total' => $priceTotal]);
+        return response()->json($combos);
     }
 
     public function getPriceVoucher(Request $request)
@@ -208,18 +222,18 @@ class BookingController extends Controller
     {
         $dataorder = session()->get('booking');
 
-//        dd($dataorder);
+        //        dd($dataorder);
         $data = $request->all();
 
         $code = $dataorder['order_code'];
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = route('user.vnpay_return');
-        $vnp_TmnCode = "LVYOOXSX";//Mã website tại VNPAY
+        $vnp_TmnCode = "LVYOOXSX"; //Mã website tại VNPAY
         $vnp_HashSecret = "L5NY1FEL473DG8W77E8G5J76N16VJJNR"; //Chuỗi bí mật
 
         $vnp_TxnRef = $code; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
         $vnp_OrderInfo = 'Thanh toán vé xem phim'; //nội dung thanh toán
-        $vnp_OrderType = 'Phimmoi Ticket ' .$vnp_TxnRef; //Loại đơn hàng
+        $vnp_OrderType = 'Phimmoi Ticket ' . $vnp_TxnRef; //Loại đơn hàng
         $vnp_Amount = $data['total'] * 100; //Số tiền thanh toán. Số tiền không có dấu phẩy
         $vnp_Locale = 'VN';
         $vnp_BankCode = 'NCB';
@@ -256,7 +270,6 @@ class BookingController extends Controller
         session('pending_payment', $dataorder);
 
         return redirect($vnp_Url . "?" . $query);
-
     }
 
     public function vnpay_return(Request $request)
@@ -283,7 +296,7 @@ class BookingController extends Controller
 
                 $data_order = session()->get('booking');
 
-//                dd($data_order);
+                //                dd($data_order);
 
                 $booking = Booking::create([
                     'user_id' => $data_order['user_id'],
@@ -309,12 +322,10 @@ class BookingController extends Controller
                 ]);
 
                 $ticket = Ticket::create([
-                    'user_id' => $data_order['user_id'],
                     'booking_id' => $booking->booking_id,
                     'transaction_id' => $transaction->transaction_id,
                     'seats' => json_encode($data_order['seats']),
                     'qr_code' => 'qr_code',
-                    'token' => $this->uuid()
                 ]);
 
 
@@ -348,12 +359,12 @@ class BookingController extends Controller
         $ticket = Ticket::where('transaction_id', session('data.transaction_id'))
             ->with('booking')
             ->first();
-// Decode the seats JSON string to an array
+        // Decode the seats JSON string to an array
         $ticket->seats = json_decode($ticket->seats, true);
 
-//        dd($ticket);
+        //        dd($ticket);
 
-        return view('user.booking.payment-success', compact( 'ticket'));
+        return view('user.booking.payment-success', compact('ticket'));
     }
 
     public function paymentFail()
@@ -402,20 +413,4 @@ class BookingController extends Controller
             return response()->json(['error' => 'An error occurred'], 500);
         }
     }
-
-    private function uuid()
-    {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0x0fff) | 0x4000,
-            random_int(0, 0x3fff) | 0x8000,
-            random_int(0, 0xffff),
-            random_int(0, 0xffff),
-            random_int(0, 0xffff)
-        );
-    }
-
 }

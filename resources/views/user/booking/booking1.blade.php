@@ -37,9 +37,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                            <![endif]-->
     <style>
         .screen-card {
             cursor: pointer;
@@ -64,6 +64,10 @@
             overflow-x: hidden;
             padding: 10px;
         }
+
+        .time-select .time-select__item:before {
+            width: 90px;
+        }
     </style>
 @endsection
 
@@ -73,7 +77,8 @@
         <div class="order-container">
             <div class="order">
                 <img class="order__images" alt='' src="{{ asset('images/tickets.png') }}">
-                <p class="order__title">Đặt vé <br><span class="order__descript">chúc bạn có thời gian xem phim vui vẻ</span></p>
+                <p class="order__title">Đặt vé <br><span class="order__descript">chúc bạn có thời gian xem phim vui
+                        vẻ</span></p>
             </div>
         </div>
         <div class="order-step-area">
@@ -86,27 +91,14 @@
     <div class="choose-film">
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                @if (count($data) == 1)
-                    <div class="choose-container choose-container--short">
-                        @foreach ($data as $item)
-                            <img alt="" src="{{ Storage::url($item->cover_image) }}" width="180" height="260"
-                                 style="margin-left: 210px;" data-film="{{ $item->title }}"
-                                 data-movie-id="{{ $item->movie_id }}">
-                            <p class="choose-film__title"></p>
-                        @endforeach
-                    </div>
-                @else
+                <div class="choose-container choose-container--short">
                     @foreach ($data as $item)
-                        <div class="swiper-slide" data-film="{{ $item->title }}" data-movie-id="{{ $item->movie_id }}"
-                             onclick="getScreens(this)">
-                            <div class="film-images">
-                                <img alt="" src="{{ Storage::url($item->cover_image) }}" width="260"
-                                     height="260">
-                            </div>
-                            <p class="choose-film__title">{{ $item->title }}</p>
-                        </div>
+                        <img alt="" src="{{ Storage::url($item->cover_image) }}" width="180" height="260"
+                            style="margin-left: 210px;" data-film="{{ $item->title }}"
+                            data-movie-id="{{ $item->movie_id }}">
+                        <p class="choose-film__title"></p>
                     @endforeach
-                @endif
+                </div>
             </div>
         </div>
     </div>
@@ -137,7 +129,7 @@
                             @foreach ($screens as $item)
                                 <div class="col-md-2 mb-4" style="padding: 10px; box-sizing: border-box;">
                                     <div class="screen-card" data-screen-id="{{ $item->screen_id }}"
-                                         data-screen-name="{{ $item->screen_name }}" onclick="getShowtimes(this)">
+                                        data-screen-name="{{ $item->screen_name }}" onclick="getShowtimes(this)">
                                         <span class="screen-name">{{ $item->screen_name }}</span>
                                     </div>
                                 </div>
@@ -176,15 +168,15 @@
     <form id='film-and-time' class="booking-form" method='post' action='{{ route('user.bookingStore2') }}'>
         @csrf
         <input type="text" name="movie_id" class="choosen-movie-id" id="chosen-movie-id"
-               @if (count($data) === 1) value="{{ $data->first()->movie_id }}" @endif>
+            value="{{ $data->first()->movie_id }}">
         <input type='text' name='screen_id' class="choosen-screen" id="chosen-screen-id">
         <input type='text' name='showtime_date' class="choosen-cinema" id="chosen-showtime-date">
         <input type='text' name='showtime_time' class="choosen-time" id="chosen-time">
 
         <style>
-            /* #film-and-time input {
+            #film-and-time input {
                         display: block;
-                    } */
+                    }
         </style>
 
         <div class="booking-pagination">
@@ -347,10 +339,15 @@
                 const groupElement = document.createElement('div');
                 groupElement.classList.add('time-select__group');
 
+                // Chuyển đổi định dạng ngày từ yyyy-mm-dd sang dd/mm/yyyy
+                const [year, month, day] = date.split('-'); // Tách các thành phần ngày
+                const formattedDate = `${day}/${month}/${year}`; // Ghép lại theo định dạng dd/mm/yyyy
+
                 // Thêm ngày vào nhóm
                 const dateElement = document.createElement('div');
                 dateElement.classList.add('col-sm-3');
-                dateElement.innerHTML = `<p class="time-select__place">${date}</p>`;
+                dateElement.innerHTML =
+                `<p class="time-select__place">${formattedDate}</p>`; // Sử dụng ngày đã định dạng
                 groupElement.appendChild(dateElement);
 
                 // Thêm các suất chiếu (theo giờ) vào nhóm
@@ -358,33 +355,30 @@
                 listElement.classList.add('col-sm-6', 'items-wrap');
 
                 showtimeGroup.forEach(function(showtime) {
-                    // Chỉ lấy giờ và phút, bỏ qua giây
-                    const timeOnly = showtime.time.substring(0, 5); // Giữ lại phần "HH:MM"
+                    const timeOnly = showtime.time.substring(0, 5); // Lấy giờ bắt đầu (HH:MM)
+                    const endTime = showtime.end_time; // Lấy giờ kết thúc từ dữ liệu
 
                     const timeElement = document.createElement('li');
                     timeElement.classList.add('time-select__item');
                     timeElement.setAttribute('data-time', timeOnly);
-                    timeElement.setAttribute('data-showtime-date', date); // Lưu ngày suất chiếu
-                    timeElement.textContent = timeOnly;
+                    timeElement.setAttribute('data-end-time', endTime);
+                    timeElement.textContent =
+                        `${timeOnly} - ${endTime}`; // Hiển thị giờ bắt đầu - giờ kết thúc
 
                     timeElement.addEventListener('click', function() {
-                        // Gán giá trị vào các input tương ứng
                         document.getElementById('chosen-showtime-date').value = date;
                         document.getElementById('chosen-time').value = timeOnly;
 
-                        // Gán date-time vào phần hiển thị (theo id choosen-time)
-                        const chosenDateTime = `${date} - ${timeOnly}`; // Kết hợp ngày và giờ
-                        document.getElementById('choosen-time').textContent =
-                            chosenDateTime; // Hiển thị lên phần #choosen-time
+                        const chosenDateTime =
+                        `${formattedDate} và ${timeOnly} - ${endTime}`; // Hiển thị ngày/tháng/năm
+                        document.getElementById('choosen-time').textContent = chosenDateTime;
 
-                        // Loại bỏ class 'active' khỏi tất cả các phần tử trong toàn bộ danh sách
                         const allTimeElements = timeSelectContainer.querySelectorAll(
                             '.time-select__item');
                         allTimeElements.forEach(function(item) {
                             item.classList.remove('active');
                         });
 
-                        // Thêm class 'active' vào phần tử vừa click
                         timeElement.classList.add('active');
                     });
 
@@ -396,9 +390,8 @@
                 // Thêm nhóm vào container
                 timeSelectContainer.appendChild(groupElement);
             });
+
         }
-
-
     </script>
     <!-- JavaScript-->
     <!-- jQuery 1.9.1-->
