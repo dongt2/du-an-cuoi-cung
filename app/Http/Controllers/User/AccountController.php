@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Review;
 use App\Models\Ticket;
 use http\Env\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class AccountController extends Controller
 {
     public function showAccountInfo()
     {
+
         $user = Auth::user();
         return view('user.accounts.account', compact('user'));
     }
@@ -60,14 +62,38 @@ class AccountController extends Controller
     {
         $user = Auth::user();
         $bookings = Booking::where('user_id', $user->user_id)->get()->sortByDesc('created_at');
+
         return view('user.accounts.booking-history', compact('bookings'));
     }
 
     public function showBookingDetail($id)
     {
-        $booking = Ticket::where('booking_id', $id)->get();
-        dd($booking);
-        return view('user.accounts.booking-detail', compact('booking'));
+        $ticket = Ticket::where('booking_id', $id)
+            ->with('transaction', 'booking')
+            ->first(); // Use first() to get a single Ticket instance
+
+        return view('user.accounts.ticket-detail', compact('ticket'));
+    }
+
+    public function storeReviewForm(\Illuminate\Http\Request $request, $id)
+    {
+            $ticket = Ticket::where('ticket_id', $id)->first();
+       if($request->isMethod('post')){
+
+           $review = new Review();
+           $review->user_id = Auth::user()->user_id;
+           $review->movie_id = $ticket->booking->movie_id;
+           $review->review_date = date('Y-m-d');
+           $review->review_time = date('H:i:s');
+           $review->comment = $request->comment;
+           $review->rating = $request->rating;
+           $review->save();
+
+           $ticket->token = '0';
+           $ticket->save();
+
+           return redirect()->route('movie.show', $ticket->booking->movie_id)->with('success', 'Đánh giá của bạn đã được gửi thành công');
+       }
     }
 
 }

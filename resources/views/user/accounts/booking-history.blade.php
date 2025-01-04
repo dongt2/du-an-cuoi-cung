@@ -128,7 +128,8 @@
                                 <td>{{ number_format($booking->total_price, 0,'.', '.') }}đ</td>
 
                                 <td>{{ $booking->created_at->format('d/m/Y') }}</td>
-                                <td>{{ $booking->status }}</td> {{-- 1: pending, 2: confirmed, 3: canceled --}}
+                                <td>Trang thai vé</td> {{-- 1: pending, 2: confirmed, 3: canceled --}}
+
                                 <td><a href="{{ route('account.booking-detail', $booking->booking_id) }}">View Details</a></td>
                             </tr>
                         @endforeach

@@ -309,10 +309,12 @@ class BookingController extends Controller
                 ]);
 
                 $ticket = Ticket::create([
+                    'user_id' => $data_order['user_id'],
                     'booking_id' => $booking->booking_id,
                     'transaction_id' => $transaction->transaction_id,
                     'seats' => json_encode($data_order['seats']),
                     'qr_code' => 'qr_code',
+                    'token' => $this->uuid()
                 ]);
 
 
@@ -399,6 +401,21 @@ class BookingController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'An error occurred'], 500);
         }
+    }
+
+    private function uuid()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0x0fff) | 0x4000,
+            random_int(0, 0x3fff) | 0x8000,
+            random_int(0, 0xffff),
+            random_int(0, 0xffff),
+            random_int(0, 0xffff)
+        );
     }
 
 }

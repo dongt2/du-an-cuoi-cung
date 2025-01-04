@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('review_date');
             $table->time('review_time');
             $table->string('comment', 1000);
+            $table->integer('rating');
 
             $table->timestamps();
         });

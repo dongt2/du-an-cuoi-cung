@@ -15,12 +15,18 @@ return new class extends Migration
             $table->bigIncrements('ticket_id');
             $table->unsignedBigInteger('transaction_id');
             $table->unsignedBigInteger('booking_id');
+            $table->unsignedBigInteger('user_id');
+
+
             $table->string('seats');
             $table->string('qr_code');
+
+            $table->string('token')->nullable();
 
 
             $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->onDelete('cascade');
             $table->foreign('booking_id')->references('booking_id')->on('bookings')->onDelete('cascade');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
 
             $table->index('transaction_id', 'booking_id');
             $table->timestamps();

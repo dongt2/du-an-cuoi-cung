@@ -82,8 +82,28 @@
             position: absolute;
             top: 3px;
             left: 3px;
-        }   
+        }
+        .rating-display {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+        }
+
+        .rating-display label {
+            position: relative;
+            width: 1em;
+            font-size: 1.5rem;
+            color: #FFD700;
+            pointer-events: none;
+        }
+
+        .rating-display label::before {
+            content: "★";
+            position: absolute;
+            opacity: 1;
+        }
     </style>
+
 @endsection
 
 @section('content')
@@ -178,7 +198,15 @@
                     </div>
                 @endif
 
+{{--                @php--}}
+{{--                $ticket = $ticket->toArray();--}}
+{{--                $ticket = $ti--}}
+{{--                    dd($ticket)--}}
+{{--                @endphp--}}
+
                 <div class="comment-wrapper">
+                    @if ($ticket = 0)
+                    <h3 class="comment-title">Viết bình luận</h3>
                     <form id="comment-form" class="comment-form" method='post' action="{{ route('movie.store') }}">
                         @csrf
                         <input type="hidden" name="movie_id" value="{{ $movie_id }}">
@@ -187,31 +215,32 @@
                         <label class="comment-form__info">Còn lại <span id="remaining-chars">250</span> kí tự</label>
                         <button type='submit' class="btn btn-md btn--danger comment-form__btn">Thêm comment</button>
                     </form>
+                    @endif
+                        <div class="comment-sets" id="comment-list">
+                            <div class="comments-container">
+                                @foreach ($reviews as $item)
+                                    <div class="comment">
+                                        <div class="comment__images">
+                                            @if (session('user.avata'))
+                                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
+                                            @else
+                                                <img alt='' src="{{ asset('images/comment/avatar.jpg') }}">
+                                            @endif
+                                        </div>
 
-                    <div class="comment-sets" id="comment-list">
-                        <!-- Chứa các bình luận -->
-                        <div class="comments-container">
-                            @foreach ($reviews as $item)
-                                <div class="comment">
-                                    <div class="comment__images">
-                                        @if (session('user.avata'))
-                                            <img src="{{ Storage::url(session('user.avata')) }}" alt=""
-                                                class="img-fluid" style="border-radius: 4px;">
-                                        @else
-                                            <img alt='' src="{{ asset('images/comment/avatar.jpg') }}">
-                                        @endif
+                                        <a href='#' class="comment__author"><span class="social-used fa fa-facebook"></span>{{ $item->user->username }}</a>
+                                        <p class="comment__date">{{ $item->review_date }} | {{ $item->review_time }}</p>
+                                        <p class="comment__message" style="word-wrap: break-word; white-space: normal;">{{ $item->comment }}</p>
+                                        <div class="rating-display">
+
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <label>{{ $i <= $item->rating ? '★' : '☆' }}</label>
+                                            @endfor
+                                        </div>
                                     </div>
-
-                                    <a href='#' class="comment__author"><span
-                                            class="social-used fa fa-facebook"></span>{{ $item->user->username }}</a>
-                                    <p class="comment__date">{{ $item->review_date }} | {{ $item->review_time }}</p>
-                                    <p class="comment__message" style="word-wrap: break-word; white-space: normal;">
-                                        {{ $item->comment }}</p>
-                                    {{-- <a href='#' class="comment__reply">Hồi đáp</a> --}}
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
 
                     {{-- <div class="comment-more">
                         <a href="javascript:void(0);" id="load-more-comments" class="watchlist">Hiển thị thêm bình

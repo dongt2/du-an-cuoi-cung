@@ -21,7 +21,8 @@ class ReviewFactory extends Factory
             'user_id' => fake()->numberBetween(1, 10),
             'review_date' => fake()->date(),
             'review_time' => fake()->time('H:i'),
-            'comment' => fake()->text(500), 
+            'comment' => fake()->text(500),
+            'rating' => fake()->numberBetween(1, 5),
         ];
     }
 }

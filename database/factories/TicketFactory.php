@@ -20,7 +20,10 @@ class TicketFactory extends Factory
         return [
             'transaction_id' => fake()->numberBetween(1, 10),
             'booking_id' => fake()->numberBetween(1, 10),
+            'user_id' => fake()->numberBetween(1, 10),
+            'seats' => 'seats',
             'qr_code' => 'qr_code',
+            'token' => fake()->uuid(),
 
         ];
     }

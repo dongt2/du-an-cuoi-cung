@@ -117,4 +117,6 @@ Route::prefix('account')
     Route::get('/booking-history/{id}', [AccountController::class, 'showBookingDetail'])->name('booking-detail');
 
 
+    Route::post('/comment/{id}', [AccountController::class, 'storeReviewForm'])->name('comment');
 });
+

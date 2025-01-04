@@ -12,15 +12,17 @@ class Ticket extends Model
     protected $primaryKey = 'ticket_id';
 
     protected $fillable = [
+        'user_id',
         'transaction_id',
         'booking_id',
         'seats',
         'qr_code',
+        'token',
     ];
 
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->belongsTo(Transaction::class, 'transaction_id');
     }
     public function booking()
     {

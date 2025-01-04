@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Review;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -92,7 +94,7 @@ class HomeController extends Controller
         // $time_showtime = Showtime::where('movie_id', $id)
         // ->select('time')
         // ->get();
-        
+
         // $time_movie = Movie::where('movie_id', $id)
         // ->select('duration')
         // ->get();
@@ -106,7 +108,7 @@ class HomeController extends Controller
         // $time_format = $time_format * 60;
         // $time_format = $time_format + strtotime($time_showtime[0]->time);
         // $time_format = date("H:i", $time_format);
-        
+
 
 
 
@@ -126,8 +128,11 @@ class HomeController extends Controller
             ->groupBy(function ($item) {
                 return $item->showtime_date . ' - ' . $item->screen->screen_name;
             });
+        $ticket = Ticket::where('user_id', Auth::user()->user_id)
+            ->select('token');
+//    dd($ticket);
         $movie_id = $id;
-        return view('user.movie.show', compact('data', 'reviews', 'showtimes', 'movie_id'));
+        return view('user.movie.show', compact('data', 'reviews', 'showtimes', 'movie_id', 'ticket'));
     }
 
     /**
