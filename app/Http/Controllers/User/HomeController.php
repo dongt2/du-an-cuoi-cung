@@ -128,8 +128,12 @@ class HomeController extends Controller
             ->groupBy(function ($item) {
                 return $item->showtime_date . ' - ' . $item->screen->screen_name;
             });
-        $ticket = Ticket::where('user_id', Auth::user()->user_id)
+        if(isset(Auth::user()->user_id)){
+            $ticket = Ticket::where('user_id', Auth::user()->user_id)
             ->select('token');
+        } else {
+            $ticket = null;
+        }
 //    dd($ticket);
         $movie_id = $id;
         return view('user.movie.show', compact('data', 'reviews', 'showtimes', 'movie_id', 'ticket'));

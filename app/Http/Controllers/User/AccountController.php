@@ -71,8 +71,11 @@ class AccountController extends Controller
         $ticket = Ticket::where('booking_id', $id)
             ->with('transaction', 'booking')
             ->first(); // Use first() to get a single Ticket instance
+        $review = Review::where('user_id', Auth::user()->user_id)
+            ->where('movie_id', $ticket->booking->movie_id)
+            ->first();
 
-        return view('user.accounts.ticket-detail', compact('ticket'));
+        return view('user.accounts.ticket-detail', compact('ticket', 'review'));
     }
 
     public function storeReviewForm(\Illuminate\Http\Request $request, $id)
