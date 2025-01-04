@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới danh mục
+    Thêm mới phim
 @endsection
 
 @push('style')
@@ -45,7 +45,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Tên thể loại</label>
                                             <input type="text" class="form-control" id="" name="category_name"
-                                                placeholder="Tên danh mục">
+                                                placeholder="Ví dụ: abc">
                                             @error('category_name')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

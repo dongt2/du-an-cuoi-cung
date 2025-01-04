@@ -115,7 +115,7 @@ class ShowtimeController extends Controller
      */
     public function update(UpdateShowtimeRequest $request, $showtime_id)
     {
-        
+
         // Tìm Showtime dựa trên ID
         $showtime = Showtime::find($showtime_id);
 

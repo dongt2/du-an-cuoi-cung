@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreScreenRequest;
+use App\Http\Requests\UpdateScreenRequest;
 use App\Models\Screen;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,7 @@ class ScreenController extends Controller
     public function index()
     {
         $data = Screen::all();
+
         return view('admin.screen.list', compact('data'));
     }
 
@@ -28,18 +31,15 @@ class ScreenController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreScreenRequest $request)
     {
-        $request->validate([
-            'screen_name' => 'required|string|max:255',
-        ]);
-
         $data = [
             'screen_name' => $request->screen_name,
         ];
 
         Screen::create($data);
-        return redirect()->route('admin.screen.index');
+
+        return redirect()->route('admin.screen.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -55,26 +55,24 @@ class ScreenController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Screen::where('screen_id', $id)->first();
+        $data = Screen::findOrFail($id);
+
         return view('admin.screen.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateScreenRequest $request, string $id)
     {
-        $request->validate([
-            'screen_name' => 'required|string|max:255',
-        ]);
-
-        $screen = Screen::where('screen_id', $id)->first();
+        $screen = Screen::findOrFail($id);
 
         $data = [
             'screen_name' => $request->screen_name,
         ];
         $screen->update($data);
-        return redirect()->route('admin.screen.index');
+
+        return redirect()->route('admin.screen.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -82,7 +80,10 @@ class ScreenController extends Controller
      */
     public function destroy(string $id)
     {
-        Screen::where('Screen_id', $id)->delete();
-        return redirect()->route('admin.screen.index');
+        $screen = Screen::findOrFail($id);
+
+        $screen->delete();
+
+        return redirect()->route('admin.screen.index')->with('success', 'Thao tác thành công');
     }
 }

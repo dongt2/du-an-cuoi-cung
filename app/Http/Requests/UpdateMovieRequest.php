@@ -26,111 +26,112 @@ class UpdateMovieRequest extends FormRequest
             'title' => [
                 'required',
                 'string',
-                'min:3',
                 'max:255',
                 Rule::unique('movies', 'title')->ignore($this->route('movie'), 'movie_id'),
             ],
+            'cover_image' => [
+                'nullable',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:2048',
+            ],
             'duration' => [
                 'required',
-                'string',
+                'integer',
                 'min:1',
-                'max:255',
+                'max:1000',
             ],
             'country' => [
                 'required',
                 'string',
-                'min:1',
                 'max:255',
-            ],
-            'description' => [
-                'required',
-                'string',
-                'min:10',
-                'max:500',
-                'regex:/^[^<>]*$/', // Không cho phép các ký tự '<' và '>'
             ],
             'year' => [
                 'required',
                 'integer',
-                'digits:4',       // Phải đúng 4 chữ số
-                'between:1900,'.date('Y'),  // Nằm trong khoảng từ 1900 đến năm hiện tại
+                'digits:4',
+                'between:1800,' .date('Y'),
             ],
-            'release_date' => [
+            'director' => [
                 'required',
-                'date',
-
+                'string',
+                'max:255',
             ],
             'actors' => [
                 'required',
                 'string',
-                'min:3',
                 'max:255',
-            ],
-            'image' => [
-                'image',                    // Phải là một file ảnh
-                'mimes:jpeg,png,jpg',       // Định dạng file là jpeg, png hoặc jpg
-            ],
-            'trailer_url' => [
-                'required',               // Bắt buộc phải có giá trị
-                'url',                    // Phải là URL hợp lệ
-                'max:255',                // Giới hạn độ dài URL không quá 255 ký tự
-                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+$/', // Chỉ chấp nhận URL từ YouTube hoặc Vimeo
             ],
             'category_id' => [
                 'required',
+                'exists:categories,category_id'
+            ],
+            'description' => [
+                'required',
+                'string',
+                'max:500',
+            ],
+            'trailer_url' => [
+                'nullable',
+                'url',
+                'regex:/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be|vimeo\.com)\/.+$/', // Chỉ chấp nhận URL từ YouTube hoặc Vimeo
+            ],
+            'release_date' => [
+                'required',
+                'date',
+                'before_or_equal:today',
             ],
         ];
     }
 
     public function messages(){
         return [
-            'title.required' => 'Trường tên không được bỏ trống',
-            'title.string' => 'Trường tên phải là chuỗi ký tự.',
-            'title.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-            'title.max' => 'Trường tên không được vượt quá 255 ký tự.',
-            'title.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-            'title.unique' => 'Tên phim đã tồn tại.', // Thông báo lỗi khi bị trùng
+            'title.required' => 'Trường title không bỏ trống',
+            'title.string'   => 'Phải là một chuối ký tự',
+            'title.max'      => 'Tối đa 255 ký tự',
+            'title.unique' => 'Tên phim đã tồn tại.',
 
-            'duration.required' => 'Trường thời lượng không được bỏ trống',
-            'duration.string' => 'Trường thời lượng phải là chuỗi ký tự.',
-            'duration.min' => 'Trường thời lượng phải có ít nhất 3 ký tự.',
-            'duration.max' => 'Trường thời lượng không được vượt quá 255 ký tự.',
+            'cover_image.nullable'   =>'Ảnh đại diện có thể để trống',
+            'cover_image.image'   => 'Ảnh đại diện phải là một file ảnh',
+            'cover_image.mimes'   => 'Ảnh đại diện phải có định dạng: jpeg, png, hoặc jpg',
+            'cover_image.max'   => 'Ảnh đại diện max 2048',
 
-            'country.required' => 'Trường quốc gia không được bỏ trống',
-            'country.string' => 'Trường quốc gia phải là chuỗi ký tự.',
-            'country.min' => 'Trường quốc gia phải có ít nhất 3 ký tự.',
-            'country.max' => 'Trường quốc gia không được vượt quá 255 ký tự.',
-            'country.regex' => 'Trường quốc gia không được chứa ký tự đặc biệt.',
+            'duration.required' => 'Trường không được bỏ trống',
+            'duration.integer' => 'Trường phải là số nguyên',
+            'duration.min' => 'Min 1 ký tự',
+            'duration.max' => 'Max 1000 ký tự',
 
-            'description.required' => 'Trường mô tả không được bỏ trống.',
-            'description.string' => 'Trường mô tả phải là chuỗi ký tự.',
-            'description.min' => 'Trường mô tả phải có ít nhất 10 ký tự.',
-            'description.max' => 'Trường mô tả không được vượt quá 500 ký tự.',
-            'description.regex' => 'Trường mô tả không được chứa các ký tự đặc biệt như < hoặc >.',
+            'country.required'  => 'Trường không được bỏ trống',
+            'country.string'  => 'Trường phải là một chuỗi',
+            'country.max'  => 'Max 255 ký tự',
 
-            'year.required' => 'Trường năm không được bỏ trống.',
-            'year.integer' => 'Trường năm phải là số nguyên.',
-            'year.digits' => 'Trường năm phải có đúng 4 chữ số.',
-            'year.between' => 'Trường năm phải nằm trong khoảng từ 1900 đến '.date('Y').'.',
+            'year.required'  => 'Trường không được bỏ trống',
+            'year.integer'  => 'Trường năm phải là số nguyên',
+            'year.digits'  => 'Trường năm phải có đúng 4 chữ số',
+            'year.between'  => 'Trường năm phải nằm trong khoảng từ 1900 đến '.date('Y').'.',
 
-            'release_date.required' => 'Trường ngày xuất bản không được bỏ trống',
-            'release_date.date' => 'Trường ngày xuất bản phải là một ngày hợp lệ.',
+            'director.required'  => 'Trường không được bỏ trống',
+            'director.string'  => 'Trường phải là một chuỗi',
+            'director.max'  => 'Max 255 ký tự',
 
-            'actors.required' => 'Trường diễn viên không được bỏ trống',
-            'actors.string' => 'Trường diễn viên phải là chuỗi ký tự.',
-            'actors.min' => 'Trường diễn viên phải có ít nhất 3 ký tự.',
-            'actors.max' => 'Trường diễn viên không được vượt quá 255 ký tự.',
-            'actors.regex' => 'Trường diễn viên không được chứa ký tự đặc biệt.',
+            'actors.required'  => 'Trường không được bỏ trống',
+            'actors.string'  => 'Trường phải là một chuỗi',
+            'actors.max'  => 'Max 255 ký tự',
 
-            'image.image' => 'Ảnh đại diện phải là một file ảnh.',
-            'image.mimes' => 'Ảnh đại diện phải có định dạng: jpeg, png, hoặc jpg.',
+            'category_id.required' => 'Trường thể loại không bỏ trống',
+            'category_id.exists'   => 'Id đã có',
 
-            'trailer_url.required' => 'Trường URL của trailer không được bỏ trống.',
-            'trailer_url.url' => 'Trường URL của trailer phải là một URL hợp lệ.',
-            'trailer_url.max' => 'Trường URL của trailer không được vượt quá 255 ký tự.',
-            'trailer_url.regex' => 'URL của trailer phải thuộc YouTube hoặc Vimeo.',
+            'description.required'  => 'Trường không được bỏ trống',
+            'description.string'  => 'Trường phải là một chuỗi',
+            'description.max'  => 'Max 500 ký tự',
 
-            'category_id.required' => 'Trường thể loại không được bỏ trống',
+            'trailer_url.nullable'  => 'Có thể bỏ trống',
+            'trailer_url.url'  => 'Trường URL của trailer phải là một URL hợp lệ.',
+            'trailer_url.regex'  => 'URL của trailer phải thuộc YouTube hoặc Vimeo.',
+
+            'release_date.required' => 'Trường không được bỏ trống',
+            'release_date.date' => 'Trường ngày xuất bản phải là một ngày hợp lệ',
+            'release_date.before_or_equal' => 'Điền ngày hợp lệ',
 
         ];
     }

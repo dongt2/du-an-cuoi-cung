@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Sửa danh mục
+    Thêm mới phim
 @endsection
 
 @push('style')
@@ -18,7 +18,7 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
                 <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
+                    <h4 class="fs-18 fw-semibold m-0">Movie</h4>
                 </div>
 
                 {{-- <div class="text-end">
@@ -48,7 +48,7 @@
                                             <label class="form-label">Tên danh mục</label>
                                             <input type="text" class="form-control" id="" name="category_name"
                                                 value="{{ $data->category_name }}" placeholder="Tên danh mục">
-                                            @error('category_name')
+                                            @error('title')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>

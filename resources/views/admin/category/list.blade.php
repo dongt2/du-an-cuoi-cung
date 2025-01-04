@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Category
+    Movie
 @endsection
 
 @push('style')
@@ -53,6 +53,7 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Tên thể loại</th>
+                                        <th>Tổng Thể Loại</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -61,6 +62,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->category_name }}</td>
+                                            <td>{{ $item->movies()->count() }}</td>
                                             <td>
                                                 <a href="{{ route('admin.category.edit', $item->category_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>

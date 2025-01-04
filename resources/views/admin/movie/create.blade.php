@@ -115,6 +115,8 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+
+
                                             @error('category_id')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

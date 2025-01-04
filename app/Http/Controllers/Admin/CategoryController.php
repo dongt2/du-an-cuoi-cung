@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,7 @@ class CategoryController extends Controller
     public function index()
     {
         $data = Category::all();
+
         return view('admin.category.list', compact('data'));
     }
 
@@ -28,18 +31,13 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-        ]);
-
-        $data = [
-            'category_name' => $request->category_name,
-        ];
+        $data = $request->all();
 
         Category::create($data);
-        return redirect()->route('admin.category.index');
+
+        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -55,26 +53,23 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Category::where('category_id', $id)->first();
+        $data = Category::findOrFail($id);
+
         return view('admin.category.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoryRequest $request, string $id)
     {
-        $request->validate([
-            'category_name' => 'required|string|max:255',
-        ]);
-        
-        $category = Category::where('category_id', $id)->first();
+        $cat = Category::findOrFail($id);
 
-        $data = [
-            'category_name' => $request->category_name,
-        ];
-        $category->update($data);
-        return redirect()->route('admin.category.index');
+        $data = $request->all();
+
+        $cat->update($data);
+
+        return redirect()->route('admin.category.index')->with('success', 'Thao tác thành công');
     }
 
     /**
@@ -82,7 +77,16 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::where('category_id', $id)->delete();
-        return redirect()->route('admin.category.index');
+        $cat = Category::findOrFail($id);
+
+        $movieCount = $cat->movies()->count();
+
+        if ($movieCount == 0) {
+            $cat->delete();
+
+            return back()->with('success', 'Thao tác thành công');
+        }
+
+        return back()->with('error', 'Thao tác không thành công vì thể loại này vẫn còn liên kết');
     }
 }

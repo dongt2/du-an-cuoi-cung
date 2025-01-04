@@ -26,7 +26,7 @@ class StoreCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'min:1',
-                'max:25',
+                'max:50',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`
             ],
@@ -36,12 +36,12 @@ class StoreCategoryRequest extends FormRequest
     public function messages()
     {
         return [
-            'category_name.required' => 'Trường tên không được bỏ trống',
-            'category_name.string' => 'Trường tên phải là chuỗi ký tự.',
-            'category_name.min' => 'Trường tên phải có ít nhất 3 ký tự.',
-            'category_name.max' => 'Trường tên không được vượt quá 25 ký tự.',
-            'category_name.regex' => 'Trường tên không được chứa ký tự đặc biệt.',
-            'category_name.unique' => 'Tên danh mục đã tồn tại.', // Thông báo lỗi khi bị trùng
+            'category_name.required' => 'Tên thể loại không được bỏ trống',
+            'category_name.string' => 'Tên thể loại phải là chuỗi ký tự.',
+            'category_name.min' => 'Tên thể loại phải có ít nhất 3 ký tự.',
+            'category_name.max' => 'Tên thể loại không được vượt quá 50 ký tự.',
+            'category_name.regex' => 'Tên thể loại không được chứa ký tự đặc biệt.',
+            'category_name.unique' => 'Tên thể loại đã tồn tại.', // Thông báo lỗi khi bị trùng
         ];
     }
 }
