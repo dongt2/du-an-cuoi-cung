@@ -65,7 +65,7 @@
                             <span class="ticket__item ticket__time">{{ $ticket->booking->showtime_time }}</span>
                             <span class="ticket__item">Phòng: <span class="ticket__cinema"></span></span>
 
-                            <span class="ticket__item ticket__price">Giá: <strong class="ticket__cost">{{ $ticket->booking->total_price }}</strong></span>
+                            <span class="ticket__item ticket__price">Giá: <strong class="ticket__cost">{{ number_format($ticket->booking->total_price, 0,'.', '.') }}</strong>đ</span>
                         </div>
 
                         <div class="ticket-primery">
@@ -95,6 +95,16 @@
 @endsection
 
 @section('script')
+    <script>
+        $(document).ready(function() {
+            $('.watchlist').click(function() {
+                var url = $(this).attr('href');
+                window.open(url, '_blank');
+                return false;
+            });
+        });
+    </script>
+
     <!-- JavaScript-->
     <!-- jQuery 1.9.1-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>

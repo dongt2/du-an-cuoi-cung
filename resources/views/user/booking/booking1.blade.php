@@ -165,13 +165,13 @@
 
     <div class="clearfix"></div>
 
-    <form id='film-and-time' class="booking-form" method='post' action='{{ route('user.bookingStore2') }}'>
+    <form id='film-and-time' class="booking-form " method='post' action='{{ route('user.bookingStore2') }}'>
         @csrf
-        <input type="text" name="movie_id" class="choosen-movie-id" id="chosen-movie-id"
+        <input type="hidden" name="movie_id" class="choosen-movie-id" id="chosen-movie-id"
             value="{{ $data->first()->movie_id }}">
-        <input type='text' name='screen_id' class="choosen-screen" id="chosen-screen-id">
-        <input type='text' name='showtime_date' class="choosen-cinema" id="chosen-showtime-date">
-        <input type='text' name='showtime_time' class="choosen-time" id="chosen-time">
+        <input type='hidden' name='screen_id' class="choosen-screen" id="chosen-screen-id">
+        <input type='hidden' name='showtime_date' class="choosen-cinema" id="chosen-showtime-date">
+        <input type='hidden' name='showtime_time' class="choosen-time" id="chosen-time">
 
         <style>
             #film-and-time input {

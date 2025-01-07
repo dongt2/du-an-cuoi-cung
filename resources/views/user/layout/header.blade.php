@@ -20,16 +20,20 @@
             <ul id="navigation">
                 <li>
                     <span class="sub-nav-toggle plus"></span>
-                    <a href="{{ route('movie.index') }}">Danh sách phim</a>
+                    <a href="#">Phim</a>
+                    <ul>
+                        <li class="menu__nav-item"><a href="{{ route('movie.index') }}">Danh sách phim</a></li>
+                        <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li>
+                    </ul>
                 </li>
                 <li>
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Trang</a>
                     <ul>
-                        <li class="menu__nav-item"><a href="movie-page-left.html">Single movie (rigth sidebar)</a></li>
-                        <li class="menu__nav-item"><a href="movie-page-right.html">Single movie (left sidebar)</a></li>
-                        <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a></li>
-                        <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth sidebar)</a></li>
+                        <li class="menu__nav-item"><a href="{{ route('movie.categories') }}">Thể loại</a></li>
+                        {{-- <li class="menu__nav-item"><a href="{{ route('movie.upcoming') }}">Phim sắp chiếu</a></li> --}}
+                        {{-- <li class="menu__nav-item"><a href="movie-page-full.html">Single movie (full widht)</a></li> --}}
+                        {{-- <li class="menu__nav-item"><a href="movie-list-left.html">Movies list (rigth sidebar)</a></li>
                         <li class="menu__nav-item"><a href="movie-list-right.html">Movies list (left sidebar)</a></li>
                         <li class="menu__nav-item"><a href="movie-list-full.html">Movies list (full widht)</a></li>
                         <li class="menu__nav-item"><a href="single-cinema.html">Single cinema</a></li>
@@ -42,7 +46,7 @@
                         <li class="menu__nav-item"><a href="contact.html">Contact us</a></li>
                         <li class="menu__nav-item"><a href="404.html">404 error</a></li>
                         <li class="menu__nav-item"><a href="coming-soon.html">Coming soon</a></li>
-                        <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li>
+                        <li class="menu__nav-item"><a href="login.html">Login/Registration</a></li> --}}
                     </ul>
                 </li>
                 <li>
@@ -87,7 +91,7 @@
                         <li class="menu__nav-item"><a href="single-page-full.html">Single post (full widht)</a></li>
                     </ul>
                 </li>
-                <li>
+                {{-- <li>
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Thực đơn Mega</a>
                     <ul class="mega-menu container">
@@ -131,39 +135,41 @@
                             </ul>
                         </li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>
         </nav>
 
         <!-- Additional header buttons / Auth and direct link to booking-->
         <div class="control-panel">
-            @if (session()->has('user.user_name'))
+            @if (\Illuminate\Support\Facades\Auth::user() != null)
                 <div class="auth auth--home">
                     <div class="auth__show">
-                        <span class="auth__image">
-                            @if (session('user.avata'))
-                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
-                            @else
-                                <img alt="" src="{{ asset('images/client-photo/auth.png') }}">
-                            @endif
-                        </span>
+{{--                        <span class="auth__image">--}}
+{{--                            @if (session('user.avata'))--}}
+{{--                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid"--}}
+{{--                                     style="border-radius: 4px;">--}}
+{{--                            @else--}}
+{{--                                <img alt="" src="{{ asset('images/client-photo/auth.png') }}">--}}
+{{--                            @endif--}}
+{{--                        </span>--}}
                     </div>
-                    <a href="#" class="btn btn--sign btn--singin">
+                    <a href="#" class="btn btn--sign btn--singin" >
                         {{ session('user.user_name') }} <!-- Hiển thị user_name -->
                     </a>
                     <ul class="auth__function">
                         <li><a href="{{ route('account.info') }}" class="auth__function-item">Tài khoản</a></li>
-                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt vé</a></li>
+                        <li><a href="{{ route('account.booking-history') }}" class="auth__function-item">Lịch sử đặt
+                                vé</a></li>
                         <li>
                             @if (session('user.role') == 'Admin')
-                            <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
+                                <a href="{{ route('admin.dashboard') }}" class="auth__function-item">Admin</a>
                             @endif
                         </li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="auth__function-item"
-                                    style="background: none; border: none;">Đăng xuất</button>
+                                        style="background: none; border: none;">Đăng xuất</button>
                             </form>
                         </li>
                     </ul>
@@ -173,8 +179,8 @@
                     nhập</a>
             @endif
 
-            <a href="{{ route('user.booking1') }}" class="btn btn-md btn--warning btn--book btn-control--home">Đặt
-                vé</a>
+{{--            <a href="{{ route('user.booking1') }}" class="btn btn-md btn--warning btn--book btn-control--home">Đặt--}}
+{{--                vé</a>--}}
 
         </div>
 

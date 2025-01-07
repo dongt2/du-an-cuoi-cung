@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Seat;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -11,16 +12,16 @@ class SeatSelected implements ShouldBroadcast
 {
     use InteractsWithSockets, SerializesModels;
 
-    public $seatId;
+    public $seat;
 
-    public function __construct($seatId)
+    public function __construct(Seat $seat)
     {
-        $this->seatId = $seatId;
+        $this->seat = $seat;
     }
 
     public function broadcastOn()
     {
-        return new PresenceChannel('seats');
+        return new PresenceChannel('seat-updates');
     }
 }
 

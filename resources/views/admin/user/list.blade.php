@@ -57,7 +57,7 @@
                                         <th>Số điện thoại</th>
                                         <th>Vai trò</th>
                                         <th>Trạng thái hoạt động</th>
-                                        <th>Trạng thái vip</th>
+{{--                                        <th>Trạng thái vip</th>--}}
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -68,9 +68,23 @@
                                             <td>{{ $item->username }}</td>
                                             <td>{{ $item->email }}</td>
                                             <td>{{ $item->phone }}</td>
-                                            <td>{{ $item->role }}</td>
-                                            <td>{{ $item->is_active }}</td>
-                                            <td>{{ $item->is_vip }}</td>
+                                            <td>
+                                                @if($item->role == 	'Admin')
+                                                <span class="badge bg-danger">Admin</span>
+                                                @elseif($item->role == 'Nhan Vien')
+                                                <span class="badge bg-info">Nhân viên</span>
+                                                @else
+                                                <span class="badge bg-success">Khách hàng</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($item->is_active == 0)
+                                                <span class="badge bg-danger">Không hoạt động</span>
+                                                @else
+                                                <span class="badge bg-success">Hoạt động</span>
+                                                @endif
+                                            </td>
+{{--                                            <td>{{ $item->is_vip }}</td>--}}
                                             <td>
                                                 <a href="{{ route('admin.user.edit', $item->user_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>

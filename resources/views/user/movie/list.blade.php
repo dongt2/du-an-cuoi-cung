@@ -41,65 +41,9 @@
 @section('content')
     <section class="container">
         <div class="col-sm-12">
-            <h2 class="page-heading">Movies</h2>
+            <br>
+            <h2 class="page-heading">Phim đang chiếu</h2>
 
-            <div class="select-area">
-                <form class="select" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="1" selected='selected'>London</option>
-                        <option value="2">New York</option>
-                        <option value="3">Paris</option>
-                        <option value="4">Berlin</option>
-                        <option value="5">Moscow</option>
-                        <option value="3">Minsk</option>
-                        <option value="4">Warsawa</option>
-                        <option value="5">Kiev</option>
-                    </select>
-                </form>
-
-                <div class="datepicker">
-                    <span class="datepicker__marker"><i class="fa fa-calendar"></i>Date</span>
-                    <input type="text" id="datepicker" value='03/10/2014' class="datepicker__input">
-                </div>
-
-                <form class="select select--cinema" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="1" selected='selected'>Cineworld</option>
-                        <option value="2">Empire</option>
-                        <option value="3">Everyman</option>
-                        <option value="4">Odeon</option>
-                        <option value="5">Picturehouse</option>
-                    </select>
-                </form>
-
-                <form class="select select--film-category" method='get'>
-                    <select name="select_item" class="select__sort" tabindex="0">
-                        <option value="2" selected='selected'>Children's</option>
-                        <option value="3">Comedy</option>
-                        <option value="4">Drama</option>
-                        <option value="5">Fantasy</option>
-                        <option value="6">Horror</option>
-                        <option value="7">Thriller</option>
-                    </select>
-                </form>
-
-            </div>
-
-            <div class="tags-area">
-                <div class="tags tags--unmarked">
-                    <span class="tags__label">Sorted by:</span>
-                    <ul>
-                        <li class="item-wrap"><a href="#" class="tags__item item-active" data-filter='all'>all</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='release'>release date</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='popularity'>popularity</a>
-                        </li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='comments'>comments</a></li>
-                        <li class="item-wrap"><a href="#" class="tags__item" data-filter='ending'>ending soon</a></li>
-                    </ul>
-                </div>
-            </div>
 
             <br><br>
             <!-- Movie preview item -->
@@ -148,7 +92,7 @@
 
 
                             {{-- <a href="#" class="movie__show-btn">Showtime</a> --}}
-                            
+
                         </div>
                     </div>
 

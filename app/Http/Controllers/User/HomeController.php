@@ -3,12 +3,17 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Review;
 use App\Models\Ticket;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+
 
 class HomeController extends Controller
 {
@@ -24,10 +29,115 @@ class HomeController extends Controller
         if (session()->has('booking')) {
             session()->forget('booking');
         }
-        $data = Movie::orderBy('created_at', 'desc')->take(8)->get();
-        return view('user.home.home', compact('data'));
+
+        $data = Movie::withCount([
+            'reviews as reviews_today' => function ($query) {
+                $query->whereDate('created_at', now()->toDateString()); // Only today's reviews
+            }
+        ])
+            ->orderByDesc('release_date') // Sort by today's reviews count
+            ->take(8)
+            ->get();
+
+
+        $todayTheBestChoice = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.movie_id') // Assuming tickets are linked to movies
+        ->whereDate('tickets.created_at', now()->toDateString()) // Filter tickets sold today
+        ->selectRaw('tickets.movie_id, movies.title, COUNT(*) as ticket_count') // Select movie_id, title, and count of tickets
+        ->groupBy('tickets.movie_id', 'movies.title') // Group by movie_id and movie title
+        ->orderBy('ticket_count', 'DESC') // Order by ticket count in descending order
+        ->limit(6) // Limit to top 10 movies
+        ->get();
+//        dd($todayTheBestChoice);
+        return view('user.home.home', compact('data', 'todayTheBestChoice'));
     }
 
+    public function categories(Request $request)
+    {
+        $categories = Category::all(); // Lấy danh sách thể loại
+        $movies = Movie::query();
+
+        // Áp dụng bộ lọc nếu có
+        if ($request->has('category') && $request->category) {
+            $movies->where('category_id', $request->category);
+        }
+
+        if ($request->has('year') && $request->year) {
+            $movies->whereYear('release_date', $request->year);
+        }
+
+        if ($request->has('director') && $request->director) {
+            $movies->where('director', $request->director);
+        }
+
+        if ($request->has('actors') && $request->actors) {
+            $movies->where('actors', $request->actors);
+        }
+
+        if ($request->has('sort') && $request->sort) {
+            if ($request->sort === 'most_viewed') {
+                $movies->orderBy('views', 'desc');
+            } elseif ($request->sort === 'newest') {
+                $movies->orderBy('release_date', 'desc');
+            }
+        }
+
+        $movies = $movies->get(); // Lấy danh sách phim sau khi lọc
+
+        return view('user.movie.categories', compact('categories', 'movies'));
+    }
+
+    public function upcoming(Request $request)
+    {
+        // Lấy ngày hiện tại
+        $today = Carbon::now();
+
+        // Query phim sắp chiếu (release_date lớn hơn ngày hiện tại)
+        $movies = Movie::query()
+            ->where('release_date', '>', $today);
+
+        // dd($movies);
+        // Lọc theo thể loại
+        if ($request->has('category') && $request->category) {
+            $movies->where('category_id', $request->category);
+        }
+
+        // Lọc theo năm
+        if ($request->has('year') && $request->year) {
+            $movies->whereYear('release_date', $request->year);
+        }
+
+        // Lọc theo đạo diễn
+        if ($request->has('director') && $request->director) {
+            $movies->where('director', $request->director);
+        }
+
+        if ($request->has('actors') && $request->actors) {
+            $movies->where('actors', $request->actors);
+        }
+
+        // Sắp xếp nếu có yêu cầu
+        if ($request->has('sort') && $request->sort) {
+            if ($request->sort === 'most_viewed') {
+                $movies->orderBy('views', 'desc');
+            } elseif ($request->sort === 'newest') {
+                $movies->orderBy('release_date', 'desc');
+            }
+        }
+
+        // Lấy danh sách thể loại để hiển thị
+        $categoriesUpcoming = Category::all();
+
+        // Lấy danh sách đạo diễn và diễn viên duy nhất
+        $directors = Movie::select('director')->distinct()->pluck('director');
+        $actors = Movie::select('actors')->distinct()->pluck('actors');
+
+        // Phân trang kết quả
+        // $movies = $movies->paginate(10);
+        $movies = $movies->get();
+
+        // Trả về view kèm danh sách phim sắp chiếu
+        return view('user.movie.upcoming', compact('movies', 'categoriesUpcoming', 'directors', 'actors'));
+    }
     public function index()
     {
         if (session()->has('movie')) {
@@ -37,6 +147,7 @@ class HomeController extends Controller
             session()->forget('booking');
         }
         $data = Movie::all();
+
         return view('user.movie.list', compact('data'));
     }
 
@@ -125,6 +236,7 @@ class HomeController extends Controller
             ->orderBy('screen_id')
             ->orderBy('time')
             ->get()
+
             ->groupBy(function ($item) {
                 return $item->showtime_date . ' - ' . $item->screen->screen_name;
             });

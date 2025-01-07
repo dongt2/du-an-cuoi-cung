@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255)->comment('123456');
             $table->string('phone', 30);
+
             $table->string('address')->nullable();
             $table->enum('role', ['Admin', 'Nhan Vien', 'Khach Hang']);
             $table->boolean('is_active')->default(true)->comment('Trạng thái hoạt động');

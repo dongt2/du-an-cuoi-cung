@@ -17,7 +17,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $data = Movie::all();
+        $data = Movie::orderBy('movie_id', 'desc')->get();
 
         return view('admin.movie.list', compact('data'));
     }
@@ -27,7 +27,7 @@ class MovieController extends Controller
      */
     public function create()
     {
-        $data = Category::all();
+        $data = Category::orderBy('category_id', 'desc')->get();
 
         return view('admin.movie.create', compact('data'));
     }
@@ -39,14 +39,14 @@ class MovieController extends Controller
     {
         $path = null;
 
-        if($request->hasFile('cover_image')){
-
+        if ($request->hasFile('cover_image')) {
             $image = $request->file('cover_image');
-
-            $newName = time().'.'.$image->getClientOriginalExtension();
-
+            $newName = time() . '.' . $image->getClientOriginalExtension();
             $path = $image->storeAs('images/movie', $newName, 'public');
         }
+
+        // Convert trailer URL to embed format
+        $trailer_url = $this->convertYoutubeUrl($request->trailer_url);
 
         $data = [
             'title' => $request->title,
@@ -58,7 +58,7 @@ class MovieController extends Controller
             'actors' => $request->actors,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'trailer_url' => $request->trailer_url,
+            'trailer_url' => $trailer_url, // Use the converted URL here
             'release_date' => $request->release_date,
         ];
 
@@ -90,21 +90,22 @@ class MovieController extends Controller
      */
     public function update(UpdateMovieRequest $request, string $id)
     {
-
         $movie = Movie::findOrFail($id);
 
         $path = $movie->cover_image;
 
-        if($request->hasFile('cover_image')){
-            // Xóa ảnh cũ
+        if ($request->hasFile('cover_image')) {
+            // Delete old image
             Storage::disk('public')->delete($path);
 
-            //Lưu ảnh mới
+            // Upload new image
             $image = $request->file('cover_image');
-            $newName = time().'.'.$image->getClientOriginalName();
-
+            $newName = time() . '.' . $image->getClientOriginalName();
             $path = $image->storeAs('images/movie', $newName, 'public');
         }
+
+        // Convert trailer URL to embed format
+        $trailer_url = $this->convertYoutubeUrl($request->trailer_url);
 
         $data = [
             'title' => $request->title,
@@ -116,7 +117,7 @@ class MovieController extends Controller
             'actors' => $request->actors,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'trailer_url' => $request->trailer_url,
+            'trailer_url' => $trailer_url, // Use the converted URL here
             'release_date' => $request->release_date,
         ];
         $movie->update($data);
@@ -134,5 +135,21 @@ class MovieController extends Controller
         $mov->delete();
 
         return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
+    }
+
+    private function convertYoutubeUrl($url)
+    {
+        // Handle "watch" URLs (e.g., https://www.youtube.com/watch?v=ABC123)
+        if (strpos($url, 'watch?v=') !== false) {
+            return str_replace('watch?v=', 'embed/', $url);
+        }
+
+        // Handle shortened URLs (e.g., https://youtu.be/ABC123)
+        if (strpos($url, 'youtu.be/') !== false) {
+            return str_replace('youtu.be/', 'www.youtube.com/embed/', $url);
+        }
+
+        // Return the same URL if already in embed format or unrecognized
+        return $url;
     }
 }

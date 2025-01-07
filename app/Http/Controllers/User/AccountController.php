@@ -61,20 +61,29 @@ class AccountController extends Controller
     public function showBookingHistory()
     {
         $user = Auth::user();
-        $bookings = Booking::where('user_id', $user->user_id)->get()->sortByDesc('created_at');
-
+        $bookings = Ticket::where('user_id', $user->user_id)
+            ->with('booking', 'transaction')
+            ->get();
+//        dd($bookings);
         return view('user.accounts.booking-history', compact('bookings'));
     }
 
     public function showBookingDetail($id)
     {
-        $ticket = Ticket::where('booking_id', $id)
+        $ticket = Ticket::where('ticket_id', $id)
             ->with('transaction', 'booking')
             ->first(); // Use first() to get a single Ticket instance
+
         $review = Review::where('user_id', Auth::user()->user_id)
             ->where('movie_id', $ticket->booking->movie_id)
             ->first();
 
+        if($review == null){
+            $review = new Review();
+            $review->rating = 0;
+            $review->comment = '';
+        }
+//        dd($review);
         return view('user.accounts.ticket-detail', compact('ticket', 'review'));
     }
 

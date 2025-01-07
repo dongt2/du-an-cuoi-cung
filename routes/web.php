@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -38,8 +39,15 @@ Route::resource('/register', RegisterController::class);
 Route::resource('/login', LoginController::class);
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+
+Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
+Route::get('/movie/upcoming', [HomeController::class, 'upcoming'])->name('movie.upcoming');
+
 Route::get('/', [HomeController::class, 'listMovie'])->name('home');
 Route::resource('/movie', HomeController::class);
+
+
+
 
 
 // Routes dành cho User
@@ -78,7 +86,8 @@ Route::prefix('admin')->name('admin.')->middleware('checkAdmin')->group(function
         return view('admin.dashboard');
     })->name('dashboard');
 
-    Route::resource('/user', AccountController::class);
+
+    Route::resource('/user', UserController::class);
     Route::resource('/movie', MovieController::class);
     Route::resource('/category', CategoryController::class);
     Route::resource('/screen', ScreenController::class);
@@ -120,3 +129,7 @@ Route::prefix('account')
     Route::post('/comment/{id}', [AccountController::class, 'storeReviewForm'])->name('comment');
 });
 
+
+Route::get('/test', function () {
+    return view('z');
+});

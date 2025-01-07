@@ -15,7 +15,7 @@ class VoucherController extends Controller
      */
     public function index()
     {
-        $data = Voucher::all();
+        $data = Voucher::orderBy('voucher_id', 'desc')->get();
         return view('admin.voucher.index', compact('data'));
     }
 

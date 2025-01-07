@@ -25,7 +25,7 @@ class BookingController extends Controller
      * Display a listing of the resource.
      */
 
-    public function generateRandomOrderCode($length = 8)
+    private function generateRandomOrderCode($length = 8)
     {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -57,7 +57,23 @@ class BookingController extends Controller
 
     public function viewBooking1()
     {
-        $data = Movie::where('movie_id', session('movie.movie_id'))->get();
+        $data = Movie::where('movie_id', session('movie.movie_id'))->get()->filter(function ($movie) {
+            // Convert premiere date to Carbon instance and compare
+            $premiereTime = \Illuminate\Support\Carbon::parse($movie->premiere_date);
+            $currentTime = Carbon::now();
+
+            // Exclude if premiere was yesterday or earlier
+            if ($premiereTime->isPast() && !$premiereTime->isToday()) {
+                return false;
+            }
+
+            // Exclude if premiere is within the next 5 minutes
+            if ($premiereTime->diffInMinutes($currentTime) <= 5 && $premiereTime->isFuture()) {
+                return false;
+            }
+
+            return true; // Include the movie if it passes both checks
+        });
 
         $screen_ids = Showtime::where('movie_id', session('movie.movie_id'))->pluck('screen_id');
         $screens = Screen::whereIn('screen_id', $screen_ids)
@@ -174,17 +190,22 @@ class BookingController extends Controller
     {
         $combos = $request->input('combos');
 
+        $totalCombos = 0;
         $price_combo = 0;
 
         foreach ($combos as $combo) {
+            $totalCombos += $combo['quantity']; // Count total combos
             $price_combo += $combo['price'] * $combo['quantity'];
         }
+
+        if ($totalCombos > 8) {
+            return response()->json(['error' => 'You cannot select more than 8 combos in total.'], 400);
+        }
+
         session(['booking.price_combo' => $price_combo]);
         session(['booking.combos' => $combos]);
 
-        $priceTotal = session(['booking.price_total']) + $price_combo;
-        session(['booking.price_total' => $priceTotal]);
-        return response()->json($combos);
+        return response()->json(['success' => 'Combos added successfully!', 'price_combo' => $price_combo]);
     }
 
     public function getPriceVoucher(Request $request)
@@ -296,8 +317,12 @@ class BookingController extends Controller
 
                 $data_order = session()->get('booking');
 
-                //                dd($data_order);
-
+                if(isset($data_order['price_combo'])){
+                    $data_order['price_ticket'] += $data_order['price_combo'];
+                } else {
+                    $data_order['price_ticket'] += 0;
+                }
+//                dd($data_order);
                 $booking = Booking::create([
                     'user_id' => $data_order['user_id'],
                     'movie_id' => $data_order['movie_id'],
@@ -324,10 +349,20 @@ class BookingController extends Controller
                 $ticket = Ticket::create([
                     'booking_id' => $booking->booking_id,
                     'transaction_id' => $transaction->transaction_id,
+                    'user_id' => $data_order['user_id'],
+                    'movie_id' => $data_order['movie_id'],
+                    'showtime_id' => Showtime::where('movie_id', $data_order['movie_id'])
+                        ->where('screen_id', $data_order['screen_id'])
+                        ->where('showtime_date', $data_order['showtime_date'])
+                        ->where('time', $data_order['showtime_time'])
+                        ->value('showtime_id'),
                     'seats' => json_encode($data_order['seats']),
                     'qr_code' => 'qr_code',
                 ]);
 
+                Seat::where('showtime_id', $ticket->showtime_id)
+                    ->whereIn('place', array_keys($data_order['seats']))
+                    ->update(['status' => 'Đã đặt']);
 
                 // Generate QR code
                 $qrCode = QrCode::format('svg')->size(250)->generate(route('ticket.show', $ticket->ticket_id));
@@ -400,12 +435,10 @@ class BookingController extends Controller
 
             $diffInMinutes = $showtimeDateTime->diffInMinutes($currentTime);
 
-            if ($diffInMinutes > 30) {
+            if ($diffInMinutes > 20) {
                 return response()->json(['time_limit' => 15]);
-            } elseif ($diffInMinutes > 15) {
+            } elseif ($diffInMinutes > 10) {
                 return response()->json(['time_limit' => 5]);
-            } elseif ($diffInMinutes > 5) {
-                return response()->json(['time_limit' => 0]);
             } else {
                 return response()->json(['time_limit' => -1]);
             }
@@ -413,4 +446,23 @@ class BookingController extends Controller
             return response()->json(['error' => 'An error occurred'], 500);
         }
     }
+    public function updateSeatStatus(Request $request)
+    {
+        $seatId = $request->input('seat_id');
+        $status = $request->input('status'); // 'reserved' or 'available'
+
+        $seat = Seat::find($seatId);
+        if ($seat) {
+            $seat->status = $status;
+            $seat->save();
+
+            // Broadcast the change to other users
+            broadcast(new SeatSelected($seat))->toOthers();
+
+            return response()->json(['success' => true, 'seat' => $seat]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Seat not found']);
+    }
+
 }

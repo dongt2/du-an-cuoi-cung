@@ -83,24 +83,15 @@
             top: 3px;
             left: 3px;
         }
-        .rating-display {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-        }
-
         .rating-display label {
-            position: relative;
-            width: 1em;
-            font-size: 1.5rem;
-            color: #FFD700;
-            pointer-events: none;
+            font-size: 24px;
+            color: gold;
         }
-
-        .rating-display label::before {
-            content: "★";
-            position: absolute;
-            opacity: 1;
+        .movie-trailer iframe {
+            width: 100%; /* Make iframe responsive */
+            max-width: 560px; /* Restrict to original size */
+            height: 315px;
+            border: none;
         }
     </style>
 
@@ -116,14 +107,14 @@
                 <div class="movie__info">
                     <div class="col-sm-4 col-md-3 movie-mobile">
                         <div class="movie__images">
-                            <span class="movie__rating">5.0</span>
+                            <span class="movie__rating">{{ number_format($data->average_rating ?? 0, 1, '.', ',') }}</span>
                             {{-- <img alt='' src="{{ asset('images/movie/single-movie.jpg') }}"> --}}
                             <img alt='' src="{{ Storage::url($data->cover_image) }}" width="270px" height="380px">
                         </div>
                     </div>
 
                     <div class="col-sm-8 col-md-9">
-                        <p class="movie__time">{{ $data->duration }} min</p>
+                        <p class="movie__time">{{ $data->duration }} phút</p>
 
                         <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $data->country }}</a>
                         <p class="movie__option"><strong>Năm sản xuất: </strong><a href="#">{{ $data->year }}</a>
@@ -133,12 +124,9 @@
                         </p>
                         <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $data->release_date }}</p>
                         <p class="movie__option"><strong>Tác giả: </strong><a href="#">{{ $data->director }}</a></p>
-                        <p class="movie__option"><strong>Diễn viên: </strong><a href="#">{{ $data->actors }}</a>, <a
-                                href="#">Ian McKellen</a>, <a href="#">Richard Armitage</a>, <a
-                                href="#">Ken Stott</a>, <a href="#">Graham McTavish</a></p>
-                        <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p>
+                        <p class="movie__option"><strong>Diễn viên: </strong><a href="#">{{ $data->actors }}</a></p>
 
-                        <a href="#" class="comment-link">Comments: 15</a>
+
 
                         <div class="movie__btns movie__btns--full">
                             <a href="{{ route('user.bookingStore1', $data->movie_id) }}"
@@ -148,11 +136,29 @@
                 </div>
 
                 <div class="clearfix"></div>
-                <h2 class="page-heading" style="clear: both;">The plot</h2>
+                <h2 class="page-heading" style="clear: both;">Mô tả</h2>
 
                 <p class="movie__describe">
                     {{ $data->description }}
                 </p>
+
+                <div class="clearfix"></div>
+
+                <h2 class="page-heading" style="clear: both;">Trailer</h2>
+                <div class="movie-trailer">
+                    @if (!empty($data->trailer_url))
+                        <iframe
+                            width="560"
+                            height="315"
+                            src="{{ $data->trailer_url }}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    @else
+                        <p>Trailer not available.</p>
+                    @endif
+                </div>
             </div>
 
             <h2 class="page-heading">Lịch chiếu</h2>
@@ -220,19 +226,12 @@
                             <div class="comments-container">
                                 @foreach ($reviews as $item)
                                     <div class="comment">
-                                        <div class="comment__images">
-                                            @if (session('user.avata'))
-                                                <img src="{{ Storage::url(session('user.avata')) }}" alt="" class="img-fluid" style="border-radius: 4px;">
-                                            @else
-                                                <img alt='' src="{{ asset('images/comment/avatar.jpg') }}">
-                                            @endif
-                                        </div>
 
-                                        <a href='#' class="comment__author"><span class="social-used fa fa-facebook"></span>{{ $item->user->username }}</a>
+
+                                        <a href='#' class="comment__author">{{ $item->user->username }}</a>
                                         <p class="comment__date">{{ $item->review_date }} | {{ $item->review_time }}</p>
                                         <p class="comment__message" style="word-wrap: break-word; white-space: normal;">{{ $item->comment }}</p>
                                         <div class="rating-display">
-
                                             @for ($i = 1; $i <= 5; $i++)
                                                 <label>{{ $i <= $item->rating ? '★' : '☆' }}</label>
                                             @endfor

@@ -16,6 +16,9 @@ return new class extends Migration
             $table->unsignedBigInteger('transaction_id');
             $table->unsignedBigInteger('booking_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('showtime_id');
+
 
 
             $table->string('seats');
@@ -27,6 +30,8 @@ return new class extends Migration
             $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->onDelete('cascade');
             $table->foreign('booking_id')->references('booking_id')->on('bookings')->onDelete('cascade');
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');
+            $table->foreign('showtime_id')->references('showtime_id')->on('showtimes')->onDelete('cascade');
 
             $table->index('transaction_id', 'booking_id');
             $table->timestamps();

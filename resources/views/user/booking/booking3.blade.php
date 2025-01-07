@@ -169,7 +169,11 @@
             <div class="order-step third--step">3. Chọn combo &amp; thanh toán</div>
         </div>
 
+        <div id="payment-timer" style="font-size: 20px; color: #FF0000; font-weight: bold; margin: 20px 0; text-align: end">
+
+        </div>
         <div class="col-sm-12">
+
             <div class="checkout-wrapper">
                 <div class="container mt-5">
                     <h2 class="page-heading">Combo</h2>
@@ -184,15 +188,15 @@
                         </div>
                         <div class="modal-body">
                             @foreach ($combos as $item)
-                                <div style="display: flex;">
-                                    <img src="{{ Storage::url($item->image) }}" alt="Hình ảnh combo"
-                                        style="flex: 1; padding-right: 5px; max-width: 150px;">
-                                    <div style="flex: 3;">
-                                        <strong style="font-size: 18px;">{{ $item->combo_name }} - {{ number_format($item->price) }} VNĐ</strong>
-                                        <p>{{ $item->short_description }}</p>
-                                        <input type="number" class="combo-quantity" data-price="{{ $item->price }}"
-                                            data-combo-id="{{ $item->combo_id }}" value="0" min="0"
-                                            max="10">
+                                <div class="combo-container">
+                                    <img src="{{ $item->image && Storage::exists($item->image) ? Storage::url($item->image) : asset('images/default.jpg') }}"
+                                         alt="Combo Image" class="combo-image">
+                                    <div class="combo-details">
+                                        <strong class="combo-title">
+                                            {{ $item->combo_name ?? 'Unknown' }} - {{ $item->price ? number_format($item->price) : 'N/A' }} VNĐ
+                                        </strong>
+                                        <p>{{ $item->short_description ?? 'No description available.' }}</p>
+                                        <input type="number" class="combo-quantity" data-price="{{ $item->price }}" data-combo-id="{{ $item->combo_id }}" value="0" min="0" max="{{ $item->max_quantity ?? 10 }}" aria-label="Quantity for {{ $item->combo_name }}" aria-describedby="combo-{{ $item->combo_id }}">
                                     </div>
                                 </div>
                                 <hr>
@@ -200,7 +204,7 @@
                         </div>
                         <div class="modal-footer">
                             <div class="price">Tổng cộng: <span id="price-combo">0 VNĐ</span></div>
-                            <button class="btn btn-success" onclick="getPriceCombo()">Xác nhận</button>
+                            <button class="btn btn-success" id="confirmCombos" onclick="getPriceCombo()" disabled>Xác nhận</button>
                         </div>
                     </div>
                 </div>
@@ -322,12 +326,8 @@
 
     <div class="booking-pagination">
         <a href="javascript:void(0);" class="booking-pagination__prev" onclick="history.back()">
-            <p class="arrow__text arrow--prev">prev step</p>
-            <span class="arrow__info">choose a sit</span>
-        </a>
-        <a href="#" class="booking-pagination__next hide--arrow">
-            <p class="arrow__text arrow--next">next step</p>
-            <span class="arrow__info"></span>
+            <span class="arrow__text arrow--prev">Quay lại</span>
+            <span class="arrow__info">Chọn ghế</span>
         </a>
     </div>
 @endsection
@@ -351,13 +351,34 @@
         );
 
         function updateTotalPrice() {
+            const MAX_COMBOS = 8; // Total limit
+
+            let totalCombos = 0;
+            let valid = true;
+
+            // Calculate the total number of combos selected
             const price_combo = [...document.querySelectorAll('.combo-quantity')].reduce((sum, input) => {
                 const quantity = parseInt(input.value) || 0;
+
+                // Increment the total selected combos
+                totalCombos += quantity;
+
+                if (totalCombos > MAX_COMBOS) {
+                    alert(`You can only select a maximum of ${MAX_COMBOS} combos per ticket.`);
+                    input.value = quantity - 1; // Reset the last invalid update
+                    valid = false; // Prevent further actions
+                }
+
                 const price = parseFloat(input.dataset.price) || 0;
-                return sum + (quantity * price);
+                return valid ? sum + (quantity * price) : sum;
             }, 0);
-            document.getElementById('price-combo').textContent = new Intl.NumberFormat('vi-VN').format(price_combo) +
-                ' VNĐ';
+
+            // Update the total price display
+            document.getElementById('price-combo').textContent = new Intl.NumberFormat('vi-VN').format(price_combo) + ' VNĐ';
+
+            // If needed, disable the confirm button while the limit is breached
+            const confirmButton = document.querySelector('.btn-success');
+            confirmButton.disabled = totalCombos > MAX_COMBOS;
         }
 
         function getPriceCombo() {
@@ -421,8 +442,42 @@
                 });
             });
         });
+
     </script>
 
+    <t>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const countdownTime = 5 * 60; // 5 minutes in seconds
+            let timeRemaining = countdownTime;
+
+            // Function to format time to mm:ss
+            function formatTime(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }
+
+            // Update the countdown display every second
+            const timerInterval = setInterval(() => {
+                const timerDisplay = document.getElementById('payment-timer');
+
+                // Decrease the time remaining
+                timeRemaining--;
+
+                if (timeRemaining >= 0) {
+                    // Update the displayed timer
+                    timerDisplay.textContent = `Thời gian thanh toán: ${formatTime(timeRemaining)}`;
+                } else {
+                    // Clear the timer and redirect on timeout
+                    clearInterval(timerInterval);
+                    alert("Thời gian thanh toán của bạn đã hết. Đang chuyển hướng về trang chủ");
+                    window.location.href = "{{ route('home') }}"; // Redirect to the previous step
+                }
+            }, 1000);
+        });
+    </script>
     <!-- JavaScript-->
     <!-- jQuery 1.9.1-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>

@@ -119,18 +119,21 @@
                         </tr>
                         </thead>
                         <tbody>
+
+
+
                         @foreach ($bookings as $booking)
                             <tr>
-                                <td>{{ $booking->order_code }}</td>
+                                <td>{{ $booking->booking->order_code }}</td>
                                 <td>{{ $booking->movie->title }}</td>
-                                <td>Teen phong</td>
-                                <td>Xuat chieu</td>
-                                <td>{{ number_format($booking->total_price, 0,'.', '.') }}đ</td>
+                                <td>{{ $booking->showtime->screen->screen_name }}</td>
+                                <td>{{ $booking->showtime->time }}</td>
+                                <td>{{ number_format($booking->transaction->total, 0,'.', '.') }}đ</td>
 
                                 <td>{{ $booking->created_at->format('d/m/Y') }}</td>
                                 <td>Trang thai vé</td> {{-- 1: pending, 2: confirmed, 3: canceled --}}
 
-                                <td><a href="{{ route('account.booking-detail', $booking->booking_id) }}">View Details</a></td>
+                                <td><a href="{{ route('account.booking-detail', $booking->ticket_id) }}">View Details</a></td>
                             </tr>
                         @endforeach
                         </tbody>

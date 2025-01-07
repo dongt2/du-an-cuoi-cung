@@ -7232,7 +7232,8 @@ ul#navigation li.mega-menu__nav-item:hover:before {
 .movie-best .movie-best__rating {
   background-color: #ffd564;
   text-align: center;
-  font: 20px 'aleobold', sans-serif;
+  font: 20px Verdana, Arial, sans-serif;
+    font-weight: bold;
   color: #4c4145;
   text-transform: uppercase;
   padding-bottom: 25px;
@@ -7244,7 +7245,7 @@ ul#navigation li.mega-menu__nav-item:hover:before {
   background-image: url("../images/icons/stars.svg");
   background-repeat: no-repeat;
   height: 20px;
-  left: 50%;
+  left: 41%;
   margin-left: -205px;
   position: absolute;
   top: 27px;
@@ -7257,7 +7258,7 @@ ul#navigation li.mega-menu__nav-item:hover:before {
   height: 20px;
   margin-right: -205px;
   position: absolute;
-  right: 50%;
+  right: 41%;
   top: 27px;
   width: 95px;
 }

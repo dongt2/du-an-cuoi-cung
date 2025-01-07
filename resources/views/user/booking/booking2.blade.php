@@ -169,7 +169,7 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
-        }
+
     </style>
 @endsection
 
@@ -188,7 +188,7 @@
             </div>
         </div>
         <br><br>
-        <div id="timer-display"></div>
+        <div id="timer-display" style="text-align: center; font-size: 20px; font-weight: bold; color: #FF0000; margin-top: 10px;"></div>
         <br>
 
 
@@ -263,7 +263,11 @@
                                     {{-- <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
                                         {{ $item->place }}
                                     </div> --}}
-                                    <div class="grid-cell ghe click {{ $class }}" data-seat-id="{{ $item->seat_id }}" data-price="{{ $item->price }}">
+                                    <div class="grid-cell ghe click {{ $class }} {{ $item['status'] ? 'reserved' : '' }}"
+                                         data-seat-id="{{ $item->seat_id }}"
+                                         data-price="{{ $item->price }}"
+                                         data-seat="{{ $item['place'] }}"
+                                         title="{{ $item['price'] }}">
                                         {{ $item->place }}
                                     </div>
                                 @endif
@@ -338,34 +342,39 @@
                             const timeLimit = data.time_limit;
 
                             if (timeLimit === -1) {
-                                alert("Không có thời gian để sắp xếp chỗ ngồi. Hệ thống sẽ tự động hủy bước xếp chỗ ngồi.");
+                                alert("Hết giờ rồi! Bạn không còn có thể đặt chỗ.");
                                 window.location.href = '{{ route('user.booking1') }}';
                             } else if (timeLimit > 0) {
                                 let timeRemaining = timeLimit * 60; // Convert minutes to seconds
-                                const warningTime = 2 * 60; // 2 minutes before time limit
 
                                 const timerInterval = setInterval(() => {
                                     timeRemaining--;
 
+                                    // Update the timer display
+                                    const minutes = Math.floor(timeRemaining / 60);
+                                    const seconds = timeRemaining % 60;
+                                    document.getElementById('timer-display').textContent = `Thời gian đặt chỗ còn lại: ${minutes}:${seconds.toString().padStart(2, '0')}`;
 
-                                        if (timeRemaining === warningTime) {
-                                            alert("Bạn còn 2 phút để chọn chỗ ngồi.");
-                                        }
-
-
-                                    if (timeRemaining <= 0) {
-                                        clearInterval(timerInterval);
-                                        alert("Đã hết thời gian! Hệ thống sẽ tự động hủy bước xếp chỗ ngồi.");
-                                        window.location.href = '{{ route('user.booking1') }}';
+                                    // Show a warning when 2 minutes are left
+                                    if (timeRemaining === 2 * 60) {
+                                        alert("Bạn còn 2 phút để hoàn tất việc đặt chỗ của mình!");
                                     }
 
-                                    // Update the timer display (if you have one)
-                                    document.getElementById('timer-display').textContent = `Thời gian chờ: ${Math.floor(timeRemaining / 60)}:${timeRemaining % 60}`;
+                                    // Redirect when the timer expires
+                                    if (timeRemaining <= 0) {
+                                        clearInterval(timerInterval); // Stop the countdown
+                                        alert("Hết giờ rồi! Trở lại màn hình chính.");
+                                        window.location.href = '{{ route('home') }}';
+                                    }
                                 }, 1000);
                             }
+                        })
+                        .catch(error => {
+                            console.error("An error occurred:", error);
                         });
                 });
             </script>
+
         </div>
     </div>
 @endsection

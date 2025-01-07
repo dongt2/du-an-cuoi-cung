@@ -19,3 +19,7 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 Broadcast::channel('seats', function ($user) {
     return $user; // Return user info if authenticated
 });
+
+Broadcast::channel('seat-updates', function ($user) {
+    return true; // You can add authentication if necessary
+});

@@ -127,7 +127,12 @@
                                 @csrf
                                 <div class="form-group">
                                     <label>Comment</label>
+                                    @if($review->comment == null)
+                                        <input type="text" name="comment">
+
+                                    @else
                                     <input type="text" name="comment" value="{{ $review->comment }}" disabled>
+                                    @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Rating</label>
@@ -139,7 +144,13 @@
                                         <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
                                     </div>
                                 </div>
-                                <button type="submit" disabled>Submit</button>
+                                @if($review->comment == null)
+                                    <button type="submit" >Submit</button>
+
+                                @else
+                                    <button type="submit" disabled>Submit</button>
+                                @endif
+
                             </form>
                         @endif
                     </div>

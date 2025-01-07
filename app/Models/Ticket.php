@@ -15,6 +15,8 @@ class Ticket extends Model
         'user_id',
         'transaction_id',
         'booking_id',
+        'movie_id',
+        'showtime_id',
         'seats',
         'qr_code',
         'token',
@@ -28,4 +30,17 @@ class Ticket extends Model
     {
         return $this->belongsTo(Booking::class, 'booking_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+    public function movie()
+    {
+        return $this->belongsTo(Movie::class, 'movie_id');
+    }
+    public function showtime()
+    {
+        return $this->belongsTo(Showtime::class, 'showtime_id');
+    }
+
 }

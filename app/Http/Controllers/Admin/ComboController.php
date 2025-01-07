@@ -15,7 +15,7 @@ class ComboController extends Controller
      */
     public function index()
     {
-        $data = Combo::all();
+        $data = Combo::orderBy('combo_id', 'desc')->get();
 
         return view('admin.combo.list', compact('data'));
     }
