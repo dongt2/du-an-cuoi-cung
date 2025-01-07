@@ -117,16 +117,28 @@ class HomeController extends Controller
         return view('user.movie.upcoming', compact('movies', 'categoriesUpcoming', 'directors', 'actors'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
+
+        $query = $request->input('query'); // Lấy từ khóa tìm kiếm từ request
+
+        if ($query) {
+            // Nếu có từ khóa, tìm kiếm phim theo tên
+            $movies = Movie::where('title', 'LIKE', '%' . $query . '%')->get();
+        } else {
+            // Nếu không có từ khóa, hiển thị danh sách tất cả phim
+            $movies = Movie::get();
+        }
+        // Xóa session nếu có
         if (session()->has('movie')) {
             session()->forget('movie');
         }
         if (session()->has('booking')) {
             session()->forget('booking');
         }
-        $data = Movie::all();
-        return view('user.movie.list', compact('data'));
+
+        // Trả về view với danh sách phim
+        return view('user.movie.list', compact('movies'));
     }
 
     /**

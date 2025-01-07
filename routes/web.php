@@ -42,7 +42,7 @@ Route::get('/', [HomeController::class, 'listMovie'])->name('home');
 Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
 Route::get('/movie/upcoming', [HomeController::class, 'upcoming'])->name('movie.upcoming');
 Route::resource('/movie', HomeController::class);
-Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
+// Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
 // Route::get('/movie/filter', [HomeController::class, 'filter'])->name('movie.filter');
 
 // Routes dành cho User
