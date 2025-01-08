@@ -75,7 +75,10 @@
                         <li class="menu__nav-item"><a href="single-page-full.html">Single post (full widht)</a></li>
                     </ul>
                 </li>
-                
+                <li>
+                    <span class="sub-nav-toggle plus"></span>
+                    <a href="{{ route('contact.index') }}">Liên hệ</a>
+                </li>
                 {{-- <li>
                     <span class="sub-nav-toggle plus"></span>
                     <a href="#">Thực đơn Mega</a>

@@ -15,6 +15,7 @@ use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
 use App\Http\Controllers\User\AccountController;
+use App\Http\Controllers\User\ContactController;
 // use App\Http\Controllers\User\GenreController;
 use App\Http\Controllers\User\RealtimeController;
 
@@ -42,7 +43,7 @@ Route::get('/', [HomeController::class, 'listMovie'])->name('home');
 Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
 Route::get('/movie/upcoming', [HomeController::class, 'upcoming'])->name('movie.upcoming');
 Route::resource('/movie', HomeController::class);
-// Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
 // Route::get('/movie/filter', [HomeController::class, 'filter'])->name('movie.filter');
 
 // Routes dành cho User
