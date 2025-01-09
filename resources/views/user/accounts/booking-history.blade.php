@@ -131,7 +131,14 @@
                                 <td>{{ number_format($booking->transaction->total, 0,'.', '.') }}đ</td>
 
                                 <td>{{ $booking->created_at->format('d/m/Y') }}</td>
-                                <td>Trang thai vé</td> {{-- 1: pending, 2: confirmed, 3: canceled --}}
+                                <td>@if($booking->status == 0)
+                                        <span class="label label-warning">Vé chưa xem</span>
+                                    @elseif($booking->status == 1)
+                                        <span class="label label-success">Vé đã xem</span>
+                                    @else
+                                        <span class="label label-danger">Vé đã hủy</span>
+                                    @endif
+                                </td>
 
                                 <td><a href="{{ route('account.booking-detail', $booking->ticket_id) }}">View Details</a></td>
                             </tr>

@@ -7,7 +7,14 @@
 
 @push('style')
     <!-- Flatpickr Timepicker css -->
+    <!-- CSS Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+
+
     <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet" href="{{ asset('summernote-0.9.0-dist/summernote-lite.min.css') }}">
 @endpush
 
 @section('content')
@@ -17,9 +24,7 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Movie</h4>
-                </div>
+
 
                 {{-- <div class="text-end">
                     <ol class="breadcrumb m-0 py-0">
@@ -34,7 +39,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Thêm mới</h5>
+                            <h5 class="card-title mb-0"><strong>Thêm mới phim</strong></h5>
                         </div><!-- end card header -->
 
                         <form action="{{ route('admin.movie.store') }}" method="post" enctype="multipart/form-data">
@@ -45,7 +50,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Tên phim</label>
                                             <input type="text" class="form-control" id="" name="title"
-                                                placeholder="Tên phim">
+                                                placeholder="Tên phim" value="{{ old('title') }}">
                                             @error('title')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -63,7 +68,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">Thời lượng</label>
                                             <input type="text" class="form-control" id="" min="1"
-                                                name="duration" max="1000" placeholder="Thời lượng phim">
+                                                name="duration" max="1000" placeholder="Thời lượng phim"
+                                                value="{{ old('duration') }}">
                                             @error('duration')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -72,7 +78,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Quốc gia</label>
                                             <input type="text" class="form-control" id="" name="country"
-                                                placeholder="Nhập quốc gia">
+                                                placeholder="Nhập quốc gia" value="{{ old('country') }}">
                                             @error('country')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -81,7 +87,8 @@
                                         <div class="mb-3">
                                             <label class="form-label">Năm sản xuất</label>
                                             <input type="number" class="form-control" id="year" min="1500"
-                                                max="{{ date('Y') }}" name="year" placeholder="Nhập năm sản xuất">
+                                                max="{{ date('Y') }}" name="year" placeholder="Nhập năm sản xuất"
+                                                value="{{ old('year') }}">
                                             @error('year')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -89,17 +96,29 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Tác giả</label>
-                                            <input type="text" class="form-control" id="" name="director"
-                                                placeholder="Nhập tên tác giả">
-                                            @error('director')
+                                            <select class="form-control select2" id="directors" name="directors[]"
+                                                multiple="multiple">
+
+                                                @foreach ($director as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->directors }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('directors')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Diễn viên</label>
-                                            <input type="text" class="form-control" id="" name="actors"
-                                                placeholder="Nhập tên diễn viên">
+                                            <select class="form-control select2" id="actors" name="actors[]"
+                                                multiple="multiple">
+
+                                                @foreach ($actor as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->actor_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                             @error('actors')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -107,9 +126,9 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Thể loại</label>
-                                            <select class="form-control" id="" name="category_id">
-                                                <option value="" disabled selected
-                                                    style="color: #6c757d; opacity: 0.1;">--Chọn thể loại--</option>
+                                            <select class="form-control select2" id="categories" name="categories[]"
+                                                multiple="multiple">
+
                                                 @foreach ($data as $item)
                                                     <option value="{{ $item->category_id }}">{{ $item->category_name }}
                                                     </option>
@@ -117,21 +136,13 @@
                                             </select>
 
 
-                                            @error('category_id')
+                                            @error('categories')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="col-xl-6">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="description">Mô tả</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Nhập mô tả phim"></textarea>
-                                            @error('description')
-                                                <span style="color: red;">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
                                         <div class="mb-3">
                                             <label class="form-label">Trailer-url</label>
                                             <input type="text" class="form-control" id="" name="trailer_url"
@@ -150,6 +161,14 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="description">Mô tả</label>
+                                        <textarea class="form-control" id="summernote" name="description" rows="3" placeholder="Nhập mô tả phim"></textarea>
+                                        @error('description')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <button class="btn btn-primary">Thêm</button>
                             </div>
@@ -163,6 +182,43 @@
 @endsection
 
 @push('script')
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JS Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+    <script src="{{ asset('summernote-0.9.0-dist/summernote-lite.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+
+        $('#summernote').summernote({
+            placeholder: 'mô tả',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            $('.selectactors').select2({
+                placeholder: "Chon tac gia",
+                allowClear: true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.selectcategories').select2({
+                placeholder: "Chon tac gia",
+                allowClear: true,
+            });
+        }); --}}
+    </script>
+
     <!-- Flatpickr Timepicker Plugin js -->
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 

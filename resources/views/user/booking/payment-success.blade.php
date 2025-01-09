@@ -63,9 +63,9 @@
                             <span class="ticket__item">Mã vé <strong class="ticket__number">{{ $ticket->booking->order_code }}</strong></span>
                             <span class="ticket__item ticket__date">{{ $ticket->booking->showtime_date }}</span>
                             <span class="ticket__item ticket__time">{{ $ticket->booking->showtime_time }}</span>
-                            <span class="ticket__item">Phòng: <span class="ticket__cinema"></span></span>
+                            <span class="ticket__item">Phòng: <span class="ticket__cinema">{{ $ticket->showtime->screen->screen_name }}</span></span>
 
-                            <span class="ticket__item ticket__price">Giá: <strong class="ticket__cost">{{ number_format($ticket->booking->total_price, 0,'.', '.') }}</strong>đ</span>
+                            <span class="ticket__item ticket__price">Giá: <strong class="ticket__cost">{{ number_format($ticket->transaction->total, 0,'.', '.') }}</strong>đ</span>
                         </div>
 
                         <div class="ticket-primery">

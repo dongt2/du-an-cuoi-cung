@@ -17,30 +17,41 @@ class Movie extends Model
         'title',
         'duration',
         'country',
-        'director',
         'description',
         'year',
         'release_date',
-        'actors',
         'cover_image',
         'trailer_url',
-        'category_id',
     ];
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'category_id');
     }
-    public function reviews()
+
+    public function categories()
     {
-        return $this->hasMany(Review::class, 'movie_id', 'movie_id');
+        return $this->belongsToMany(Category::class, 'movie_categories', 'movie_id', 'category_id');
     }
 
-    public function getAverageRatingAttribute()
+    public function actors()
     {
-        return round($this->reviews()->avg('rating'), 1);
+        return $this->belongsToMany(Actor::class, 'movie_actors', 'movie_id','actor_id');
     }
-    // Movie model
+
+    public function directors()
+    {
+        return $this->belongsToMany(Director::class, 'movie_directors', 'movie_id', 'director_id');
+    }
+
+    public function showtimes()
+    {
+        return $this->hasMany(Showtime::class);
+    }
+    public function reviews()
+    {
+        return $this->belongsTo(Review::class, 'movie_id', 'movie_id');
+    }
     public function reviews_today()
     {
         return $this->hasMany(Review::class, 'movie_id') // Assuming links with movie_id

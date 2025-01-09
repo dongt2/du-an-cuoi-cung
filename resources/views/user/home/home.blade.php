@@ -73,7 +73,12 @@
                                 </li>
                                 <li>
                                     <p class="movie__time">{{ $movie->duration }} phút</p>
-                                    <p>{{ $movie->category->category_name }}</p>
+                                    @foreach ($movie->categories as $category)
+                                        <p >
+                                            {{ $category->category_name }}@if(!$loop->last), @endif
+                                        </p>
+                                    @endforeach
+
 
                                 </li>
                                 <li class="last-block">
@@ -117,14 +122,17 @@
 
                                 <p class="movie__time">{{ $item->duration }} phút</p>
 
-                                <p class="movie__option"><a href="#">{{ $item->category->category_name }}</a>
-{{--                                    | <a--}}
-{{--                                        href="#">Thể loại 2</a> |--}}
-{{--                                    <a href="#">Thể loại 3</a>--}}
+                                <p class="movie__option">
+                                    @foreach ($item->categories as $category)
+                                    <a href="#">
+                                            {{ $category->category_name }}@if(!$loop->last), @endif
+                                    </a>
+                                    @endforeach
+
                                 </p>
 
                                 <div class="movie__rate">
-                                    <div class="score"></div>
+
 
                                     <span class="movie__rating">{{ number_format($item->average_rating ?? 0, 1, '.', ',') }}</span>
 
@@ -195,7 +203,7 @@
     <script src="{{ asset('js/external/twitterfeed.js') }}"></script>
 
     <!-- Custom -->
-    {{-- <script src="{{ asset('js/custom.js') }}"></script> --}}
+     <script src="{{ asset('js/custom.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

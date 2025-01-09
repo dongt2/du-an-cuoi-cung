@@ -20,7 +20,12 @@ class Category extends Model
     //     return $this->hasMany(Movie::class, 'movie_id', 'movie_id');
     // }
 
-    public function movies(){
-        return $this->hasMany(Movie::class, 'category_id', 'category_id');
+    // public function movies(){
+    //     return $this->hasMany(Movie::class, 'category_id', 'category_id');
+    // }
+
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class, 'movie_categories', 'category_id', 'movie_id');
     }
 }

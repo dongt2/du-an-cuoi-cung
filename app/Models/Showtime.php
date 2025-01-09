@@ -29,4 +29,9 @@ class Showtime extends Model
     {
         return $this->belongsTo(Screen::class, 'screen_id', 'screen_id');
     }
+
+    public function movies()
+    {
+        return $this->belongsTo(Movie::class);
+    }
 }

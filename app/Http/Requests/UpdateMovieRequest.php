@@ -52,17 +52,17 @@ class UpdateMovieRequest extends FormRequest
                 'digits:4',
                 'between:1800,' .date('Y'),
             ],
-            'director' => [
+            'directors' => [
                 'required',
-                'string',
-                'max:255',
+                'array',
+                'exists:directors,id',
             ],
             'actors' => [
                 'required',
-                'string',
-                'max:255',
+                'array',
+                'exists:actors,id',
             ],
-            'category_id' => [
+            'categories' => [
                 'required',
                 'exists:categories,category_id'
             ],
@@ -110,16 +110,16 @@ class UpdateMovieRequest extends FormRequest
             'year.digits'  => 'Trường năm phải có đúng 4 chữ số',
             'year.between'  => 'Trường năm phải nằm trong khoảng từ 1900 đến '.date('Y').'.',
 
-            'director.required'  => 'Trường không được bỏ trống',
-            'director.string'  => 'Trường phải là một chuỗi',
-            'director.max'  => 'Max 255 ký tự',
+            'directors.required'  => 'Trường không được bỏ trống',
+            'directors.array'  => 'Truong phai la mot mang',
+            'directors.exists'  => 'Id đã có',
 
             'actors.required'  => 'Trường không được bỏ trống',
-            'actors.string'  => 'Trường phải là một chuỗi',
-            'actors.max'  => 'Max 255 ký tự',
+            'actors.array'  => 'Truong phai la mot mang',
+            'actors.exists'  => 'Id đã có',
 
-            'category_id.required' => 'Trường thể loại không bỏ trống',
-            'category_id.exists'   => 'Id đã có',
+            'categories.required' => 'Trường thể loại không bỏ trống',
+            'categories.exists'   => 'Id đã có',
 
             'description.required'  => 'Trường không được bỏ trống',
             'description.string'  => 'Trường phải là một chuỗi',

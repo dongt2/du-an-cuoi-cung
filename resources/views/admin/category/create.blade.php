@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới phim
+    Thêm mới thể loại
 @endsection
 
 @push('style')
@@ -17,16 +17,7 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
-                </div>
 
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Form Pickers</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Advance Form -->
@@ -34,7 +25,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Thêm mới</h5>
+                            <h5 class="card-title mb-0"><strong>Thêm mới thể loại</strong></h5>
                         </div><!-- end card header -->
 
                         <form action="{{ route('admin.category.store') }}" method="post" enctype="multipart/form-data">

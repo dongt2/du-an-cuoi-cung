@@ -8,6 +8,8 @@
 @push('style')
     <!-- Flatpickr Timepicker css -->
     <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="{{ asset('summernote-0.9.0-dist/summernote-lite.min.css') }}">
 @endpush
 
 @section('content')
@@ -21,12 +23,6 @@
                     <h4 class="fs-18 fw-semibold m-0">Combo</h4>
                 </div>
 
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Form Pickers</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Advance Form -->
@@ -43,7 +39,7 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Tên combo</label>
+                                            <label class="form-label">Tên sản phẩm</label>
                                             <input type="text" class="form-control" id="" name="combo_name"
                                                 placeholder="Tên combo">
                                             @error('combo_name')
@@ -61,15 +57,6 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label" for="short_description">Mô tả</label>
-                                            <textarea class="form-control" id="short_description" name="short_description" rows="3"
-                                                placeholder="Nhập mô tả combo"></textarea>
-                                            @error('short_description')
-                                                <span style="color: red;">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                        <div class="mb-3">
                                             <label class="form-label">Giá</label>
                                             <input type="text" class="form-control" name="price"
                                                 placeholder="Nhập giá">
@@ -78,7 +65,16 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="short_description">Mô tả</label>
+                                        <textarea class="form-control" id="summernote" name="short_description" rows="3"
+                                            placeholder="Nhập mô tả combo"></textarea>
+                                        @error('short_description')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
+
                                 <button class="btn btn-primary">Thêm</button>
                             </div>
                         </form>
@@ -91,8 +87,16 @@
 @endsection
 
 @push('script')
-    <!-- Flatpickr Timepicker Plugin js -->
-    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 
-    <script src="{{ asset('assets/js/pages/form-picker.js') }}"></script>
+<script src="{{ asset('summernote-0.9.0-dist/summernote-lite.min.js') }}"></script>
+    <script>
+
+
+        $('#summernote').summernote({
+            placeholder: 'Nhập mô tả sản phẩm',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
+
 @endpush

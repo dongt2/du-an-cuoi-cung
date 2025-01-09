@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('qr_code');
 
             $table->string('token')->nullable();
+            $table->enum('checkin', ['0', '1'])->default('0');
+            $table->enum('status', ['0', '1', '2'])->default('0');
 
 
             $table->foreign('transaction_id')->references('transaction_id')->on('transactions')->onDelete('cascade');

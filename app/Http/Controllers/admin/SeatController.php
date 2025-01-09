@@ -84,6 +84,57 @@ class SeatController extends Controller
         return response()->json($data);
     }
 
+    public function store1(Request $request)
+    {
+        // Validate input data
+        $validated = $request->validate([
+            'showtime_id' => 'required|integer',
+            'row' => 'required|string|max:1', // Ensures only single character for rows
+            'price' => 'required|numeric',
+            'status' => 'required|string',
+        ]);
+
+        // Convert row to uppercase
+        $row = strtoupper($validated['row']);
+        $seatsToCreate = []; // Array to hold new seats to be created
+
+        // Loop through the seats in the row (1 to 18)
+        for ($i = 1; $i <= 18; $i++) {
+            $place = $row . $i;
+
+            // Check if the seat already exists in the database
+            $existingSeat = Seat::where('showtime_id', $validated['showtime_id'])
+                ->where('place', $place)
+                ->first();
+
+            if ($existingSeat) {
+                // If the seat exists, update the price only
+                $existingSeat->update(['price' => $validated['price']]);
+            } else {
+                // Otherwise, prepare the seat for insertion
+                $seatsToCreate[] = [
+                    'showtime_id' => $validated['showtime_id'],
+                    'place' => $place,
+                    'price' => $validated['price'],
+                    'status' => $validated['status'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        // Insert new seats into the database if there are any
+        if (!empty($seatsToCreate)) {
+            Seat::insert($seatsToCreate);
+        }
+
+        // Prepare and return response
+        return response()->json([
+            'message' => 'Seats processed successfully',
+            'added_seats' => $seatsToCreate,
+            'updated_seats_count' => 18 - count($seatsToCreate), // Number of seats updated instead of created
+        ], 200);
+    }
 
 
     /**

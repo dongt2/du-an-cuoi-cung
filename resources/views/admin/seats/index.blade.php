@@ -8,22 +8,22 @@
 @push('style')
     <!-- Datatables css -->
     <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
 @endpush
 
 @section('content')
     <style>
         .choose-sits {
             padding: 10px;
-            width: 60%;
+            width: 80%;
             margin: 0 auto;
         }
 
@@ -230,7 +230,8 @@
                 <option value="0" selected>Chọn xuất chiếu</option>
                 @foreach ($showtimes as $item)
                     <option value="{{ $item->showtime_id }}">{{ $item->showtime_id }}--&emsp;Phim:
-                        {{ $item->movie->title ?? 'Chưa xác định' }}&emsp;-&emsp;Phòng: {{ $item->screen->screen_name ?? 'Chưa xác định' }}&emsp;-
+                        {{ $item->movie->title ?? 'Chưa xác định' }}&emsp;-&emsp;Phòng:
+                        {{ $item->screen->screen_name ?? 'Chưa xác định' }}&emsp;-
                         &emsp;Ngày: {{ $item->showtime_date }}&emsp;-&emsp;Giờ: {{ $item->time }}</option>
                 @endforeach
             </select>
@@ -240,15 +241,15 @@
 
         <div class="choose-sits">
             <ul>
-                <li class="sits-price"><strong>Price</strong></li>
+                <li class="sits-price"><strong>Giá</strong></li>
                 <li class="sits-price">
-                    <div class="square color-1"></div>30.000 VNĐ
+                    <div class="square color-1"></div>Ghế cùi: 30.000Đ - 49.000Đ
                 </li>
                 <li class="sits-price">
-                    <div class="square color-2"></div>50.000 VNĐ
+                    <div class="square color-2"></div>Ghế thường: 50.000Đ - 79.000Đ
                 </li>
                 <li class="sits-price">
-                    <div class="square color-3"></div>70.000 VNĐ
+                    <div class="square color-3"></div>Ghế vip: 80.000Đ - 200.000Đ
                 </li>&ensp;||&ensp;
                 <li class="sits-price">
                     <div class="square color-4"></div>Ghế đã đặt
@@ -288,7 +289,6 @@
                 @php
                     $rows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
                 @endphp
-
                 @foreach ($rows as $row)
                     <div class="grid-row">
                         @foreach ($data as $item)
@@ -298,11 +298,11 @@
                                         $class = 'color-4';
                                     } elseif ($item->status === 'Đã hỏng') {
                                         $class = 'color-5';
-                                    } elseif ($item->price === '30000') {
+                                    } elseif ($item->price >= 30000 && $item->price < 50000) {
                                         $class = 'color-1';
-                                    } elseif ($item->price === '50000') {
+                                    } elseif ($item->price >= 50000 && $item->price < 80000) {
                                         $class = 'color-2';
-                                    } elseif ($item->price === '70000') {
+                                    } elseif ($item->price >= 80000 && $item->price <= 200000) {
                                         $class = 'color-3';
                                     } else {
                                         $class = 'color-5';
@@ -313,6 +313,7 @@
                         @endforeach
                     </div>
                 @endforeach
+
                 <!-- hàng số -->
                 <div class="grid-row" style="margin-top: auto;">
                     <div class="grid-cell grid-number">1</div>
@@ -340,6 +341,9 @@
         <div class="btn-seat">
             <div class="action-button" id="btn-add-seat" style="background-color: #800080;" onclick="showModal()">Thêm
                 ghế</div>
+            <div class="action-button" id="btn-add-seat" style="background-color: #42d17d;" onclick="showModal1()">Thêm
+                nhiều
+                ghế</div>
             <form action="{{ route('admin.seat.update', $showtime_id) }}" style="display: flex;" method="POST">
                 @csrf
                 @method('PUT')
@@ -348,11 +352,11 @@
                 <div class="action-button" id="btn-update-seat" style="background-color: #20B2AA;" onclick="editModal()">Sửa
                     ghế</div>
                 <div class="action-button" id="btn-empty" style="background-color: #00BFFF;"
-                    onclick="setInputValue('Còn trống')">Còn trống</div>
+                     onclick="setInputValue('Còn trống')">Còn trống</div>
                 <div class="action-button" id="btn-occupied" style="background-color: #008000;"
-                    onclick="setInputValue('Đã đặt')">Đã đặt</div>
+                     onclick="setInputValue('Đã đặt')">Đã đặt</div>
                 <div class="action-button" id="btn-broken" style="background-color: #FFD700;"
-                    onclick="setInputValue('Đã hỏng')">Đã hỏng</div>
+                     onclick="setInputValue('Đã hỏng')">Đã hỏng</div>
                 <button hidden class="action-button auto-submit" type="submit">Cập nhật</button>
             </form>&emsp;&emsp;
             <form action="{{ route('admin.seat.destroy', $showtime_id) }}" method="POST" id="delete-form">
@@ -360,7 +364,7 @@
                 @method('delete')
                 <div id="input-container-destroy"></div>
                 <button type="button" class="action-button" style="background-color: #FF4500;"
-                    onclick="checkInputsAndSubmit()">Xóa ghế</button>
+                        onclick="checkInputsAndSubmit()">Xóa ghế</button>
             </form>
         </div>
 
@@ -382,13 +386,9 @@
                     <!-- Các cột sẽ được điền vào qua JavaScript -->
                 </select>
                 <br>
-                <label for="price">Chọn Giá:</label>
-                <select for="price" name="price" id="price">
-                    <option value=""></option>
-                    <option value="30000">30000</option>
-                    <option value="50000">50000</option>
-                    <option value="70000">70000</option>
-                </select>
+                <label for="price">Giá:</label>
+                <input type="number" name="price" id="price" min="20000" max="120000"
+                       placeholder="20.000 - 120.000">
                 <br>
                 <label for="stt">Trạng thái:</label>
                 <select id="stt" name="status">
@@ -399,7 +399,46 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="save-seat"
-                    onclick="addSeat()">Thêm</button>
+                        onclick="addSeat()">Thêm</button>
+            </div>
+        </div>
+
+        <!-- Modal thêm hàng ghế -->
+        <div id="add-seat-modal1" class="modal" style="display: none;">
+            <div class="modal-content">
+                <br>
+                <span class="close" onclick="closeModal1()">&times;</span>
+                <h2>Thêm Ghế</h2>
+                <label for="row1">Chọn Hàng:</label>
+                <select for="row1" id="row1" name="row1">
+                    <option value=""></option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                    <option value="H">H</option>
+                    <option value="I">I</option>
+                    <option value="J">J</option>
+                    <option value="K">K</option>
+                </select>
+                <br>
+                <label for="price1">Giá:</label>
+                <input type="text" name="price1" id="price1" min="20000" max="120000"
+                       placeholder="20.000 - 120.000">
+                <br>
+                <label for="stt1">Trạng thái:</label>
+                <select id="stt1" name="status1">
+                    <option value=""></option>
+                    <option value="Còn trống">Còn trống</option>
+                    <option value="Đã đặt">Đã đặt</option>
+                    <option value="Đã hỏng">Đã hỏng</option>
+                </select>
+                <br><br>
+                <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="save-seat"
+                        onclick="addSeat1()">Thêm</button>
             </div>
         </div>
 
@@ -448,13 +487,9 @@
                     <option value="18">18</option>
                 </select>
                 <br>
-                <label for="edit-price">Chọn Giá:</label>
-                <select for="edit-price" name="edit-price" id="edit-price">
-                    <option value=""></option>
-                    <option value="30000">30000</option>
-                    <option value="50000">50000</option>
-                    <option value="70000">70000</option>
-                </select>
+                <label for="edit-price">Giá:</label>
+                <input type="text" name="edit-price" id="edit-price" min="20000" max="120000"
+                       placeholder="20.000 - 120.000">
                 <br>
                 <label for="edit-stt">Trạng thái:</label>
                 <select id="edit-stt" name="edit-status">
@@ -465,7 +500,7 @@
                 </select>
                 <br><br>
                 <button style="width: 35%; margin: 0 auto; border-radius: 5px;" id="update-seat"
-                    onclick="updateSeat()">Cập nhật</button>
+                        onclick="updateSeat()">Cập nhật</button>
             </div>
         </div>
     </div>
@@ -556,9 +591,17 @@
             document.getElementById('add-seat-modal').style.display = 'flex';
         }
 
+        function showModal1() {
+            document.getElementById('add-seat-modal1').style.display = 'flex';
+        }
+
         // Hàm đóng modal thêm ghế
         function closeModal() {
             document.getElementById('add-seat-modal').style.display = 'none';
+        }
+
+        function closeModal1() {
+            document.getElementById('add-seat-modal1').style.display = 'none';
         }
 
         // Hàm thêm ghế
@@ -574,6 +617,11 @@
                 return;
             }
 
+            if (price < 30000 || price > 200000) {
+                alert("Giá phải nằm trong khoảng từ 20.000 đến 200.000!");
+                return;
+            }
+
             $.ajax({
                 url: '{{ route('admin.seat.store') }}',
                 method: 'POST',
@@ -583,6 +631,43 @@
                 data: {
                     showtime_id: {{ $showtime_id }},
                     place: place,
+                    price: price,
+                    status: status
+                },
+                success: function(response) {
+                    console.log("Dữ liệu đã được lưu:", response);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Chi tiết lỗi:", error);
+                }
+            });
+        }
+
+        function addSeat1() {
+            let row = document.getElementById("row1").value;
+            let price = document.getElementById("price1").value;
+            let status = document.getElementById("stt1").value;
+
+            if (!row || !price || !status) {
+                alert("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            if (price < 30000 || price > 200000) {
+                alert("Giá phải nằm trong khoảng từ 20.000 đến 200.000!");
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route('admin.seat.store1') }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    showtime_id: {{ $showtime_id }},
+                    row: row,
                     price: price,
                     status: status
                 },
@@ -652,6 +737,11 @@
 
             if (!row || !column || !price || !status) {
                 alert("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            if (price < 30000 || price > 200000) {
+                alert("Giá phải nằm trong khoảng từ 20.000 đến 200.000!");
                 return;
             }
 

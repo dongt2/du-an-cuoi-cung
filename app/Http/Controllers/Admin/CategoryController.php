@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::orderBy('category_id', 'desc')->get();
+        $data = Category::all();
 
         return view('admin.category.list', compact('data'));
     }
@@ -84,9 +84,11 @@ class CategoryController extends Controller
         if ($movieCount == 0) {
             $cat->delete();
 
-            return back()->with('success', 'Thao tác thành công');
+            toastr()->success('Thao tác thành công');
+        }else{
+            toastr()->error('Thao tác không thành công vì thể loại này vẫn còn liên kết');
         }
 
-        return back()->with('error', 'Thao tác không thành công vì thể loại này vẫn còn liên kết');
+        return back();
     }
 }

@@ -35,10 +35,11 @@ class HomeController extends Controller
                 $query->whereDate('created_at', now()->toDateString()); // Only today's reviews
             }
         ])
+            ->with('categories', 'actors', 'directors')
             ->orderByDesc('release_date') // Sort by today's reviews count
             ->take(8)
             ->get();
-
+//        dd($data);
 
         $todayTheBestChoice = Ticket::join('movies', 'tickets.movie_id', '=', 'movies.movie_id') // Assuming tickets are linked to movies
         ->whereDate('tickets.created_at', now()->toDateString()) // Filter tickets sold today
@@ -51,6 +52,7 @@ class HomeController extends Controller
         return view('user.home.home', compact('data', 'todayTheBestChoice'));
     }
 
+    // Hiển thị danh sách thể loại
     public function categories(Request $request)
     {
         $categories = Category::all(); // Lấy danh sách thể loại
@@ -138,17 +140,29 @@ class HomeController extends Controller
         // Trả về view kèm danh sách phim sắp chiếu
         return view('user.movie.upcoming', compact('movies', 'categoriesUpcoming', 'directors', 'actors'));
     }
-    public function index()
+
+    public function index(Request $request)
     {
+
+        $query = $request->input('query'); // Lấy từ khóa tìm kiếm từ request
+
+        if ($query) {
+            // Nếu có từ khóa, tìm kiếm phim theo tên
+            $movies = Movie::where('title', 'LIKE', '%' . $query . '%')->get();
+        } else {
+            // Nếu không có từ khóa, hiển thị danh sách tất cả phim
+            $movies = Movie::get();
+        }
+        // Xóa session nếu có
         if (session()->has('movie')) {
             session()->forget('movie');
         }
         if (session()->has('booking')) {
             session()->forget('booking');
         }
-        $data = Movie::all();
 
-        return view('user.movie.list', compact('data'));
+        // Trả về view với danh sách phim
+        return view('user.movie.list', compact('movies'));
     }
 
     /**
@@ -225,7 +239,10 @@ class HomeController extends Controller
 
         // dd($time_format);
 
-        $data = Movie::where('movie_id', $id)->first();
+        $data = Movie::where('movie_id', $id)
+            ->with('categories', 'actors', 'directors')
+            ->first();
+//        dd($data);
         $reviews = Review::where('movie_id', $id)
             ->with('user')
             ->orderBy('created_at', 'desc')

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\ActorController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DirectorController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -12,6 +14,7 @@ use App\Http\Controllers\Admin\ShowtimeController;
 use App\Http\Controllers\Admin\VoucherController;
 
 use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\User\ContactController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\LoginController;
 use App\Http\Controllers\User\RegisterController;
@@ -42,6 +45,8 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/movie/categories', [HomeController::class, 'categories'])->name('movie.categories');
 Route::get('/movie/upcoming', [HomeController::class, 'upcoming'])->name('movie.upcoming');
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+// Route::get('/movie/filter', [HomeController::class, 'filter'])->name('movie.filter');
 
 Route::get('/', [HomeController::class, 'listMovie'])->name('home');
 Route::resource('/movie', HomeController::class);
@@ -67,6 +72,7 @@ Route::prefix('user')->name('user.')->middleware('checkUser')->group(function ()
 
     Route::post('/get-price-combo', [BookingController::class, 'getPriceCombo'])->name('get.price-combo');
     Route::post('/get-price-voucher', [BookingController::class, 'getPriceVoucher'])->name('get.price-voucher');
+    Route::post('/destroy-voucher', [BookingController::class, 'destroyVoucher'])->name('destroy-voucher');
 
     Route::get('checkout/vnpay/return', [BookingController::class, 'vnpay_return'])->name('vnpay_return');
 
@@ -96,7 +102,10 @@ Route::prefix('admin')->name('admin.')->middleware('checkAdmin')->group(function
     Route::resource('/voucher', VoucherController::class);
     Route::resource('/review', ReviewController::class);
     Route::resource('/seat', SeatController::class);
+    Route::post('/seat1', [SeatController::class, 'store1'])->name('seat.store1');
     Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
+    Route::resource('/actor', ActorController::class);
+    Route::resource('/director', DirectorController::class);
 });
 
 // qr code

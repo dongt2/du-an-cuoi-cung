@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Movie
+    Danh Sách Phim
 @endsection
 
 @push('style')
@@ -17,6 +17,10 @@
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 @endpush
 
 @section('content')
@@ -26,9 +30,7 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Movie</h4>
-                </div>
+
 
                 {{-- <div class="text-end">
                     <ol class="breadcrumb m-0 py-0">
@@ -44,7 +46,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách phim</h5>
+                            <h5 class="card-title mb-0"><strong>Danh sách phim</strong></h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -58,6 +60,7 @@
                                         <th>Tác giả</th>
                                         <th>Ngày phát hành</th>
                                         <th>Thể loại</th>
+                                        {{-- <th>Tổng</th> --}}
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -71,19 +74,39 @@
                                                     class="img-fluid" width="120px" height="70px">
                                             </td>
                                             <td>{{ $item->duration }}</td>
-                                            <td>{{ $item->director }}</td>
-                                            <td>{{ $item->release_date }}</td>
-                                            <td>{{ $item->category->category_name }}</td>
                                             <td>
+                                                @foreach ($item->directors as $dire)
+                                                    {{ $dire->directors }}
+                                                    @if (!$loop->last)
+                                                        ,
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            <td>{{ $item->release_date }}</td>
+                                            <td>
+                                                @foreach ($item->categories as $cate)
+                                                    {{ $cate->category_name }}
+                                                    @if (!$loop->last)
+                                                        ,
+                                                    @endif
+                                                @endforeach
+                                            </td>
+                                            {{-- <td>{{ $item->actors()->count() }}</td>
+                                            <td>{{ $item->directors()->count() }}</td>
+                                            <td>{{ $item->categories()->count() }}</td> --}}
+                                            <td class="">
+                                                <a href="{{ route('admin.movie.show', $item->movie_id) }}"
+                                                    class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
                                                 <a href="{{ route('admin.movie.edit', $item->movie_id) }}"
-                                                    class="btn btn-warning d-inline">Sửa</a>
-                                                <form action="{{ route('admin.movie.destroy', $item->movie_id) }}" method="post"
-                                                    class="d-inline">
+                                                    class="btn btn-warning d-inline"><i
+                                                        class="fa-regular fa-pen-to-square"></i></a>
+                                                <form action="{{ route('admin.movie.destroy', $item->movie_id) }}"
+                                                    method="post" class="d-inline" id="delete-form-{{ $item->movie_id }}">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="btn btn-danger"
-                                                        style="padding: 0.335rem 0.7rem; line-height: 1.5;"
-                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                                    <button type="button" data-id="{{ $item->movie_id }}"
+                                                        class="btn btn-danger delete-button"><i
+                                                            class="fa-solid fa-trash-can"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -102,6 +125,30 @@
 @endsection
 
 @push('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Bạn có chắc chắn?',
+                    text: "Phim này sẽ bị xóa vĩnh viễn!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Có, xóa nó!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-form-${userId}`).submit();
+                    }
+                });
+            });
+        });
+    </script>
+
     <!-- Datatables js -->
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 

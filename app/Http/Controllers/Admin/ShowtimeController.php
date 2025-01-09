@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ShowtimeRequest;
 use App\Http\Requests\StoreShowtimeRequest;
 use App\Http\Requests\UpdateShowtimeRequest;
 use App\Models\Movie;
 use App\Models\Screen;
 use App\Models\Showtime;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ShowtimeController extends Controller
@@ -31,11 +30,10 @@ class ShowtimeController extends Controller
             // Xử lý khi không có dữ liệu
             return response()->json(['message' => 'Không có dữ liệu'], 404);
         }
+
         // dd($data);
         $listScreens = DB::table('screens')->get();
         $listMovies = DB::table('movies')->get();
-
-
 
         return view('admin.showtime.list', compact('data'));
     }
@@ -47,6 +45,7 @@ class ShowtimeController extends Controller
     {
         $listScreens = DB::table('screens')->get();
         $listMovies = DB::table('movies')->get();
+
         // dd($listScreens);
         return view('admin.showtime.create', compact('listScreens', 'listMovies'));
     }
@@ -94,7 +93,7 @@ class ShowtimeController extends Controller
         $showtime = Showtime::find($showtime_id);
 
         // Kiểm tra nếu showtime không tìm thấy
-        if (!$showtime) {
+        if (! $showtime) {
             return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi.']);
         }
 
@@ -120,7 +119,7 @@ class ShowtimeController extends Controller
         $showtime = Showtime::find($showtime_id);
 
         // Kiểm tra nếu showtime không tìm thấy
-        if (!$showtime) {
+        if (! $showtime) {
             return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi.']);
         }
 
@@ -145,7 +144,7 @@ class ShowtimeController extends Controller
         $showtime = Showtime::find($showtime_id);
 
         // Kiểm tra xem bản ghi có tồn tại không
-        if (!$showtime) {
+        if (! $showtime) {
             return redirect()->route('admin.showtime.index')->withErrors(['showtime' => 'Không tìm thấy bản ghi để xóa.']);
         }
 

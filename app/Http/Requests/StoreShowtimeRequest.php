@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreShowtimeRequest extends FormRequest
 {
@@ -29,13 +31,18 @@ class StoreShowtimeRequest extends FormRequest
         ];
     }
 
-    public function messages(){
+    public function messages()
+    {
         return [
             'movie_id.required' => 'Tên phim không được để trống',
             'screen_id.required' => 'Phòng chiếu không được để trống',
             'showtime_date.required' => 'Ngày chiếu không được để trống',
             'showtime_date.after_or_equal' => 'Vui lòng chọn lại',
-            'time.required' => 'Giờ chiếu không được để trống'
+            'time.required' => 'Giờ chiếu không được để trống',
+            'time.after_or_equal' => 'Chọn thời chiếu trên thời điểm hiện tại',
         ];
     }
+
+
+
 }

@@ -332,6 +332,42 @@
                 </li>
 
                 <li>
+                    <a href="#sidebarActor" data-bs-toggle="collapse">
+                        <i data-feather="pie-chart"></i>
+                        <span> QL Diễn Viên </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarActor">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.actor.index') }}'>Danh sách diễn viên</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.actor.create') }}'>Thêm diễn viên</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href="#sidebarDirector" data-bs-toggle="collapse">
+                        <i data-feather="pie-chart"></i>
+                        <span> QL Đạo Diễn </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="sidebarDirector">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.director.index') }}'>Danh sách đạo diễn</a>
+                            </li>
+                            <li>
+                                <a class='tp-link' href='{{ route('admin.director.create') }}'>Thêm đạo diễn</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
                     <a href="#sidebarAdvancedUI" data-bs-toggle="collapse">
                         <i data-feather="cpu"></i>
                         <span> Extended UI </span>

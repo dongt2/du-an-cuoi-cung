@@ -195,15 +195,15 @@
         <div class="page-content">
             <div class="choose-sits">
                 <ul>
-                    <li class="sits-price"><strong>Giá ghế</strong></li>
+                    <li class="sits-price"><strong>Price</strong></li>
                     <li class="sits-price">
-                        <div class="square color-1"></div>30.000 VNĐ
+                        <div class="square color-1"></div>Ghế cùi
                     </li>
                     <li class="sits-price">
-                        <div class="square color-2"></div>50.000 VNĐ
+                        <div class="square color-2"></div>Ghế thường
                     </li>
                     <li class="sits-price">
-                        <div class="square color-3"></div>70.000 VNĐ
+                        <div class="square color-3"></div>Ghế vip
                     </li>&ensp;||&ensp;
                     <li class="sits-price">
                         <div class="square color-4"></div>Ghế đã đặt
@@ -250,11 +250,11 @@
                                             $class = 'color-4';
                                         } elseif ($item->status === 'Đã hỏng') {
                                             $class = 'color-5';
-                                        } elseif ($item->price === '30000') {
+                                        } elseif ($item->price >= 30000 && $item->price < 50000) {
                                             $class = 'color-1';
-                                        } elseif ($item->price === '50000') {
+                                        } elseif ($item->price >= 50000 && $item->price < 80000) {
                                             $class = 'color-2';
-                                        } elseif ($item->price === '70000') {
+                                        } elseif ($item->price >= 80000 && $item->price <= 200000) {
                                             $class = 'color-3';
                                         } else {
                                             $class = 'color-5';
@@ -263,11 +263,8 @@
                                     {{-- <div class="grid-cell click {{ $class }}" data-price="{{ $item->price }}">
                                         {{ $item->place }}
                                     </div> --}}
-                                    <div class="grid-cell ghe click {{ $class }} {{ $item['status'] ? 'reserved' : '' }}"
-                                         data-seat-id="{{ $item->seat_id }}"
-                                         data-price="{{ $item->price }}"
-                                         data-seat="{{ $item['place'] }}"
-                                         title="{{ $item['price'] }}">
+                                    <div class="grid-cell click {{ $class }}" data-seat-id="{{ $item->seat_id }}"
+                                         data-price="{{ $item->price }}">
                                         {{ $item->place }}
                                     </div>
                                 @endif
@@ -385,6 +382,59 @@
         const maxSeats = 9; // Giới hạn số ghế
         let selectedSeats = [];
 
+        // Hàm để lấy danh sách các ghế liền kề xung quanh một ghế đã chọn
+        function getAdjacentSeats(row, col) {
+            const adjacentSeats = [{
+                row: String.fromCharCode(row.charCodeAt(0) - 1),
+                col: col
+            }, // Dưới
+                {
+                    row: String.fromCharCode(row.charCodeAt(0) + 1),
+                    col: col
+                }, // Trên
+                {
+                    row: row,
+                    col: col - 1
+                }, // Trái
+                {
+                    row: row,
+                    col: col + 1
+                }, // Phải
+                {
+                    row: String.fromCharCode(row.charCodeAt(0) - 1),
+                    col: col - 1
+                }, // Dưới trái
+                {
+                    row: String.fromCharCode(row.charCodeAt(0) - 1),
+                    col: col + 1
+                }, // Dưới phải
+                {
+                    row: String.fromCharCode(row.charCodeAt(0) + 1),
+                    col: col - 1
+                }, // Trên trái
+                {
+                    row: String.fromCharCode(row.charCodeAt(0) + 1),
+                    col: col + 1
+                }, // Trên phải
+            ];
+
+            return adjacentSeats.filter(seat => seat.col >= 1 && seat.col <= 18 && seat.row >= 'A' && seat.row <= 'K');
+        }
+
+        // Kiểm tra nếu ghế bị bỏ chọn là một trong các ghế "giữa" trong một chuỗi liên tiếp
+        function isMiddleSeat(seat, selectedSeats) {
+            // Tạo mảng ghế theo thứ tự cột
+            const colSeats = selectedSeats.filter(s => s.row === seat.row).sort((a, b) => a.col - b.col);
+            const rowSeats = selectedSeats.filter(s => s.col === seat.col).sort((a, b) => a.row.localeCompare(b.row));
+
+
+            // Kiểm tra nếu ghế là ghế giữa (có ghế trước và sau)
+            return (
+                (colSeats.length > 2 && colSeats[1].col === seat.col) ||
+                (rowSeats.length > 2 && rowSeats[1].row === seat.row)
+            );
+        }
+
         cells.forEach(cell => {
             const originalContent = cell.textContent.trim();
 
@@ -393,8 +443,20 @@
                 const col = parseInt(originalContent.slice(1));
                 const price = this.getAttribute('data-price');
 
+                // Nếu ghế đã được chọn, kiểm tra nếu ghế đó nằm trong những ghế liền kề
                 if (this.classList.contains('active')) {
-                    // Nếu đã active, xóa active và khôi phục nội dung ban đầu
+                    // Kiểm tra nếu ghế đang hủy là ghế "giữa"
+                    const seatToRemove = {
+                        row,
+                        col
+                    };
+                    const isMiddle = isMiddleSeat(seatToRemove, selectedSeats);
+
+                    if (isMiddle) {
+                        alert("Không thể bỏ chọn ghế giữa vì các ghế bên cạnh sẽ bị cách nhau!");
+                        return;
+                    }
+
                     this.classList.remove('active');
                     this.style.removeProperty('color');
                     this.textContent = originalContent;
@@ -414,53 +476,30 @@
                         return;
                     }
 
-                    // Kiểm tra tính hợp lệ của ghế được chọn
+                    // Kiểm tra nếu ghế thứ 2 hoặc sau phải nằm trong vùng xung quanh bất kỳ ghế nào đã chọn
                     if (selectedSeats.length > 0) {
-                        const isSameRow = selectedSeats.every(seat => seat.row === row);
-                        const isSameCol = selectedSeats.every(seat => seat.col === col);
+                        const isValidSeat = selectedSeats.some(seat => {
+                            const adjacentSeats = getAdjacentSeats(seat.row, seat.col);
+                            return adjacentSeats.some(adjSeat => adjSeat.row === row && adjSeat
+                                .col === col);
+                        });
 
-                        if (isSameRow) {
-                            // Kiểm tra tính liền kề trong cùng hàng
-                            const cols = selectedSeats.map(seat => seat.col).sort((a, b) => a - b);
-                            const minCol = cols[0];
-                            const maxCol = cols[cols.length - 1];
-                            if (col < minCol - 1 || col > maxCol + 1) {
-                                alert("Các ghế cùng hàng phải liền kề nhau!");
-                                return;
-                            }
-                        } else if (isSameCol) {
-                            // Kiểm tra tính liền kề trong cùng cột
-                            const rows = selectedSeats.map(seat => seat.row.charCodeAt(0)).sort((a, b) =>
-                                a - b);
-                            const minRow = rows[0];
-                            const maxRow = rows[rows.length - 1];
-                            if (row.charCodeAt(0) < minRow - 1 || row.charCodeAt(0) > maxRow + 1) {
-                                alert("Các ghế cùng cột phải liền kề nhau!");
-                                return;
-                            }
-                        } else {
-                            // Kiểm tra khoảng cách giữa các ghế không cùng hàng/cột
-                            for (let seat of selectedSeats) {
-                                const rowDiff = Math.abs(seat.row.charCodeAt(0) - row.charCodeAt(0));
-                                const colDiff = Math.abs(seat.col - col);
-                                if (rowDiff > 2 || colDiff > 2) {
-                                    alert("Vui lòng chọn ghế cách nhau không quá 2 ô!");
-                                    return;
-                                }
-                            }
+                        if (!isValidSeat) {
+                            alert("Ghế phải nằm trong khu vực xung quanh ít nhất một ghế đã chọn!");
+                            return;
                         }
                     }
-
-                    // Thêm active và hiện hình ảnh
-                    this.classList.add('active');
-                    this.style.color = 'white';
-                    this.textContent = originalContent;
 
                     // Thêm ghế vào mảng đã chọn
                     selectedSeats.push({
                         row,
                         col
                     });
+
+                    // Thêm active và thay đổi màu sắc
+                    this.classList.add('active');
+                    this.style.color = 'white';
+                    this.textContent = originalContent;
 
                     // Tạo thẻ input
                     const input = document.createElement('input');
@@ -491,8 +530,6 @@
 
             });
         });
-
-
     </script>
 
 @endsection

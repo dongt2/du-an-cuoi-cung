@@ -68,7 +68,7 @@
                                                 <img src="{{ Storage::url($item->image) }}" alt=""
                                                     class="img-fluid" width="120px" height="70px">
                                             </td>
-                                            {{-- <td>{{ $item->short_description }}</td> --}}
+                                            {{-- <td>{!! $item->short_description !!}</td> --}}
                                             <td>{{ $item->price }}</td>
                                             <td>
                                                 <a href="{{ route('admin.combo.edit', $item->combo_id) }}"

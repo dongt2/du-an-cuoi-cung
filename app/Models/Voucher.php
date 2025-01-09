@@ -11,6 +11,10 @@ class Voucher extends Model
 
     protected $table = 'vouchers';
 
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
     protected $primaryKey = 'voucher_id';
 
     protected $fillable = [

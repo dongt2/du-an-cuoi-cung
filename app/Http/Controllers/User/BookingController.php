@@ -222,15 +222,17 @@ class BookingController extends Controller
         $priceVoucher = 0; // Mặc định không có giảm giá
 
         if ($voucher) {
-            $priceVoucher = $voucher->deduct_amount;
+            $priceVoucher = ($voucher->deduct_amount / 100) * ($priceTicket + $priceCombo);
             session(['booking.price_voucher' => $priceVoucher]);
-            session(['booking.voucher_name' => $voucher->name]);
+            session(['booking.voucher_code' => $voucher->code]);
+            session(['booking.voucher_name' => $voucher->voucher_name]);
         } else {
             session()->forget('booking.price_voucher');
         }
 
         $priceTotal = $priceTicket + $priceCombo - $priceVoucher;
         session(['booking.price_total' => $priceTotal]);
+//        dd(session()->get('booking'));
 
         if ($voucher) {
             return response()->json(['success' => 'Mã giảm giá áp dụng thành công', 'price_total' => $priceTotal]);
@@ -239,9 +241,21 @@ class BookingController extends Controller
         }
     }
 
+    public function destroyVoucher(Request $request)
+    {
+        // Remove the voucher code from session or database
+        session()->forget('booking.voucher_code'); // Clear voucher from session
+        session()->put('booking.price_voucher', 0); // Reset voucher discount to zero
+
+        return response()->json([
+            'success' => 'Voucher đã được gỡ bỏ thành công.'
+        ]);
+    }
+
     public function vnpay_payment(Request $request)
     {
         $dataorder = session()->get('booking');
+//        dd($dataorder);
 
         //        dd($dataorder);
         $data = $request->all();
@@ -341,7 +355,7 @@ class BookingController extends Controller
                     'booking_id' => $booking->booking_id,
                     'user_id' => $data_order['user_id'],
                     'payment_method' => 'online',
-                    'total' => $data_order['price_ticket'],
+                    'total' => $data_order['price_total'],
                     'payment_date' => Carbon::now(),
                     'status_payment' => 'completed',
                 ]);
@@ -392,12 +406,12 @@ class BookingController extends Controller
     public function paymentSuccess()
     {
         $ticket = Ticket::where('transaction_id', session('data.transaction_id'))
-            ->with('booking')
+            ->with('booking', 'transaction')
             ->first();
+//        dd($ticket);
         // Decode the seats JSON string to an array
         $ticket->seats = json_decode($ticket->seats, true);
 
-        //        dd($ticket);
 
         return view('user.booking.payment-success', compact('ticket'));
     }

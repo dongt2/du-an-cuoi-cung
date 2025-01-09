@@ -63,13 +63,13 @@ class SeatFactory extends Factory
         $firstLetter = substr($place, 0, 1);
         $price = match ($firstLetter) {
             'A', 'B', 'C', 'D' => '30000',
-            'E', 'F', 'G', 'H' => '50000',
-            'I', 'J', 'K' => '70000',
+            'E', 'F', 'G', 'H' => '60000',
+            'I', 'J', 'K' => '100000',
             default => '30000', // Mặc định là 30000 nếu không khớp
         };
 
         return [
-            'place' => $place, 
+            'place' => $place,
             'price' => $price,
             'status' => 'Còn trống',
         ];

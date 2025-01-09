@@ -12,19 +12,20 @@ class Ticket extends Model
     protected $primaryKey = 'ticket_id';
 
     protected $fillable = [
-        'user_id',
         'transaction_id',
         'booking_id',
+        'user_id',
         'movie_id',
         'showtime_id',
         'seats',
         'qr_code',
-        'token',
+        'checkin',
+        'status',
     ];
 
     public function transaction()
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
+        return $this->belongsTo(Transaction::class, 'transaction_id', 'transaction_id');
     }
     public function booking()
     {
@@ -32,15 +33,14 @@ class Ticket extends Model
     }
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
     public function movie()
     {
-        return $this->belongsTo(Movie::class, 'movie_id');
+        return $this->belongsTo(Movie::class, 'movie_id', 'movie_id');
     }
     public function showtime()
     {
-        return $this->belongsTo(Showtime::class, 'showtime_id');
+        return $this->belongsTo(Showtime::class, 'showtime_id', 'showtime_id');
     }
-
 }

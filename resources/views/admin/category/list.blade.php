@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Movie
+    Danh Sách Thể Loại
 @endsection
 
 @push('style')
@@ -17,6 +17,10 @@
         type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 @endpush
 
 @section('content')
@@ -26,15 +30,8 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
+                {{-- <div class="flex-grow-1">
                     <h4 class="fs-18 fw-semibold m-0">Category</h4>
-                </div>
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Tables</li>
-                    </ol>
                 </div> --}}
             </div>
 
@@ -44,7 +41,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách thể loại</h5>
+                            <h5 class="card-title mb-0"><strong>Danh sách thể loại</strong></h5>
                         </div><!-- end card header -->
 
                         <div class="card-body">
@@ -63,16 +60,18 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->category_name }}</td>
                                             <td>{{ $item->movies()->count() }}</td>
-                                            <td>
+                                            <td class="d-flex gap-2">
                                                 <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                    class="btn btn-warning d-inline">Sửa</a>
+                                                    class="btn btn-warning d-inline"><i
+                                                        class="fa-solid fa-pen-to-square"></i></a>
                                                 <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                    method="post" class="d-inline">
+                                                    method="post" class="d-inline"
+                                                    id="delete-form-{{ $item->category_id }}">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="btn btn-danger"
-                                                        style="padding: 0.335rem 0.7rem; line-height: 1.5;"
-                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
+                                                    <button type="button" data-id="{{ $item->category_id }}"
+                                                        class="btn btn-danger delete-button"><i
+                                                            class="fa-solid fa-trash-can"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -91,6 +90,31 @@
 @endsection
 
 @push('script')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-id');
+                Swal.fire({
+                    title: 'Bạn có chắc chắn?',
+                    text: "Người dùng này sẽ bị xóa vĩnh viễn!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Có, xóa nó!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        document.getElementById(`delete-form-${userId}`).submit();
+                    }
+                });
+            });
+        });
+
+    </script>
+
     <!-- Datatables js -->
     <script src="{{ asset('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
 

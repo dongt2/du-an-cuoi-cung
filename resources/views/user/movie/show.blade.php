@@ -108,7 +108,6 @@
                     <div class="col-sm-4 col-md-3 movie-mobile">
                         <div class="movie__images">
                             <span class="movie__rating">{{ number_format($data->average_rating ?? 0, 1, '.', ',') }}</span>
-                            {{-- <img alt='' src="{{ asset('images/movie/single-movie.jpg') }}"> --}}
                             <img alt='' src="{{ Storage::url($data->cover_image) }}" width="270px" height="380px">
                         </div>
                     </div>
@@ -119,12 +118,29 @@
                         <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $data->country }}</a>
                         <p class="movie__option"><strong>Năm sản xuất: </strong><a href="#">{{ $data->year }}</a>
                         </p>
-                        <p class="movie__option"><strong>Thể loại: </strong><a
-                                href="#">{{ $data->category->category_name }}</a>, <a href="#">Thể loại 2</a>
+                        <p class="movie__option"><strong>Thể loại: </strong>
+                            @foreach ($data->categories as $category)
+                                <a href="#">
+                                    {{ $category->category_name }}@if(!$loop->last), @endif
+                                </a>
+                            @endforeach
                         </p>
                         <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $data->release_date }}</p>
-                        <p class="movie__option"><strong>Tác giả: </strong><a href="#">{{ $data->director }}</a></p>
-                        <p class="movie__option"><strong>Diễn viên: </strong><a href="#">{{ $data->actors }}</a></p>
+                        <p class="movie__option"><strong>Tác giả: </strong>
+                                @foreach ($data->directors as $director)
+                                    <a href="#">
+                                        {{ $director->directors }}@if(!$loop->last), @endif
+                                    </a>
+                                @endforeach
+                        </p>
+                        <p class="movie__option"><strong>Diễn viên: </strong>
+                                @foreach ($data->actors as $actor)
+                                    <a href="#">
+                                        {{ $actor->actor_name }}@if(!$loop->last), @endif
+                                    </a>
+                                @endforeach
+                            </p>
+
 
 
 
@@ -139,7 +155,7 @@
                 <h2 class="page-heading" style="clear: both;">Mô tả</h2>
 
                 <p class="movie__describe">
-                    {{ $data->description }}
+                    {!! $data->description !!}
                 </p>
 
                 <div class="clearfix"></div>

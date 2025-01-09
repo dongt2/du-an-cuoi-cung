@@ -188,14 +188,15 @@
                         </div>
                         <div class="modal-body">
                             @foreach ($combos as $item)
+
                                 <div class="combo-container">
-                                    <img src="{{ $item->image && Storage::exists($item->image) ? Storage::url($item->image) : asset('images/default.jpg') }}"
-                                         alt="Combo Image" class="combo-image">
+                                    <img src="{{ Storage::url($item->image) }}"
+                                         alt="Combo Image" class="combo-image" width="80px">
                                     <div class="combo-details">
                                         <strong class="combo-title">
                                             {{ $item->combo_name ?? 'Unknown' }} - {{ $item->price ? number_format($item->price) : 'N/A' }} VNĐ
                                         </strong>
-                                        <p>{{ $item->short_description ?? 'No description available.' }}</p>
+                                        <p>{!! $item->short_description ?? 'No description available.' !!}</p>
                                         <input type="number" class="combo-quantity" data-price="{{ $item->price }}" data-combo-id="{{ $item->combo_id }}" value="0" min="0" max="{{ $item->max_quantity ?? 10 }}" aria-label="Quantity for {{ $item->combo_name }}" aria-describedby="combo-{{ $item->combo_id }}">
                                     </div>
                                 </div>
@@ -211,10 +212,19 @@
                 <!-- Voucher -->
                 <h2 class="page-heading" style="clear: both;">Voucher</h2>
                 <div class="container" style="float: left; max-width: 600px;">
+
                     <div class="input-group">
-                        <input type="text" name="voucher" id="voucher" value="{{ old('voucher') }}"
-                            placeholder="Nhập mã giảm giá" class="voucher">&emsp;
-                        <button id="submit-voucher" class="btn btnVoucher"> Xác nhận </button>
+                        @if(session('booking.voucher_code') != null)
+                        <input type="text" name="voucher" id="voucher" value="{{ session('booking.voucher_code') }}"
+                            placeholder="Nhập mã giảm giá" class="voucher" disabled>
+                            <button id="destroy-voucher" class="btn btnVoucher"> Hủy mã </button>
+
+                        @else
+                            <input type="text" name="voucher" id="voucher"
+                                   placeholder="Nhập mã giảm giá" class="voucher">
+                            <button id="submit-voucher" class="btn btnVoucher"> Xác nhận </button>
+                        @endif
+
                     </div>
                 </div>
                 <br>
@@ -251,6 +261,7 @@
                             VNĐ</span></li>
 
                     @php
+//                    dd(session('booking'));
                         $total =
                             session('booking.price_ticket') +
                             session('booking.price_combo') -
@@ -277,46 +288,6 @@
                     </form>
 
 
-
-                    <script>
-                        window.addEventListener('load', function() {
-                            var totalText = document.getElementById('total').textContent;
-                            var totalVND = parseFloat(totalText.replace(/[^\d.-]/g, '').replace(',',
-                                '.'));
-
-                            // Kiểm tra xem giá trị total có hợp lệ không
-                            if (isNaN(totalVND) || totalVND <= 0) {
-                                console.log("Giá trị tổng không hợp lệ");
-                            } else {
-                                // Giả sử tỷ giá hối đoái là 1 USD = 23,000 VNĐ
-                                var exchangeRate = 23000;
-
-
-                                var totalUSD = (totalVND * 1000 / exchangeRate).toFixed(2);
-
-                                console.log("Tổng giá trị bằng USD: " + totalUSD);
-
-                                // Render PayPal button
-                                paypal.Buttons({
-                                    createOrder: function(data, actions) {
-                                        return actions.order.create({
-                                            purchase_units: [{
-                                                amount: {
-                                                    value: totalUSD // Giá trị tính bằng USD
-                                                }
-                                            }]
-                                        });
-                                    },
-                                    onApprove: function(data, actions) {
-                                        return actions.order.capture().then(function(details) {
-                                            alert('Thanh toán thành công! ' + details.payer.name.given_name);
-                                            // Có thể xử lý thêm ở đây sau khi thanh toán thành công
-                                        });
-                                    }
-                                }).render('#paypal-button-container');
-                            }
-                        });
-                    </script>
                 </div>
             </div>
         </div>
@@ -438,6 +409,32 @@
                     error: function(xhr, status, error) {
                         console.error('Có lỗi xảy ra:', error);
                         alert('Có lỗi xảy ra khi áp dụng mã giảm giá.');
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            $('#destroy-voucher').on('click', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: "{{ route('user.destroy-voucher') }}", // Updated route for destroying voucher
+                    type: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}" // CSRF token for Laravel
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.success); // Display success message
+                        } else if (response.error) {
+                            alert(response.error); // Display error message
+                        }
+                        location.reload(); // Reload page to update voucher state
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('An error occurred:', error);
+                        alert('An error occurred while removing the voucher.');
                     }
                 });
             });

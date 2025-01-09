@@ -34,9 +34,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                                                                                <![endif]-->
     <style>
         /* Đặt chung cho form */
         form {
@@ -151,7 +151,7 @@
                         <div class="movie__images">
                             {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
                             <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
-                                 height="260px">
+                                height="260px">
                         </div>
                         <div class="movie__feature">
                             <a href="#" class="movie__feature-item movie__feature--comment">123</a>
@@ -194,7 +194,7 @@
                     </div>
 
                     <div class="clearfix"></div>
-
+                    
 
                 </div>
                 <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">

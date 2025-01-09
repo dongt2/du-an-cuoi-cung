@@ -15,7 +15,7 @@ class ScreenController extends Controller
      */
     public function index()
     {
-        $data = Screen::orderBy('screen_id', 'desc')->get();
+        $data = Screen::all();
 
         return view('admin.screen.list', compact('data'));
     }

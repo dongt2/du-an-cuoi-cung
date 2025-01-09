@@ -7,7 +7,14 @@
 
 @push('style')
     <!-- Flatpickr Timepicker css -->
+    <!-- CSS Select2 -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" rel="stylesheet" />
+
+
     <link href="{{ asset('assets/libs/flatpickr/flatpickr.min.css') }}" rel="stylesheet" type="text/css" />
+
+
+    <link rel="stylesheet" href="{{ asset('summernote-0.9.0-dist/summernote-lite.min.css') }}">
 @endpush
 
 @section('content')
@@ -17,16 +24,7 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Movie</h4>
-                </div>
 
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Form Pickers</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Advance Form -->
@@ -34,10 +32,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Sửa</h5>
+                            <h5 class="card-title mb-0"><strong>Sửa thông tin phim - {{ $data->movie_id }}</strong></h5>
                         </div><!-- end card header -->
 
-                        <form action="{{ route('admin.movie.update', $id = $data->movie_id) }}" method="post"
+                        <form action="{{ route('admin.movie.update', $data->movie_id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -96,17 +94,29 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Tác giả</label>
-                                            <input type="text" class="form-control" id="" name="director"
-                                                value="{{ $data->director }}" placeholder="Nhập tên tác giả">
-                                            @error('director')
+                                            <select name="directors[]" id="directors" class="form-control select2" multiple>
+                                                @foreach ($director as $dir)
+                                                    <option value="{{ $dir->id }}"
+                                                        {{ in_array($dir->id, $data->directors->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                        {{ $dir->directors }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('directors')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
 
                                         <div class="mb-3">
                                             <label class="form-label">Diễn viên</label>
-                                            <input type="text" class="form-control" id="" name="actors"
-                                                value="{{ $data->actors }}" placeholder="Nhập tên diễn viên">
+                                            <select name="actors[]" id="actors" class="form-control select2" multiple>
+                                                @foreach ($actor as $act)
+                                                    <option value="{{ $act->id }}"
+                                                        {{ in_array($act->id, $data->actors->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                        {{ $act->actor_name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                             @error('actors')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -114,18 +124,17 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Thể loại</label>
-                                            <select class="form-control" id="" name="category_id">
-                                                <option value="{{ $data->category_id }}">
-                                                    {{ $data->category->category_name }}</option>
-
+                                            <select name="categories[]" class="form-control select2" multiple>
                                                 @foreach ($category as $item)
-                                                    @if ($item->category_id != $data->category_id)
-                                                        <option value="{{ $item->category_id }}">
-                                                            {{ $item->category_name }}</option>
-                                                    @endif
+                                                    <option value="{{ $item->category_id }}"
+                                                        {{ $data->categories->pluck('category_id')->contains($item->category_id) ? 'selected' : '' }}>
+                                                        {{ $item->category_name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
-                                            @error('category_id')
+
+
+                                            @error('categories')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
@@ -133,14 +142,6 @@
                                     </div>
 
                                     <div class="col-xl-6">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="description">Mô tả</label>
-                                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Nhập mô tả phim">{{ $data->description }}</textarea>
-                                            @error('description')
-                                                <span style="color: red;">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
                                         <div class="mb-3">
                                             <label class="form-label">Trailer-url</label>
                                             <input type="text" class="form-control" id="" name="trailer_url"
@@ -160,6 +161,14 @@
                                             @enderror
                                         </div>
                                     </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label" for="description">Mô tả</label>
+                                        <textarea class="form-control" id="summernote" name="description" rows="3">{!! $data->description !!}</textarea>
+                                        @error('description')
+                                            <span style="color: red;">{{ $message }}</span>
+                                        @enderror
+                                    </div>
                                 </div>
                                 <button class="btn btn-primary">Sửa</button>
                             </div>
@@ -173,6 +182,44 @@
 @endsection
 
 @push('script')
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- JS Select2 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
+    <script src="{{ asset('summernote-0.9.0-dist/summernote-lite.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+
+        $('#summernote').summernote({
+            placeholder: 'mô tả',
+            tabsize: 2,
+            height: 100
+        });
+    </script>
+    </script>
+
+    {{-- <script>
+        $(document).ready(function() {
+            $('.selectactors').select2({
+                placeholder: "Chon tac gia",
+                allowClear: true,
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('.selectcategories').select2({
+                placeholder: "Chon tac gia",
+                allowClear: true,
+            });
+        }); --}}
+    </script>
+
     <!-- Flatpickr Timepicker Plugin js -->
     <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
 

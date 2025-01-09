@@ -15,9 +15,9 @@ return new class extends Migration
             $table->bigIncrements('seat_id');
             $table->unsignedBigInteger('showtime_id');
             $table->text('place', 2);
-            $table->enum('price', ['30000', '50000', '70000']);
+            $table->integer('price');
             $table->enum('status', ['Còn trống', 'Đã đặt', 'Đã hỏng']);
-            
+
             $table->foreign('showtime_id')->references('showtime_id')->on('showtimes')->onDelete('cascade');
             $table->timestamps();
         });

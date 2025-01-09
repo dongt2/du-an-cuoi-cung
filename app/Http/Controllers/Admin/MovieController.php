@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Models\Actor;
 use App\Models\Category;
+use App\Models\Director;
 use App\Models\Movie;
-use Illuminate\Http\Request;
+use App\Models\MovieCategory;
 use Illuminate\Support\Facades\Storage;
 
 class MovieController extends Controller
@@ -17,7 +19,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $data = Movie::orderBy('movie_id', 'desc')->get();
+        $data = Movie::with('categories', 'actors', 'directors')->get();
 
         return view('admin.movie.list', compact('data'));
     }
@@ -27,9 +29,11 @@ class MovieController extends Controller
      */
     public function create()
     {
-        $data = Category::orderBy('category_id', 'desc')->get();
+        $data = Category::all();
+        $actor = Actor::all();
+        $director = Director::all();
 
-        return view('admin.movie.create', compact('data'));
+        return view('admin.movie.create', compact('data', 'actor', 'director'));
     }
 
     /**
@@ -40,29 +44,37 @@ class MovieController extends Controller
         $path = null;
 
         if ($request->hasFile('cover_image')) {
+
             $image = $request->file('cover_image');
-            $newName = time() . '.' . $image->getClientOriginalExtension();
+
+            $newName = time().'.'.$image->getClientOriginalExtension();
+
             $path = $image->storeAs('images/movie', $newName, 'public');
         }
-
-        // Convert trailer URL to embed format
-        $trailer_url = $this->convertYoutubeUrl($request->trailer_url);
-
         $data = [
             'title' => $request->title,
             'cover_image' => $path,
             'duration' => $request->duration,
             'country' => $request->country,
             'year' => $request->year,
-            'director' => $request->director,
-            'actors' => $request->actors,
-            'category_id' => $request->category_id,
             'description' => $request->description,
-            'trailer_url' => $trailer_url, // Use the converted URL here
+            'trailer_url' => $request->trailer_url,
             'release_date' => $request->release_date,
         ];
 
-        Movie::create($data);
+        $movie = Movie::create($data);
+
+        // MovieCategory::create([
+        //     'movie_id' => $movie->movie_id,
+        //     'category_id' => $request->categories,
+        // ]);
+
+        $movie->categories()->sync($request->categories);
+
+        // dd(vars: $movie);
+        $movie->actors()->sync($request->actors);
+        $movie->directors()->sync($request->directors);
+        // dd($movie);
 
         return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
     }
@@ -72,7 +84,15 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Lấy dữ liệu của phim cần chỉnh sửa, kèm theo các mối quan hệ (categories, actors, directors)
+        $data = Movie::with(['categories', 'actors', 'directors'])->findOrFail($id);
+
+        // Lấy toàn bộ danh sách thể loại, diễn viên, đạo diễn để hiển thị trong form
+        $category = Category::all(); // Danh sách thể loại
+        $actor = Actor::all();       // Danh sách diễn viên
+        $director = Director::all(); // Danh sách đạo diễn
+        //dd($data, $category, $actor, $director);
+        return view('admin.movie.show', compact('data', 'category', 'actor', 'director'));
     }
 
     /**
@@ -80,9 +100,15 @@ class MovieController extends Controller
      */
     public function edit(string $id)
     {
-        $data = Movie::where('movie_id', $id)->first();
-        $category = Category::all();
-        return view('admin.movie.edit', compact('data', 'category'));
+        // Lấy dữ liệu của phim cần chỉnh sửa, kèm theo các mối quan hệ (categories, actors, directors)
+        $data = Movie::with(['categories', 'actors', 'directors'])->findOrFail($id);
+
+        // Lấy toàn bộ danh sách thể loại, diễn viên, đạo diễn để hiển thị trong form
+        $category = Category::all(); // Danh sách thể loại
+        $actor = Actor::all();       // Danh sách diễn viên
+        $director = Director::all(); // Danh sách đạo diễn
+        //dd($data, $category, $actor, $director);
+        return view('admin.movie.edit', compact('data', 'category', 'actor', 'director'));
     }
 
     /**
@@ -90,22 +116,21 @@ class MovieController extends Controller
      */
     public function update(UpdateMovieRequest $request, string $id)
     {
+
         $movie = Movie::findOrFail($id);
 
         $path = $movie->cover_image;
 
         if ($request->hasFile('cover_image')) {
-            // Delete old image
+            // Xóa ảnh cũ
             Storage::disk('public')->delete($path);
 
-            // Upload new image
+            // Lưu ảnh mới
             $image = $request->file('cover_image');
-            $newName = time() . '.' . $image->getClientOriginalName();
+            $newName = time().'.'.$image->getClientOriginalName();
+
             $path = $image->storeAs('images/movie', $newName, 'public');
         }
-
-        // Convert trailer URL to embed format
-        $trailer_url = $this->convertYoutubeUrl($request->trailer_url);
 
         $data = [
             'title' => $request->title,
@@ -117,10 +142,16 @@ class MovieController extends Controller
             'actors' => $request->actors,
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'trailer_url' => $trailer_url, // Use the converted URL here
+            'trailer_url' => $request->trailer_url,
             'release_date' => $request->release_date,
         ];
         $movie->update($data);
+
+        $movie->categories()->sync($request->categories);
+
+        // dd(vars: $movie);
+        $movie->actors()->sync($request->actors);
+        $movie->directors()->sync($request->directors);
 
         return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
     }
@@ -131,25 +162,14 @@ class MovieController extends Controller
     public function destroy(string $id)
     {
         $mov = Movie::findOrFail($id);
-
-        $mov->delete();
-
-        return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
-    }
-
-    private function convertYoutubeUrl($url)
-    {
-        // Handle "watch" URLs (e.g., https://www.youtube.com/watch?v=ABC123)
-        if (strpos($url, 'watch?v=') !== false) {
-            return str_replace('watch?v=', 'embed/', $url);
+        if($mov){
+            $mov->delete();
+            toastr()->success('Thao tác thành công');
+        }else{
+            toastr()->error('Thao tác không thành công');
         }
 
-        // Handle shortened URLs (e.g., https://youtu.be/ABC123)
-        if (strpos($url, 'youtu.be/') !== false) {
-            return str_replace('youtu.be/', 'www.youtube.com/embed/', $url);
-        }
+        return back();
 
-        // Return the same URL if already in embed format or unrecognized
-        return $url;
     }
 }

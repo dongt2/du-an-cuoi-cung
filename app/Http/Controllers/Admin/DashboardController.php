@@ -1,46 +1,65 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Movie; // Assuming this model exists
-use App\Models\Combo; // Assuming this model exists
-use App\Models\DailyPremiere; // Assuming this model exists
-use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
-/**
-* Display the dashboard.
-*/
-public function index()
-{
-// Get statistics for best-selling movies (weekly)
-$bestSellingMovies = Movie::withSum('sales', 'quantity')
-->orderByDesc('sales_sum_quantity')
-->take(5) // Limit top 5
-->get();
-dd($bestSellingMovies);
-// Get statistics for best-selling combos (weekly)
-$bestSellingCombos = Combo::withSum('sales', 'quantity')
-->orderByDesc('sales_sum_quantity')
-->take(5) // Limit top 5
-->get();
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        return view('admin.dashboard');
+    }
 
-// Get daily premiere statistics
-$dailyPremieres = DailyPremiere::whereDate('premiere_date', Carbon::today())
-->get();
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
 
-// Data for charts (e.g., monthly stats)
-$monthlySales = Movie::selectRaw('MONTH(sale_date) as month, SUM(quantity) as total_sales')
-->groupBy('month')
-->get();
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
 
-return view('admin.dashboard', [
-    'bestSellingMovies' => $bestSellingMovies,
-'bestSellingCombos' => $bestSellingCombos,
-'dailyPremieres' => $dailyPremieres,
-'monthlySales' => $monthlySales,
-]);
-}
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
 }
