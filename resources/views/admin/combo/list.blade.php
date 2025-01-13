@@ -56,6 +56,7 @@
                                         <th>Ảnh</th>
                                         {{-- <th>Mô tả</th> --}}
                                         <th>Giá</th>
+                                        <th>Số lượng</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -70,6 +71,7 @@
                                             </td>
                                             {{-- <td>{!! $item->short_description !!}</td> --}}
                                             <td>{{ $item->price }}</td>
+                                            <td>{{ $item->quantity }}</td>
                                             <td>
                                                 <a href="{{ route('admin.combo.edit', $item->combo_id) }}"
                                                     class="btn btn-warning d-inline">Sửa</a>

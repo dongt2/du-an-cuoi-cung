@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Actor;
 use App\Models\Category;
+use App\Models\Director;
 use App\Models\Movie;
 use App\Models\Showtime;
 use App\Models\Review;
@@ -17,10 +19,6 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function listMovie()
     {
         if (session()->has('movie')) {
@@ -35,7 +33,7 @@ class HomeController extends Controller
                 $query->whereDate('created_at', now()->toDateString()); // Only today's reviews
             }
         ])
-            ->with('categories', 'actors', 'directors')
+            ->with('categories', 'actors', 'directors','reviews')
             ->orderByDesc('release_date') // Sort by today's reviews count
             ->take(8)
             ->get();
@@ -56,11 +54,15 @@ class HomeController extends Controller
     public function categories(Request $request)
     {
         $categories = Category::all(); // Lấy danh sách thể loại
+        $directors = Director::all(); // Lấy danh sách đạo diễn
+        $actors = Actor::all(); // Lấy danh sách diễn viên
         $movies = Movie::query();
 
         // Áp dụng bộ lọc nếu có
         if ($request->has('category') && $request->category) {
-            $movies->where('category_id', $request->category);
+            $movies->whereHas('categories', function ($query) use ($request) {
+                $query->where('categories.category_id', $request->category);
+            });
         }
 
         if ($request->has('year') && $request->year) {
@@ -68,11 +70,15 @@ class HomeController extends Controller
         }
 
         if ($request->has('director') && $request->director) {
-            $movies->where('director', $request->director);
+            $movies->whereHas('directors', function ($query) use ($request) {
+                $query->where('directors.id', $request->director);
+            });
         }
 
         if ($request->has('actors') && $request->actors) {
-            $movies->where('actors', $request->actors);
+            $movies->whereHas('actors', function ($query) use ($request) {
+                $query->where('actors.id', $request->actors);
+            });
         }
 
         if ($request->has('sort') && $request->sort) {
@@ -85,7 +91,7 @@ class HomeController extends Controller
 
         $movies = $movies->get(); // Lấy danh sách phim sau khi lọc
 
-        return view('user.movie.categories', compact('categories', 'movies'));
+        return view('user.movie.categories', compact('categories', 'directors', 'actors', 'movies'));
     }
 
     public function upcoming(Request $request)
@@ -97,10 +103,11 @@ class HomeController extends Controller
         $movies = Movie::query()
             ->where('release_date', '>', $today);
 
-        // dd($movies);
         // Lọc theo thể loại
         if ($request->has('category') && $request->category) {
-            $movies->where('category_id', $request->category);
+            $movies->whereHas('categories', function ($query) use ($request) {
+                $query->where('categories.category_id', $request->category);
+            });
         }
 
         // Lọc theo năm
@@ -110,11 +117,16 @@ class HomeController extends Controller
 
         // Lọc theo đạo diễn
         if ($request->has('director') && $request->director) {
-            $movies->where('director', $request->director);
+            $movies->whereHas('directors', function ($query) use ($request) {
+                $query->where('directors.id', $request->director);
+            });
         }
 
+        // Lọc theo diễn viên
         if ($request->has('actors') && $request->actors) {
-            $movies->where('actors', $request->actors);
+            $movies->whereHas('actors', function ($query) use ($request) {
+                $query->where('actors.id', $request->actors);
+            });
         }
 
         // Sắp xếp nếu có yêu cầu
@@ -130,11 +142,10 @@ class HomeController extends Controller
         $categoriesUpcoming = Category::all();
 
         // Lấy danh sách đạo diễn và diễn viên duy nhất
-        $directors = Movie::select('director')->distinct()->pluck('director');
-        $actors = Movie::select('actors')->distinct()->pluck('actors');
+        $directors = Director::all();
+        $actors = Actor::all();
 
-        // Phân trang kết quả
-        // $movies = $movies->paginate(10);
+        // Lấy kết quả sau khi lọc
         $movies = $movies->get();
 
         // Trả về view kèm danh sách phim sắp chiếu
@@ -164,18 +175,6 @@ class HomeController extends Controller
         // Trả về view với danh sách phim
         return view('user.movie.list', compact('movies'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -202,11 +201,6 @@ class HomeController extends Controller
     }
 
 
-    /**
-     * Display the specified resource.
-     */
-
-
 
     public function show(string $id)
     {
@@ -216,23 +210,6 @@ class HomeController extends Controller
         if (session()->has('booking')) {
             session()->forget('booking');
         }
-        // $time_showtime = Showtime::where('movie_id', $id)
-        // ->select('time')
-        // ->get();
-
-        // $time_movie = Movie::where('movie_id', $id)
-        // ->select('duration')
-        // ->get();
-        // $time_format = $time_movie[0]->duration;
-        // $time_format = explode(":", $time_format);
-        // $time_format = $time_format[0] * 60 + $time_format[0];
-        // $time_format = $time_format + 15;
-        // $time_format = gmdate("H:i", $time_format);
-        // $time_format = explode(":", $time_format);
-        // $time_format = $time_format[0] * 60 + $time_format[0];
-        // $time_format = $time_format * 60;
-        // $time_format = $time_format + strtotime($time_showtime[0]->time);
-        // $time_format = date("H:i", $time_format);
 
 
 
@@ -268,27 +245,5 @@ class HomeController extends Controller
         return view('user.movie.show', compact('data', 'reviews', 'showtimes', 'movie_id', 'ticket'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

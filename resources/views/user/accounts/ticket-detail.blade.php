@@ -37,9 +37,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+                <![endif]-->
 
     <style>
         .rating {
@@ -67,20 +67,143 @@
         }
 
         .rating label:hover:before,
-        .rating label:hover ~ label:before {
+        .rating label:hover~label:before {
             opacity: 1 !important;
         }
 
-        .rating input:checked ~ label:before {
+        .rating input:checked~label:before {
             opacity: 1;
         }
 
-        .rating input:checked + label:hover:before,
-        .rating input:checked + label:hover ~ label:before,
-        .rating input:checked ~ label:hover:before,
-        .rating input:checked ~ label:hover ~ label:before,
-        .rating label:hover ~ input:checked ~ label:before {
+        .rating input:checked+label:hover:before,
+        .rating input:checked+label:hover~label:before,
+        .rating input:checked~label:hover:before,
+        .rating input:checked~label:hover~label:before,
+        .rating label:hover~input:checked~label:before {
             opacity: 0.4;
+        }
+
+        /* Căn giữa container */
+        .col-md-12 {
+            margin: 20px auto;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            /* Đặt chiều rộng tối đa */
+            width: 90%;
+            /* Chiếm 90% chiều rộng màn hình */
+            box-sizing: border-box;
+        }
+
+        .account-info h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        /* Ticket Details */
+        .ticket-details p {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .ticket-details p strong {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .ticket-details img {
+            margin-top: 10px;
+            max-width: 150px;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        /* Phần Rating (từ phải sang trái) */
+        .rating {
+            display: flex;
+            gap: 8px;
+            direction: rtl;
+            /* Đảo ngược thứ tự từ phải sang trái */
+        }
+
+        .rating label {
+            font-size: 24px;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s, transform 0.2s;
+        }
+
+        .rating input {
+            display: none;
+        }
+
+        /* Hiệu ứng khi hover hoặc chọn */
+        .rating input:checked~label,
+        .rating label:hover,
+        .rating label:hover~label {
+            color: #ffc107;
+            transform: scale(1.1);
+        }
+
+        /* Button Styles */
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
     </style>
 @endsection
@@ -97,56 +220,65 @@
                         <p><strong>Booking ID:</strong> {{ $ticket->booking_id }}</p>
                         <p><strong>User ID:</strong> {{ $ticket->user_id }}</p>
                         <p><strong>Seats:</strong> {{ $ticket->seats }}</p>
-                        <p><strong>QR Code:</strong> <img src="{{ \Illuminate\Support\Facades\Storage::url($ticket->qr_code) }}" alt="QR Code"></p>
+                        <p><strong>QR Code:</strong> <img
+                                src="{{ \Illuminate\Support\Facades\Storage::url($ticket->qr_code) }}" alt="QR Code"></p>
                         <p><strong>Created At:</strong> {{ $ticket->created_at }}</p>
                         <p><strong>Updated At:</strong> {{ $ticket->updated_at }}</p>
                         <p><strong>Status:</strong> {{ $ticket->status }}</p>
                         <p><strong>Price:</strong> {{ $ticket->price }}</p>
                         <p><strong>Payment Method:</strong> {{ $ticket->payment_method }}</p>
-                        @if($ticket->token != 0)
-                        <form action="{{ route('account.comment', $ticket->ticket_id) }}" method="post">
-                            @csrf
-                            <div class="form-group">
-                                <label>Comment</label>
-                                <input type="text" name="comment">
-                            </div>
-                            <div class="form-group">
-                                <label>Rating</label>
-                                <div class="rating">
-                                    <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                                    <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                                    <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                    <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                    <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                        @if ($ticket->token != 0)
+                            <form action="{{ route('account.comment', $ticket->ticket_id) }}" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <label>Comment</label>
+                                    <input type="text" name="comment">
                                 </div>
-                            </div>
-                            <button type="submit">Submit</button>
-                        </form>
+                                <div class="form-group">
+                                    <label>Rating</label>
+                                    <div class="rating">
+                                        <input type="radio" name="rating" value="5" id="5"><label
+                                            for="5">☆</label>
+                                        <input type="radio" name="rating" value="4" id="4"><label
+                                            for="4">☆</label>
+                                        <input type="radio" name="rating" value="3" id="3"><label
+                                            for="3">☆</label>
+                                        <input type="radio" name="rating" value="2" id="2"><label
+                                            for="2">☆</label>
+                                        <input type="radio" name="rating" value="1" id="1"><label
+                                            for="1">☆</label>
+                                    </div>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </form>
                         @else
                             <form action="{{ route('account.comment', $ticket->ticket_id) }}" method="post">
                                 @csrf
                                 <div class="form-group">
                                     <label>Comment</label>
-                                    @if($review->comment == null)
+                                    @if ($review->comment == null)
                                         <input type="text" name="comment">
-
                                     @else
-                                    <input type="text" name="comment" value="{{ $review->comment }}" disabled>
+                                        <input type="text" name="comment" value="{{ $review->comment }}" disabled>
                                     @endif
                                 </div>
                                 <div class="form-group">
                                     <label>Rating</label>
                                     <div class="rating">
-                                        <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
-                                        <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
-                                        <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
-                                        <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
-                                        <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                                        <input type="radio" name="rating" value="5" id="5"><label
+                                            for="5">☆</label>
+                                        <input type="radio" name="rating" value="4" id="4"><label
+                                            for="4">☆</label>
+                                        <input type="radio" name="rating" value="3" id="3"><label
+                                            for="3">☆</label>
+                                        <input type="radio" name="rating" value="2" id="2"><label
+                                            for="2">☆</label>
+                                        <input type="radio" name="rating" value="1" id="1"><label
+                                            for="1">☆</label>
                                     </div>
                                 </div>
-                                @if($review->comment == null)
-                                    <button type="submit" >Submit</button>
-
+                                @if ($review->comment == null)
+                                    <button type="submit">Submit</button>
                                 @else
                                     <button type="submit" disabled>Submit</button>
                                 @endif
@@ -196,6 +328,7 @@
         $(document).ready(function() {
             init_TicketOne();
         });
+
         function init_TicketOne() {
             // Add your initialization code here
             console.log('init_TicketOne function called');

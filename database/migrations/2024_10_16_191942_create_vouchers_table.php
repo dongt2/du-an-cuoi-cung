@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('code', 100)->unique();
             $table->date('start_date');
             $table->date('end_date');
-            $table->integer('quantity')->default(1);
+            $table->integer('quantity')->default(0);
             $table->integer('deduct_amount');
             $table->timestamps();
 

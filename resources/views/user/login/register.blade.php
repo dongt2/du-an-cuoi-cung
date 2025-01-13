@@ -62,7 +62,7 @@
             @error('password')
                 <span style="color: red;">{{ $message }}</span>
             @enderror
-            <input type='text' placeholder='Số điện thoại' name='phone' class="login__input">
+            <input type='password' placeholder='Nhập lại mật khẩu' name='phone' class="login__input">
             @error('phone')
                 <span style="color: red;">{{ $message }}</span>
             @enderror

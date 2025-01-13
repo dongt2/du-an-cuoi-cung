@@ -37,14 +37,11 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+            <![endif]-->
 
     <style>
-
-
-
         /* Account Section */
         .account-info {
             max-width: 800px;
@@ -89,10 +86,118 @@
             background-color: #b71c1c;
         }
 
-        .account-container{
+        .account-container {
             padding-top: 250px;
         }
 
+
+        /*CSS  Account Section */
+        .col-md-12 {
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Arial', sans-serif;
+        }
+
+        .col-md-12 h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .table thead th {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+            color: #fff;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f1faff;
+            transform: scale(1.01);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .label {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .label-warning {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        .label-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .label-danger {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        a {
+            color: #007bff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        /* Add subtle animations */
+        .table tbody tr td a {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .table tbody tr td a:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
     </style>
 @endsection
 
@@ -106,43 +211,45 @@
                 @else
                     <table class="table table-striped">
                         <thead>
-                        <tr>
-                            <th>Mã vé</th>
-                            <th>Tên phim</th>
-                            <th>Phòng chiếu</th>
-                            <th>Xuất chiếu</th>
-                            <th>Giá vé</th>
-                            <th>Ngày đặt vé</th>
-                            <th>Trạng thái</th>
+                            <tr>
+                                <th>Mã vé</th>
+                                <th>Tên phim</th>
+                                <th>Phòng chiếu</th>
+                                <th>Xuất chiếu</th>
+                                <th>Giá vé</th>
+                                <th>Ngày đặt vé</th>
+                                <th>Trạng thái</th>
 
-                            <th>Details</th>
-                        </tr>
+                                <th>Details</th>
+                            </tr>
                         </thead>
                         <tbody>
 
 
 
-                        @foreach ($bookings as $booking)
-                            <tr>
-                                <td>{{ $booking->booking->order_code }}</td>
-                                <td>{{ $booking->movie->title }}</td>
-                                <td>{{ $booking->showtime->screen->screen_name }}</td>
-                                <td>{{ $booking->showtime->time }}</td>
-                                <td>{{ number_format($booking->transaction->total, 0,'.', '.') }}đ</td>
+                            @foreach ($bookings as $booking)
+                                <tr>
+                                    <td>{{ $booking->booking->order_code }}</td>
+                                    <td>{{ $booking->movie->title }}</td>
+                                    <td>{{ $booking->showtime->screen->screen_name }}</td>
+                                    <td>{{ $booking->showtime->time }}</td>
+                                    <td>{{ number_format($booking->transaction->total, 0, '.', '.') }}đ</td>
 
-                                <td>{{ $booking->created_at->format('d/m/Y') }}</td>
-                                <td>@if($booking->status == 0)
-                                        <span class="label label-warning">Vé chưa xem</span>
-                                    @elseif($booking->status == 1)
-                                        <span class="label label-success">Vé đã xem</span>
-                                    @else
-                                        <span class="label label-danger">Vé đã hủy</span>
-                                    @endif
-                                </td>
+                                    <td>{{ $booking->created_at->format('d/m/Y') }}</td>
+                                    <td>
+                                        @if ($booking->status == 0)
+                                            <span class="label label-warning">Vé chưa xem</span>
+                                        @elseif($booking->status == 1)
+                                            <span class="label label-success">Vé đã xem</span>
+                                        @else
+                                            <span class="label label-danger">Vé đã hủy</span>
+                                        @endif
+                                    </td>
 
-                                <td><a href="{{ route('account.booking-detail', $booking->ticket_id) }}">View Details</a></td>
-                            </tr>
-                        @endforeach
+                                    <td><a href="{{ route('account.booking-detail', $booking->ticket_id) }}">View
+                                            Details</a></td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 @endif

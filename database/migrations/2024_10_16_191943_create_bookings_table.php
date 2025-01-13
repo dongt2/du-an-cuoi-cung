@@ -15,6 +15,8 @@ return new class extends Migration
             $table->bigIncrements('booking_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('movie_id');
+            $table->unsignedBigInteger('combo_id')->nullable();
+            $table->unsignedBigInteger('voucher_id')->nullable();
 
 
             $table->string('order_code', 255);
@@ -24,13 +26,14 @@ return new class extends Migration
 
             $table->decimal('total_price', 10)->default(0.00);
 
-            $table->string('order_combo', 255)->nullable();
-            $table->string('voucher', 255)->nullable();
+
 
 
 
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');
+            $table->foreign('combo_id')->references('combo_id')->on('combos')->onDelete('cascade');
+            $table->foreign('voucher_id')->references('voucher_id')->on('vouchers')->onDelete('cascade');
 
 
             $table->timestamps();
@@ -38,6 +41,8 @@ return new class extends Migration
             // Thêm chỉ số cho các khóa ngoại để tăng tốc độ truy vấn
             $table->index(['user_id']);
             $table->index(['movie_id']);
+            $table->index(['combo_id']);
+            $table->index(['voucher_id']);
         });
     }
 

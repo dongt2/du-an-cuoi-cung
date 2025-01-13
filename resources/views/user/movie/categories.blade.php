@@ -34,9 +34,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                                                    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                                                                <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
     <style>
         /* Đặt chung cho form */
         form {
@@ -115,11 +115,11 @@
 
                     <div class="col-md-2">
                         <select name="director" class="form-control">
-                            <option value="" hidden>Đạo Diễn</option>
-                            @foreach ($movies->unique('director')->pluck('director') as $director)
-                                <option value="{{ $director }}"
-                                    {{ request('director') == $director ? 'selected' : '' }}>
-                                    {{ $director }}
+                            <option value="" hidden>Đạo diễn</option>
+                            @foreach ($directors as $director)
+                                <option value="{{ $director->id }}"
+                                    {{ request('director') == $director->id ? 'selected' : '' }}>
+                                    {{ $director->directors }}
                                 </option>
                             @endforeach
                         </select>
@@ -127,14 +127,17 @@
 
                     <div class="col-md-2">
                         <select name="actors" class="form-control">
-                            <option value="" hidden>Diễn Viên</option>
-                            @foreach ($movies->unique('actors')->pluck('actors') as $actors)
-                                <option value="{{ $actors }}" {{ request('actors') == $actors ? 'selected' : '' }}>
-                                    {{ $actors }}
+                            <option value="" hidden>Diễn viên</option>
+                            @foreach ($actors as $actor)
+                                <option value="{{ $actor->id }}"
+                                    {{ request('actors') == $actor->id ? 'selected' : '' }}>
+                                    {{ $actor->actor_name }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+
+
                     <!-- Nút lọc -->
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-primary w-100">Lọc</button>
@@ -144,62 +147,91 @@
         </div>
         <hr style="border: 1px solid #ccc; margin: 20px 0;">
         <!-- Danh sách phim -->
-        <div class="row">
-            @foreach ($movies as $movie)
-                <div class="movie movie--preview movie--full release" style="margin-top:0px;">
-                    <div class="col-sm-3 col-md-2  col-lg-2">
-                        <div class="movie__images">
-                            {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
-                            <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
-                                height="260px">
-                        </div>
-                        <div class="movie__feature">
-                            <a href="#" class="movie__feature-item movie__feature--comment">123</a>
-                            <a href="#" class="movie__feature-item movie__feature--video">7</a>
-                            <a href="#" class="movie__feature-item movie__feature--photo">352</a>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                        <a href='movie-page-full.html' class="movie__title link--huge" style="margin-bottom: 7px">{{ $movie->title }}</a>
-
-                        <p class="movie__time" style="margin-bottom: 7px">{{ $movie->duration }} min</p>
-
-                        <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a></p>
-                        <p class="movie__option"><strong>Thể loại: </strong><a
-                                href="#">{{ $movie->category->category_name }}</a></p>
-                        <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}</p>
-                        <p class="movie__option"><strong>Đạo diễn: </strong><a href="#">{{ $movie->director }}</a>
-                        </p>
-                        <p class="movie__option"><strong>Diễn viên: </strong><a href="#">{{ $movie->actors }}</a>, <a
-                                href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                                href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                                href="#">Jerry
-                                Ferrara</a>, <a href="#">Romany Malco</a> <a href="#">...</a></p>
-                        {{-- <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p> --}}
-
-                        <div class="movie__btns">
-                            <a href="{{ route('movie.show', $movie->movie_id) }}" class="btn btn-md btn--warning">Đặt vé
-                                <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
-                        </div>
-
-                        <div class="preview-footer" style=" background-color: #ffffff; margin-top: 20px;">
-                            <div class="movie__rate" style="display: flex; align-items: center; gap: 7px;">
-                                <div class="star" style="color: #FFD700; font-size: 30px; margin-top: 0px;">★</div><div class="rating" style="font-size:30px">8.5</div>
-                                <span class="movie__rate-number" style="font-size: 14px; color: #000000;">(170 votes)</span>
-                                {{-- <span class="movie__rating"
-                                    style="font-size: 16px; font-weight: bold; color: #333;">5.0</span> --}}
+        @if ($movies->count() > 0)
+            <div class="row">
+                @foreach ($movies as $movie)
+                    <div class="movie movie--preview movie--full release" style="margin-top:0px;">
+                        <div class="col-sm-3 col-md-2  col-lg-2">
+                            <div class="movie__images">
+                                {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
+                                <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
+                                     height="260px">
+                            </div>
+                            <div class="movie__feature">
+                                <a href="#" class="movie__feature-item movie__feature--comment">123</a>
+                                <a href="#" class="movie__feature-item movie__feature--video">7</a>
+                                <a href="#" class="movie__feature-item movie__feature--photo">352</a>
                             </div>
                         </div>
+
+                        <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
+                            <a href='movie-page-full.html' class="movie__title link--huge"
+                               style="margin-bottom: 7px">{{ $movie->title }}</a>
+
+                            <p class="movie__time" style="margin-bottom: 7px">{{ $movie->duration }} min</p>
+
+                            <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a>
+                            </p>
+                            <p class="movie__option"><strong>Thể loại: </strong>
+                                @foreach ($movie->categories as $category)
+                                    <a href="#">
+                                        {{ $category->category_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                            @endforeach
+                            <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}</p>
+                            <p class="movie__option"><strong>Đạo diễn: </strong>
+                                @foreach ($movie->directors as $director)
+                                    <a href="#">
+                                        {{ $director->directors }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </p>
+                            <p class="movie__option"><strong>Diễn viên: </strong>
+                                @foreach ($movie->actors as $actor)
+                                    <a href="#">
+                                        {{ $actor->actor_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </p>
+
+                            <div class="movie__btns">
+                                <a href="{{ route('movie.show', $movie->movie_id) }}" class="btn btn-md btn--warning">Đặt
+                                    vé
+                                    <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
+                            </div>
+
+                            <div class="preview-footer" style=" background-color: #ffffff; margin-top: 20px;">
+                                <div class="movie__rate" style="display: flex; align-items: center; gap: 7px;">
+                                    <div class="star" style="color: #FFD700; font-size: 30px; margin-top: 0px;">★
+                                    </div>
+                                    <div class="rating" style="font-size:30px">8.5</div>
+                                    <span class="movie__rate-number" style="font-size: 14px; color: #000000;">(170
+                                        votes)</span>
+                                    {{-- <span class="movie__rating"
+                                    style="font-size: 16px; font-weight: bold; color: #333;">5.0</span> --}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+
                     </div>
-
-                    <div class="clearfix"></div>
-                    
-
-                </div>
-                <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">
-            @endforeach
-        </div>
+                    <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">
+                @endforeach
+            </div>
+            {{-- <div class="d-flex justify-content-center">
+                {{ $movies->links() }}
+            </div> --}}
+        @else
+            <p class="text-center">Hiện tại không có phim sắp chiếu.</p>
+        @endif
 
         <div class="coloum-wrapper">
             <div class="pagination paginatioon--full">

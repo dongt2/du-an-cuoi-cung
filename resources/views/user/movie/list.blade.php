@@ -41,7 +41,7 @@
 @section('content')
     <section class="container">
         <div class="col-sm-12">
-            <h2 class="page-heading" style="margin-top: 100px;">Movies</h2>
+            <h2 class="page-heading" style="margin-top: 100px;">Danh sách phim</h2>
 
             <form action="{{ route('movie.index') }}" method="GET" class="search">
                 <input type="text" id="search-input" name="query" value="{{ old('query', request('query')) }}"
@@ -83,18 +83,27 @@
 
                             <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a>
                             </p>
-                            <p class="movie__option"><strong>Thể loại: </strong><a
-                                    href="#">{{ $movie->category->category_name }}</a></p>
+                            <p class="movie__option"><strong>Thể loại: </strong>
+                                @foreach ($movie->categories as $category)
+                                    <a href="#">
+                                        {{ $category->category_name }}@if(!$loop->last), @endif
+                                    </a>
+                            @endforeach
                             <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}
                             </p>
-                            <p class="movie__option"><strong>Đạo diễn: </strong><a
-                                    href="#">{{ $movie->director }}</a>
+                            <p class="movie__option"><strong>Đạo diễn: </strong>
+                                @foreach ($movie->directors as $director)
+                                    <a href="#">
+                                        {{ $director->directors }}@if(!$loop->last), @endif
+                                    </a>
+                                @endforeach
                             </p>
-                            <p class="movie__option"><strong>Diễn viên: </strong><a
-                                    href="#">{{ $movie->actors }}</a>, <a href="#">Michael Douglas</a>,
-                                <a href="#">Morgan Freeman</a>, <a href="#">Kevin Kline</a>, <a
-                                    href="#">Mary Steenburgen</a>, <a href="#">Jerry
-                                    Ferrara</a>, <a href="#">Romany Malco</a> <a href="#">...</a>
+                            <p class="movie__option"><strong>Diễn viên: </strong>
+                                @foreach ($movie->actors as $actor)
+                                    <a href="#">
+                                        {{ $actor->actor_name }}@if(!$loop->last), @endif
+                                    </a>
+                                @endforeach
                             </p>
                             <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p>
 
@@ -102,12 +111,13 @@
                                 <a href="{{ route('movie.show', $movie->movie_id) }}" class="btn btn-md btn--warning">Đặt
                                     vé
                                     <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
+                                </a>
                             </div>
 
                             <div class="preview-footer">
                                 <div class="movie__rate">
-                                    <div class="score"></div><span class="movie__rate-number">170 votes</span>
-                                    <span class="movie__rating">5.0</span>
+                                    <span class="movie__rate-number">{{ $movie->reviews_today->count() ?? 0 }} người đã đánh giá hôm nay</span>
+                                    <span class="">{{ number_format($movie->reviews ? $movie->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}</span>
                                 </div>
 
 

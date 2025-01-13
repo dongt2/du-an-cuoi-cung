@@ -37,14 +37,11 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+        <![endif]-->
 
     <style>
-
-
-
         /* Account Section */
         .account-info {
             max-width: 800px;
@@ -89,10 +86,112 @@
             background-color: #b71c1c;
         }
 
-        .account-container{
-            padding-top: 250px;
+        .account-container {
+            padding-top: 150px;
         }
 
+        /* Đặt kiểu tổng thể cho Sidebar và Account Content */
+        .account-sidebar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .account-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tiêu đề của Sidebar */
+        .account-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+
+        /* Danh sách trong Sidebar */
+        .user__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user__item {
+            margin-bottom: 10px;
+        }
+
+        .user__link {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .user__link:hover {
+            background: #ffc107;
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        /* Thông tin tài khoản trong Account Content */
+        .account-info {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .user__name,
+        .user__email {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Nút cập nhật tài khoản */
+        .btn--warning {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn--warning:hover {
+            background-color: #e0a800;
+            transform: scale(1.05);
+        }
+
+        .btn--wide {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Điều chỉnh bố cục chung */
+        .col-md-3,
+        .col-md-9 {
+            padding: 15px;
+        }
+
+        /* Hiệu ứng khi hover trên Sidebar */
+        .account-sidebar:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
     </style>
 @endsection
 
@@ -110,9 +209,11 @@
                         </div>
                         <div class="user__content">
                             <ul class="user__list">
-                                <li class="user__item"><a href="{{ route('account.info') }}" class="user__link">Thông tin tài khoản</a></li>
+                                <li class="user__item"><a href="{{ route('account.info') }}" class="user__link">Thông tin
+                                        tài khoản</a></li>
 
-                                <li class="user__item"><a href="{{ route('account.booking-history') }}" class="user__link">Lịch sử đặt vé</a></li>
+                                <li class="user__item"><a href="{{ route('account.booking-history') }}"
+                                        class="user__link">Lịch sử đặt vé</a></li>
 
                                 <li class="user__item"><a href="{{ route('logout') }}" class="user__link">Đăng xuất</a></li>
                             </ul>
@@ -131,7 +232,8 @@
                         <div class="user__email">Số điện thoại: {{ $user->phone }}</div>
 
 
-                        <a href="{{ route('account.update-profile') }}" class="btn btn-md btn--warning btn--wide">Cập nhật tài khoản</a>
+                        <a href="{{ route('account.update-profile') }}" class="btn btn-md btn--warning btn--wide">Cập nhật
+                            tài khoản</a>
                     </div>
                 </div>
 

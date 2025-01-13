@@ -196,6 +196,7 @@ class BookingController extends Controller
         foreach ($combos as $combo) {
             $totalCombos += $combo['quantity']; // Count total combos
             $price_combo += $combo['price'] * $combo['quantity'];
+            $combo_id = $combo['id'];
         }
 
         if ($totalCombos > 8) {
@@ -204,6 +205,7 @@ class BookingController extends Controller
 
         session(['booking.price_combo' => $price_combo]);
         session(['booking.combos' => $combos]);
+        session(['booking.combo_id' => $combo_id]);
 
         return response()->json(['success' => 'Combos added successfully!', 'price_combo' => $price_combo]);
     }
@@ -226,6 +228,7 @@ class BookingController extends Controller
             session(['booking.price_voucher' => $priceVoucher]);
             session(['booking.voucher_code' => $voucher->code]);
             session(['booking.voucher_name' => $voucher->voucher_name]);
+            session(['booking.voucher_id' => $voucher->voucher_id]);
         } else {
             session()->forget('booking.price_voucher');
         }
@@ -336,6 +339,22 @@ class BookingController extends Controller
                 } else {
                     $data_order['price_ticket'] += 0;
                 }
+
+//                if (isset($data_order['voucher_code'])) {
+//                    $voucher = Voucher::where('code', $data_order['voucher_code'])->first();
+//
+//                    if ($voucher) {
+//                        // Ensure there's enough voucher quantity
+//                        if ($voucher->quantity > 0) {
+//                            $voucher->quantity -= 1;
+//                            $voucher->save();
+//                        } else {
+//                            return redirect()->route('payment-fail')->with('error', 'Voucher is no longer available.');
+//                        }
+//                    } else {
+//                        return redirect()->route('payment-fail')->with('error', 'Invalid voucher code.');
+//                    }
+//                }
 //                dd($data_order);
                 $booking = Booking::create([
                     'user_id' => $data_order['user_id'],
@@ -344,8 +363,8 @@ class BookingController extends Controller
                     'order_code' => $data_order['order_code'],
                     'total_price' => $data_order['price_ticket'],
 
-                    'order_combo' => isset($data_order['order_combo']) ? $data_order['order_combo'] : null,
-                    'voucher' => isset($data_order['voucher']) ? $data_order['voucher'] : null,
+                    'combo_id' => isset($data_order['combo_id']) ? $data_order['combo_id'] : null,
+                    'voucher_id' => isset($data_order['voucher_id']) ? $data_order['voucher_id'] : null,
 
                     'showtime_date' => $data_order['showtime_date'],
                     'showtime_time' => $data_order['showtime_time'],
@@ -378,8 +397,10 @@ class BookingController extends Controller
                     ->whereIn('place', array_keys($data_order['seats']))
                     ->update(['status' => 'Đã đặt']);
 
+
                 // Generate QR code
-                $qrCode = QrCode::format('svg')->size(250)->generate(route('ticket.show', $ticket->ticket_id));
+                // check in
+                $qrCode = QrCode::format('svg')->size(250)->generate(route('admin.checkin', $ticket->ticket_id));
                 $qrCodePath = 'public/qrcodes/ticket_' . $ticket->ticket_id . '.svg';
                 Storage::put($qrCodePath, $qrCode);
 

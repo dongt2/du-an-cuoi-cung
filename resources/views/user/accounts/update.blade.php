@@ -37,14 +37,11 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-    <![endif]-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+        <![endif]-->
 
     <style>
-
-
-
         /* Account Section */
         .account-info {
             max-width: 800px;
@@ -89,10 +86,151 @@
             background-color: #b71c1c;
         }
 
-        .account-container{
-            padding-top: 250px;
+        .account-container {
+            padding-top: 150px;
         }
 
+
+        /* Tổng thể cho giao diện */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar (Bên trái) */
+        .account-sidebar {
+            background: #343a40;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .account-sidebar .account-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffc107;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+
+        .account-sidebar .user__list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .account-sidebar .user__item {
+            margin-bottom: 10px;
+        }
+
+        .account-sidebar .user__link {
+            text-decoration: none;
+            color: #ffc107;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .account-sidebar .user__link:hover {
+            background-color: #ffc107;
+            color: #343a40;
+            transform: translateX(5px);
+        }
+
+        /* Phần nội dung bên phải */
+        .account-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tiêu đề chính */
+        .content__title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+
+        /* Các thông tin tài khoản */
+        .account-info {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 5px rgba(255, 193, 7, 0.5);
+            outline: none;
+        }
+
+        /* Nút bấm */
+        .btn--warning {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn--warning:hover {
+            background-color: #e0a800;
+            transform: scale(1.05);
+        }
+
+        .btn--wide {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Điều chỉnh bố cục */
+        .col-md-3,
+        .col-md-9 {
+            padding: 15px;
+        }
+
+        /* Hiệu ứng khi hover vào Account Content */
+        .account-content:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
     </style>
 @endsection
 
@@ -110,7 +248,8 @@
                         </div>
                         <div class="user__content">
                             <ul class="user__list">
-                                <li class="user__item"><a href="{{ route('account.info') }}" class="user__link">Account Info</a></li>
+                                <li class="user__item"><a href="{{ route('account.info') }}" class="user__link">Account
+                                        Info</a></li>
                                 <li class="user__item"><a href="{{ route('logout') }}" class="user__link">Logout</a></li>
                             </ul>
                         </div>
@@ -128,28 +267,31 @@
                             @method('PUT')
                             <div class="form-group">
                                 <label for="name">Họ và tên</label>
-                                <input type="text" class="form-control" id="name" name="name" value="{{ $user->username }}">
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="{{ $user->username }}">
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" value="{{ $user->email }}">
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="{{ $user->email }}">
                             </div>
                             <div class="form-group">
                                 <label for="phone">Số điện thoại</label>
-                                <input type="text" class="form-control" id="phone" name="phone" value="{{ $user->phone }}">
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    value="{{ $user->phone }}">
                             </div>
 
                             <div class="form-group">
                                 <label for="old_password">Mật khẩu cũ</label>
-                                <input type="password" class="form-control" id="old_password" name="old_password" >
+                                <input type="password" class="form-control" id="old_password" name="old_password">
                             </div>
                             <div class="form-group">
                                 <label for="new_password">Mật khẩu mới</label>
-                                <input type="password" class="form-control" id="new_password" name="new_password" >
+                                <input type="password" class="form-control" id="new_password" name="new_password">
                             </div>
                             <div class="form-group">
                                 <label for="confirm_password">Xác nhận mật khẩu mới</label>
-                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" >
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password">
                             </div>
                             <button type="submit" class="btn btn-md btn--warning btn--wide">Cập nhật tài khoản</button>
                     </div>

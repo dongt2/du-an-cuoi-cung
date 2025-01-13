@@ -68,7 +68,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="short_description">Mô tả</label>
                                             <textarea class="form-control" id="short_description" name="short_description" rows="3"
-                                                placeholder="Nhập mô tả combo">{{ $data->short_description }}</textarea>
+                                                placeholder="Nhập mô tả combo">{!! $data->short_description !!}</textarea>
                                             @error('short_description')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
@@ -78,6 +78,14 @@
                                             <label class="form-label">Giá</label>
                                             <input type="text" class="form-control" name="price"
                                                 value="{{ $data->price }}" placeholder="Nhập giá">
+                                            @error('year')
+                                                <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Số lượng</label>
+                                            <input type="text" class="form-control" name="quantity"
+                                                value="{{ $data->quantity }}" placeholder="Nhập số lượng">
                                             @error('year')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

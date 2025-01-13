@@ -48,10 +48,12 @@ class Movie extends Model
     {
         return $this->hasMany(Showtime::class);
     }
+
     public function reviews()
     {
-        return $this->belongsTo(Review::class, 'movie_id', 'movie_id');
+        return $this->hasMany(Review::class, 'movie_id');
     }
+
     public function reviews_today()
     {
         return $this->hasMany(Review::class, 'movie_id') // Assuming links with movie_id

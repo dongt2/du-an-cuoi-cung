@@ -190,6 +190,7 @@
                             @foreach ($combos as $item)
 
                                 <div class="combo-container">
+                                    <input type="hidden" name="combo_id" value="{{ $item->combo_id }}">
                                     <img src="{{ Storage::url($item->image) }}"
                                          alt="Combo Image" class="combo-image" width="80px">
                                     <div class="combo-details">
@@ -358,7 +359,7 @@
                 quantity: parseInt(input.value) || 0,
                 price: parseFloat(input.dataset.price) || 0
             }));
-
+            console.log(combos);
             $.ajax({
                 url: '{{ route('user.get.price-combo') }}',
                 method: 'POST',

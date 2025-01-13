@@ -64,6 +64,14 @@
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Số lượng</label>
+                                            <input type="number" class="form-control" name="quantity"
+                                                   placeholder="Nhập số lượng">
+                                            @error('quantity')
+                                            <span style="color: red;">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label" for="short_description">Mô tả</label>

@@ -18,5 +18,6 @@ class Combo extends Model
         'image',
         'short_description',
         'price',
+        'quantity',
     ];
 }

@@ -48,8 +48,9 @@ class ComboController extends Controller
             'image'      => $path,
             'short_description' => $request->short_description,
             'price' => $request->price,
+            'quantity' => $request->quantity,
         ];
-
+//dd($data);
         Combo::create($data);
 
         return redirect()->route('admin.combo.index')->with('success', 'Thao tác thành công');
@@ -70,7 +71,7 @@ class ComboController extends Controller
     {
         $data = Combo::findOrFail($id);
 
-        return view('admin.combo.update', compact('data'));
+        return view('admin.combo.edit', compact('data'));
     }
 
     /**
@@ -95,6 +96,7 @@ class ComboController extends Controller
             'image'      => $path,
             'short_description' => $request->short_description,
             'price' => $request->price,
+            'quantity' => $request->quantity,
         ];
 
         $com->update($data);

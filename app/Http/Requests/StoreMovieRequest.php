@@ -67,7 +67,6 @@ class StoreMovieRequest extends FormRequest
             'description' => [
                 'required',
                 'string',
-                'max:500',
             ],
             'trailer_url' => [
                 'nullable',
@@ -77,7 +76,6 @@ class StoreMovieRequest extends FormRequest
             'release_date' => [
                 'required',
                 'date',
-                'before_or_equal:today',
             ],
         ];
     }

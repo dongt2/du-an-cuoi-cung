@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title', 255);
             $table->string('duration', 10);
             $table->string('country', 100);
-            $table->text('description');
+            $table->longText('description');
             $table->year('year');
             $table->date('release_date');
             $table->string('cover_image')->nullable();

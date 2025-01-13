@@ -33,9 +33,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                            <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
     <style>
         /* Đặt chung cho form */
         form {
@@ -111,25 +111,25 @@
                     </div>
 
                     <!-- Bộ lọc đạo diễn -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="director" class="form-control">
-                            <option value="" hidden>Đạo Diễn</option>
+                            <option value="" hidden>Đạo diễn</option>
                             @foreach ($directors as $director)
-                                <option value="{{ $director }}"
-                                    {{ request('director') == $director ? 'selected' : '' }}>
-                                    {{ $director }}
+                                <option value="{{ $director->id }}"
+                                    {{ request('director') == $director->id ? 'selected' : '' }}>
+                                    {{ $director->directors }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
-                    <!-- Bộ lọc diễn viên -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <select name="actors" class="form-control">
-                            <option value="" hidden>Diễn Viên</option>
+                            <option value="" hidden>Diễn viên</option>
                             @foreach ($actors as $actor)
-                                <option value="{{ $actor }}" {{ request('actors') == $actor ? 'selected' : '' }}>
-                                    {{ $actor }}
+                                <option value="{{ $actor->id }}"
+                                    {{ request('actors') == $actor->id ? 'selected' : '' }}>
+                                    {{ $actor->actor_name }}
                                 </option>
                             @endforeach
                         </select>
@@ -152,7 +152,7 @@
                             <div class="movie__images">
                                 {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
                                 <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
-                                    height="260px">
+                                     height="260px">
                             </div>
                             <div class="movie__feature">
                                 <a href="#" class="movie__feature-item movie__feature--comment">123</a>
@@ -168,19 +168,33 @@
 
                             <p class="movie__option"><strong>Quốc gia: </strong><a href="#">{{ $movie->country }}</a>
                             </p>
-                            <p class="movie__option"><strong>Thể loại: </strong><a
-                                    href="#">{{ $movie->category->category_name }}</a></p>
+                            <p class="movie__option"><strong>Thể loại: </strong>
+                                @foreach ($movie->categories as $category)
+                                    <a href="#">
+                                        {{ $category->category_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                            @endforeach
                             <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}</p>
-                            <p class="movie__option"><strong>Đạo diễn: </strong><a
-                                    href="#">{{ $movie->director }}</a>
+                            <p class="movie__option"><strong>Đạo diễn: </strong>
+                                @foreach ($movie->directors as $director)
+                                    <a href="#">
+                                        {{ $director->directors }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                                @endforeach
                             </p>
-                            <p class="movie__option"><strong>Diễn viên: </strong><a
-                                    href="#">{{ $movie->actors }}</a>, <a href="#">Michael Douglas</a>, <a
-                                    href="#">Morgan Freeman</a>, <a href="#">Kevin Kline</a>, <a
-                                    href="#">Mary Steenburgen</a>, <a href="#">Jerry
-                                    Ferrara</a>, <a href="#">Romany Malco</a> <a href="#">...</a></p>
-                            {{-- <p class="movie__option"><strong>Giới hạn độ tuổi: </strong><a href="#">13</a></p> --}}
-
+                            <p class="movie__option"><strong>Diễn viên: </strong>
+                                @foreach ($movie->actors as $actor)
+                                    <a href="#">
+                                        {{ $actor->actor_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
+                                    </a>
+                                @endforeach
+                            </p>
                             <div class="movie__btns">
                                 <a href="{{ route('movie.show', $movie->movie_id) }}" class="btn btn-md btn--warning">Đặt
                                     vé

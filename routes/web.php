@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ActorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DirectorController;
+use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\MovieController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -88,10 +89,14 @@ Route::get('/payment-fail', [BookingController::class, 'paymentFail'])->name('pa
 // Routes dành cho Admin
 Route::prefix('admin')->name('admin.')->middleware('checkAdmin')->group(function () {
 
-    Route::get('/', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+//    Route::get('/', function () {
+//        return view('admin.dashboard');
+//    })->name('dashboard');
 
+    // route checkin
+
+
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('/user', UserController::class);
     Route::resource('/movie', MovieController::class);
@@ -106,6 +111,8 @@ Route::prefix('admin')->name('admin.')->middleware('checkAdmin')->group(function
     Route::put('/seat/update/{place}', [SeatController::class, 'updateSeat']);
     Route::resource('/actor', ActorController::class);
     Route::resource('/director', DirectorController::class);
+
+    Route::resource('ticket', TicketController::class);
 });
 
 // qr code

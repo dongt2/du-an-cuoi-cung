@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('combos', function (Blueprint $table) {
             $table->bigIncrements('combo_id');
-            $table->string('image'); 
-            $table->string('combo_name', 255); 
-            $table->string('short_description', 800);
+            $table->string('image');
+            $table->string('combo_name', 255);
+            $table->longText('short_description');
             $table->integer('price');
+            $table->integer('quantity')->default(0);
             $table->timestamps();
         });
     }

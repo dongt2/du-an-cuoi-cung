@@ -20,389 +20,64 @@
                 </div>
             </div>
 
-            <!-- start row -->
             <div class="row">
-                <div class="col-md-12 col-xl-12">
-                    <div class="row g-3">
-
-                        <div class="col-md-6 col-xl-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="fs-14 mb-1">Website Traffic</div>
-                                    </div>
-
-                                    <div class="d-flex align-items-baseline mb-2">
-                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">91.6K</div>
-                                        <div class="me-auto">
-                                            <span class="text-primary d-inline-flex align-items-center">
-                                                15%
-                                                <i data-feather="trending-up" class="ms-1"
-                                                    style="height: 22px; width: 22px;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="website-visitors" class="apex-charts"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-xl-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="fs-14 mb-1">Conversion rate</div>
-                                    </div>
-
-                                    <div class="d-flex align-items-baseline mb-2">
-                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">15%</div>
-                                        <div class="me-auto">
-                                            <span class="text-danger d-inline-flex align-items-center">
-                                                10%
-                                                <i data-feather="trending-down" class="ms-1"
-                                                    style="height: 22px; width: 22px;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="conversion-visitors" class="apex-charts"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-xl-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="fs-14 mb-1">Session duration</div>
-                                    </div>
-
-                                    <div class="d-flex align-items-baseline mb-2">
-                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">90 Sec</div>
-                                        <div class="me-auto">
-                                            <span class="text-success d-inline-flex align-items-center">
-                                                25%
-                                                <i data-feather="trending-up" class="ms-1"
-                                                    style="height: 22px; width: 22px;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="session-visitors" class="apex-charts"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-xl-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="fs-14 mb-1">Active Users</div>
-                                    </div>
-
-                                    <div class="d-flex align-items-baseline mb-2">
-                                        <div class="fs-22 mb-0 me-2 fw-semibold text-black">2,986</div>
-                                        <div class="me-auto">
-                                            <span class="text-success d-inline-flex align-items-center">
-                                                4%
-                                                <i data-feather="trending-up" class="ms-1"
-                                                    style="height: 22px; width: 22px;"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div id="active-users" class="apex-charts"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- end sales -->
-            </div> <!-- end row -->
-
-            <!-- Start Monthly Sales -->
-            <div class="row">
-                <div class="col-md-6 col-xl-8">
+                <!-- Best-Selling Movies -->
+                <div class="col-md-4">
                     <div class="card">
-
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                    <i data-feather="bar-chart" class="widgets-icons"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Monthly Sales</h5>
-                            </div>
+                            <h5 class="card-title">Best-Selling Movies</h5>
                         </div>
-
                         <div class="card-body">
-                            <div id="monthly-sales" class="apex-charts"></div>
+                            <div id="best-selling-movies-chart"></div>
+                            <ul class="list-group mt-3">
+                                @foreach ($bestSellingMovies as $movie)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $movie->movie->title ?? 'Unknown Movie' }}
+                                        <span class="badge bg-primary rounded-pill">{{ $movie->total_tickets_sold }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-
                     </div>
                 </div>
 
-                <div class="col-md-6 col-xl-4">
-                    <div class="card overflow-hidden">
-
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                    <i data-feather="tablet" class="widgets-icons"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Best Traffic Source</h5>
-                            </div>
-                        </div>
-
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-traffic mb-0">
-                                    <tbody>
-                                        <thead>
-                                            <tr>
-                                                <th>Network</th>
-                                                <th colspan="2">Visitors</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tr>
-                                            <td>Instagram</td>
-                                            <td>3,550</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-danger" style="width: 80.0%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Facebook</td>
-                                            <td>1,245</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-primary" style="width: 55.9%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Twitter</td>
-                                            <td>1,798</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-secondary" style="width: 67.0%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>YouTube</td>
-                                            <td>986</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-success" style="width: 38.72%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Pinterest</td>
-                                            <td>854</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-danger" style="width: 45.08%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Linkedin</td>
-                                            <td>650</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-warning" style="width: 68.0%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>Nextdoor</td>
-                                            <td>420</td>
-                                            <td class="w-50">
-                                                <div class="progress progress-md mt-0">
-                                                    <div class="progress-bar bg-info" style="width: 56.4%"></div>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <!-- End Monthly Sales -->
-
-            <div class="row">
-                <div class="col-md-6 col-xl-6">
+                <!-- Most-Purchased Combos -->
+                <div class="col-md-4">
                     <div class="card">
-
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                    <i data-feather="minus-square" class="widgets-icons"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Audiences By Time Of Day</h5>
-                            </div>
+                            <h5 class="card-title">Most-Purchased Combos</h5>
                         </div>
-
                         <div class="card-body">
-                            <div id="audiences-daily" class="apex-charts mt-n3"></div>
+                            <div id="most-purchased-combos-chart"></div>
+                            <ul class="list-group mt-3">
+                                @foreach ($mostPurchasedCombos as $combo)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $combo->combo->combo_name ?? 'Unknown Combo' }}
+                                        <span class="badge bg-success rounded-pill">{{ $combo->total_combos_sold }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-
                     </div>
                 </div>
 
-                <div class="col-md-6 col-xl-6">
-                    <div class="card overflow-hidden">
-
+                <!-- Most-Purchased Screenings -->
+                <div class="col-md-4">
+                    <div class="card">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="border border-dark rounded-2 me-2 widget-icons-sections">
-                                    <i data-feather="table" class="widgets-icons"></i>
-                                </div>
-                                <h5 class="card-title mb-0">Most Visited Pages</h5>
-                            </div>
+                            <h5 class="card-title">Most-Purchased Screenings</h5>
                         </div>
-
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-traffic mb-0">
-                                    <tbody>
-
-                                        <thead>
-                                            <tr>
-                                                <th>Page name</th>
-                                                <th>Visitors</th>
-                                                <th>Unique</th>
-                                                <th colspan="2">Bounce rate</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tr>
-                                            <td>
-                                                /home
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>5,896</td>
-                                            <td>3,654</td>
-                                            <td>82.54%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-1" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /about.html
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>3,898</td>
-                                            <td>3,450</td>
-                                            <td>76.29%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-2" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /index.html
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>3,057</td>
-                                            <td>2,589</td>
-                                            <td>72.68%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-3" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /invoice.html
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>867</td>
-                                            <td>795</td>
-                                            <td>44.78%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-4" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /docs/
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>958</td>
-                                            <td>801</td>
-                                            <td>41.15%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-5" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /service.html
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>658</td>
-                                            <td>589</td>
-                                            <td>32.65%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-6" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-                                            <td>
-                                                /analytical.html
-                                                <a href="#" class="ms-1" aria-label="Open website">
-                                                    <i data-feather="link" class="ms-1 text-primary"
-                                                        style="height: 15px; width: 15px;"></i>
-                                                </a>
-                                            </td>
-                                            <td>457</td>
-                                            <td>859</td>
-                                            <td>32.65%</td>
-                                            <td class="w-25">
-                                                <div id="sparkline-bounce-7" class="apex-charts"></div>
-                                            </td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div class="card-body">
+                            <div id="most-purchased-screenings-chart"></div>
+                            <ul class="list-group mt-3">
+                                @foreach ($mostPurchasedScreens as $screening)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $screening->screen->screen_name ?? 'Unknown Screening' }}
+                                        <span class="badge bg-warning rounded-pill">{{ $screening->total_tickets_sold }}</span>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -412,6 +87,59 @@
 @endsection
 
 @push('script')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Best-Selling Movies Chart
+            var moviesChartOptions = {
+                series: [{
+                    data: @json($bestSellingMovies->pluck('total_tickets_sold')->toArray())
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                xaxis: {
+                    categories: @json($bestSellingMovies->pluck('movie.title')->toArray())
+                },
+            };
+            var moviesChart = new ApexCharts(document.querySelector("#best-selling-movies-chart"), moviesChartOptions);
+            moviesChart.render();
+
+            // Most-Purchased Combos Chart
+            var combosChartOptions = {
+                series: [{
+                    data: @json($mostPurchasedCombos->pluck('total_combos_sold')->toArray())
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                xaxis: {
+                    categories: @json($mostPurchasedCombos->pluck('combo.combo_name')->toArray())
+                },
+            };
+            var combosChart = new ApexCharts(document.querySelector("#most-purchased-combos-chart"), combosChartOptions);
+            combosChart.render();
+
+            // Most-Purchased Screenings Chart
+            var screeningsChartOptions = {
+                series: [{
+                    data: @json($mostPurchasedScreens->pluck('total_tickets_sold')->toArray())
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                xaxis: {
+                    categories: @json($mostPurchasedScreens->pluck('screen.screen_name')->toArray())
+                },
+            };
+            var screeningsChart = new ApexCharts(document.querySelector("#most-purchased-screenings-chart"), screeningsChartOptions);
+            screeningsChart.render();
+        });
+    </script>
+
+
     <!-- Widgets Init Js -->
     <script src="{{ asset('assets/js/pages/analytics-dashboard.init.js') }}"></script>
 @endpush
