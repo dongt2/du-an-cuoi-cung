@@ -73,7 +73,8 @@ class AccountController extends Controller
         $ticket = Ticket::where('ticket_id', $id)
             ->with('transaction', 'booking')
             ->first(); // Use first() to get a single Ticket instance
-
+//        dd($ticket);
+        $ticket->seats = json_decode($ticket->seats, true);
         $review = Review::where('user_id', Auth::user()->user_id)
             ->where('movie_id', $ticket->booking->movie_id)
             ->first();
@@ -89,7 +90,7 @@ class AccountController extends Controller
 
     public function storeReviewForm(\Illuminate\Http\Request $request, $id)
     {
-            $ticket = Ticket::where('ticket_id', $id)->first();
+        $ticket = Ticket::where('ticket_id', $id)->first();
        if($request->isMethod('post')){
 
            $review = new Review();

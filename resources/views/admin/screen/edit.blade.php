@@ -2,7 +2,7 @@
 
 @section('title')
     @parent
-    Thêm mới phim
+    Sửa thông tin phòng chiếu
 @endsection
 
 @push('style')
@@ -17,16 +17,6 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Screen</h4>
-                </div>
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Form Pickers</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Advance Form -->
@@ -34,7 +24,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Sửa</h5>
+                            <h5 class="card-title mb-0"><strong>Sửa phòng chiếu</strong></h5>
                         </div><!-- end card header -->
 
                         <form action="{{ route('admin.screen.update', $id = $data->screen_id) }}" method="post"
@@ -45,9 +35,9 @@
                                 <div class="row">
                                     <div class="col-xl-6">
                                         <div class="mb-3">
-                                            <label class="form-label">Tên danh mục</label>
+                                            <label class="form-label">Tên phòng chiếu</label>
                                             <input type="text" class="form-control" id="" name="screen_name"
-                                                value="{{ $data->screen_name }}" placeholder="Tên danh mục">
+                                                value="{{ $data->screen_name }}" placeholder="Ví dụ: abc">
                                             @error('screen_name')
                                                 <span style="color: red;">{{ $message }}</span>
                                             @enderror

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('screen_id');
             $table->date('showtime_date');
             $table->time('time');
+            $table->softDeletes();
 
             $table->foreign('movie_id')->references('movie_id')->on('movies')->onDelete('cascade');
             $table->foreign('screen_id')->references('screen_id')->on('screens')->onDelete('cascade');

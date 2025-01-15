@@ -82,8 +82,56 @@ class ScreenController extends Controller
     {
         $screen = Screen::findOrFail($id);
 
-        $screen->delete();
+        $screenCount = $screen->showtime->count();
 
-        return redirect()->route('admin.screen.index')->with('success', 'Thao tác thành công');
+        if($screenCount == 0){
+
+            $screen->delete();
+
+            toastr()->success('Thao tác thành công');
+        }else{
+
+            toastr()->error('Không thể xóa vì vẫn còn liên kết với phòng');
+        }
+
+        return redirect()->route('admin.screen.index');
+    }
+
+
+    public function trashed()
+    {
+        $data = Screen::onlyTrashed()->get();
+
+        return view('admin.screen.trashed', compact('data'));
+    }
+
+    public function restore(string $id)
+    {
+        $data = Screen::withTrashed()->findOrFail($id);
+
+        $data->restore();
+
+        if($data){
+            toastr()->success('Khôi phục dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.screen.trashed', compact('data'));
+    }
+
+    public function forceDelete(string $id)
+    {
+        $data = Screen::withTrashed()->findOrFail($id);
+
+        $data->forceDelete();
+
+        if($data){
+            toastr()->success('Xóa dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.screen.trashed', compact('data'));
     }
 }

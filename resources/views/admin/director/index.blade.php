@@ -8,17 +8,17 @@
 @push('style')
     <!-- Datatables css -->
     <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 @endpush
@@ -41,38 +41,40 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0"><strong>Danh sách đạo diễn</strong></h5>
                         </div><!-- end card header -->
-
+                        <div class="mb-3 mt-3" style="margin-left: 20px">
+                            <a href="{{ route('admin.director.trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên đạo diễn</th>
-                                        <th>Tổng Thể Loại</th>
-                                        <th>Hành động</th>
-                                    </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên đạo diễn</th>
+                                    <th>Tổng liên kết phim</th>
+                                    <th>Hành động</th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($data as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->directors }}</td>
-                                            <td>{{ $item->director()->count() }}</td>
-                                            <td class="d-flex gap-2">
-                                                <a href="{{ route('admin.director.edit', $item->id) }}"
-                                                    class="btn btn-warning d-inline"><i
+                                @foreach ($data as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->directors }}</td>
+                                        <td>{{ $item->director()->count() }}</td>
+                                        <td class="d-flex gap-2">
+                                            <a href="{{ route('admin.director.edit', $item->id) }}"
+                                               class="btn btn-warning d-inline"><i
                                                     class="fa-solid fa-pen-to-square"></i></a>
-                                                <form action="{{ route('admin.director.destroy', $item->id) }}"
-                                                    method="post" class="d-inline" id="delete-form-{{ $item->id }}">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button type="button" data-id="{{ $item->id }}"
+                                            <form action="{{ route('admin.director.destroy', $item->id) }}"
+                                                  method="post" class="d-inline" id="delete-form-{{ $item->id }}">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="button" data-id="{{ $item->id }}"
                                                         class="btn btn-danger delete-button"><i
-                                                            class="fa-solid fa-trash-can"></i></button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                        class="fa-solid fa-trash-can"></i></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -88,7 +90,7 @@
 
 @push('script')
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.delete-button').forEach(button => {

@@ -41,7 +41,9 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0"><strong>Danh sách diễn viên</strong></h5>
                         </div><!-- end card header -->
-
+                        <div class="mb-3 mt-3" style="margin-left: 20px">
+                        <a href="{{ route('admin.actor.trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>

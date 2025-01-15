@@ -26,7 +26,7 @@ class UpdateCategoryRequest extends FormRequest
             'category_name' => [
                 'required',
                 'string',
-                'min:1',
+                'min:3',
                 'max:25',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 Rule::unique('categories', 'category_name')->ignore($this->route('category'), 'category_id'),

@@ -24,9 +24,9 @@ return new class extends Migration
             $table->date('showtime_date');
             $table->time('showtime_time');
 
+            $table->integer('quantity_combo')->default(0);
+
             $table->decimal('total_price', 10)->default(0.00);
-
-
 
 
 

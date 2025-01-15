@@ -154,11 +154,6 @@
                                 <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
                                      height="260px">
                             </div>
-                            <div class="movie__feature">
-                                <a href="#" class="movie__feature-item movie__feature--comment">123</a>
-                                <a href="#" class="movie__feature-item movie__feature--video">7</a>
-                                <a href="#" class="movie__feature-item movie__feature--photo">352</a>
-                            </div>
                         </div>
 
                         <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
@@ -176,7 +171,7 @@
                                         @endif
                                     </a>
                             @endforeach
-                            <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}</p>
+                            <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date->format('d-m-Y') }}</p>
                             <p class="movie__option"><strong>Đạo diễn: </strong>
                                 @foreach ($movie->directors as $director)
                                     <a href="#">
@@ -201,16 +196,7 @@
                                     <a style="display: none;" href="#" class="watchlist">Add to watchlist</a>
                             </div>
 
-                            <div class="preview-footer" style=" background-color: #ffffff; margin-top: 20px;">
-                                <div class="movie__rate" style="display: flex; align-items: center; gap: 7px;">
-                                    <div class="star" style="color: #FFD700; font-size: 30px; margin-top: 0px;">★</div>
-                                    <div class="rating" style="font-size:30px">8.5</div>
-                                    <span class="movie__rate-number" style="font-size: 14px; color: #000000;">(170
-                                        votes)</span>
-                                    {{-- <span class="movie__rating"
-                                        style="font-size: 16px; font-weight: bold; color: #333;">5.0</span> --}}
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="clearfix"></div>

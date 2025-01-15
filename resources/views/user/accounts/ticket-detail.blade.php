@@ -35,11 +35,14 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+{{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"--}}
+{{--          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">--}}
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
 
     <style>
         .rating {
@@ -156,12 +159,12 @@
             outline: none;
         }
 
-        /* Phần Rating (từ phải sang trái) */
+        /* Phần Rating (từ trái sang phải) */
         .rating {
             display: flex;
             gap: 8px;
-            direction: rtl;
-            /* Đảo ngược thứ tự từ phải sang trái */
+            direction: ltr;
+            /* Đảm bảo hướng từ trái sang phải */
         }
 
         .rating label {
@@ -175,13 +178,19 @@
             display: none;
         }
 
-        /* Hiệu ứng khi hover hoặc chọn */
-        .rating input:checked~label,
+        /* Hiệu ứng hover: Sáng tất cả sao từ trái đến sao hiện tại */
         .rating label:hover,
         .rating label:hover~label {
             color: #ffc107;
             transform: scale(1.1);
         }
+
+        /* Hiệu ứng checked: Sáng tất cả sao từ trái đến sao được chọn */
+        .rating input:checked~label {
+            color: #ffc107;
+            transform: scale(1.1);
+        }
+
 
         /* Button Styles */
         button {
@@ -213,25 +222,30 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="account-info">
-                    <h2>Ticket Details</h2>
+                    <h2>Chi tiết vé</h2>
                     <div class="ticket-details">
-                        <p><strong>Ticket ID:</strong> {{ $ticket->ticket_id }}</p>
-                        <p><strong>Transaction ID:</strong> {{ $ticket->transaction->transaction_id }}</p>
-                        <p><strong>Booking ID:</strong> {{ $ticket->booking_id }}</p>
-                        <p><strong>User ID:</strong> {{ $ticket->user_id }}</p>
-                        <p><strong>Seats:</strong> {{ $ticket->seats }}</p>
-                        <p><strong>QR Code:</strong> <img
-                                src="{{ \Illuminate\Support\Facades\Storage::url($ticket->qr_code) }}" alt="QR Code"></p>
-                        <p><strong>Created At:</strong> {{ $ticket->created_at }}</p>
-                        <p><strong>Updated At:</strong> {{ $ticket->updated_at }}</p>
-                        <p><strong>Status:</strong> {{ $ticket->status }}</p>
-                        <p><strong>Price:</strong> {{ $ticket->price }}</p>
-                        <p><strong>Payment Method:</strong> {{ $ticket->payment_method }}</p>
-                        @if ($ticket->token != 0)
+                        <div class="d-flex" style="display: flex;gap: 100px;">
+                            <div class="qr-code" style="margin-right: 15px;">
+                                <img src="{{ \Illuminate\Support\Facades\Storage::url($ticket->qr_code) }}" alt="QR Code">
+                            </div>
+                            <div class="ticket-info" style="margin-left: 15px;">
+                                <p><strong>Mã vé:</strong> {{ $ticket->booking->order_code }}</p>
+                                <p><strong>Tên phim:</strong> {{ $ticket->movie->title }}</p>
+                                <p><strong>Xuất chiếu</strong> {{ \Carbon\Carbon::parse($ticket->showtime->time)->format('H:i') }}</p>
+                                <p><strong>Phòng</strong> {{ $ticket->showtime->screen->screen_name }}</p>
+                                <p><strong>Seats:</strong> {{ implode(', ', $ticket->seats) }}</p>
+                                <p><strong>Ngày đặt:</strong> {{ $ticket->created_at->format('d-m-Y') }}</p>
+                                <p><strong>Combo chọn:</strong> {{ $ticket->booking->combo->combo_name }} x {{ $ticket->booking->quantity_combo }}</p>
+
+                                <p><strong>Giá:</strong> {{ number_format($ticket->booking->total_price, 0, ',', ',')  }} VNĐ</p>
+                            </div>
+                        </div>
+
+                        @if ($ticket->checkin != 0 && $ticket->status != 0 && $ticket->token != 0)
                             <form action="{{ route('account.comment', $ticket->ticket_id) }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label>Comment</label>
+                                    <label>Bình luận</label>
                                     <input type="text" name="comment">
                                 </div>
                                 <div class="form-group">
@@ -255,17 +269,16 @@
                             <form action="{{ route('account.comment', $ticket->ticket_id) }}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label>Comment</label>
+                                    <label>Bình luận</label>
                                     @if ($review->comment == null)
-                                        <input type="text" name="comment">
+                                        <input type="text" name="comment" disabled>
                                     @else
                                         <input type="text" name="comment" value="{{ $review->comment }}" disabled>
                                     @endif
                                 </div>
-                                <div class="form-group">
-                                    <label>Rating</label>
+                                @if($review->rating == 5)
                                     <div class="rating">
-                                        <input type="radio" name="rating" value="5" id="5"><label
+                                        <input type="radio" name="rating" value="5" id="5" checked><label
                                             for="5">☆</label>
                                         <input type="radio" name="rating" value="4" id="4"><label
                                             for="4">☆</label>
@@ -276,11 +289,14 @@
                                         <input type="radio" name="rating" value="1" id="1"><label
                                             for="1">☆</label>
                                     </div>
-                                </div>
+
+                                @endif
+
                                 @if ($review->comment == null)
                                     <button type="submit">Submit</button>
                                 @else
-                                    <button type="submit" disabled>Submit</button>
+                                    <a href="{{ route('account.booking-history') }}" class="btn btn--info">Quay lại</a>
+
                                 @endif
 
                             </form>

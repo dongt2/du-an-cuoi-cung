@@ -31,13 +31,6 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
 
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Tables</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Datatables  -->
@@ -48,9 +41,12 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0"><strong>Danh sách phim</strong></h5>
                         </div><!-- end card header -->
+                        <div class="mb-3 mt-3" style="margin-left:20px">
+                            <a href="{{ route('admin.movie.trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
 
                         <div class="card-body">
-                            <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
+                            <table id="datatable" class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -60,7 +56,6 @@
                                         <th>Tác giả</th>
                                         <th>Ngày phát hành</th>
                                         <th>Thể loại</th>
-                                        {{-- <th>Tổng</th> --}}
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -82,7 +77,7 @@
                                                     @endif
                                                 @endforeach
                                             </td>
-                                            <td>{{ $item->release_date }}</td>
+                                            <td>{{ $item->release_date->format('d-m-Y') }}</td>
                                             <td>
                                                 @foreach ($item->categories as $cate)
                                                     {{ $cate->category_name }}
@@ -91,21 +86,19 @@
                                                     @endif
                                                 @endforeach
                                             </td>
-                                            {{-- <td>{{ $item->actors()->count() }}</td>
-                                            <td>{{ $item->directors()->count() }}</td>
-                                            <td>{{ $item->categories()->count() }}</td> --}}
-                                            <td class="">
+                                            <td>
                                                 <a href="{{ route('admin.movie.show', $item->movie_id) }}"
-                                                    class="btn btn-info"><i class="fa-solid fa-eye"></i></a>
+                                                    class="btn btn-info" data-bs-toggle="tooltip" title="Xem chi tiết"><i
+                                                        class="fa-solid fa-eye"></i></a>
                                                 <a href="{{ route('admin.movie.edit', $item->movie_id) }}"
-                                                    class="btn btn-warning d-inline"><i
+                                                    class="btn btn-warning d-inline" data-bs-toggle="tooltip" title="Sửa thông tin"><i
                                                         class="fa-regular fa-pen-to-square"></i></a>
                                                 <form action="{{ route('admin.movie.destroy', $item->movie_id) }}"
                                                     method="post" class="d-inline" id="delete-form-{{ $item->movie_id }}">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="button" data-id="{{ $item->movie_id }}"
-                                                        class="btn btn-danger delete-button"><i
+                                                        class="btn btn-danger delete-button" data-bs-toggle="tooltip" title="Xóa"><i
                                                             class="fa-solid fa-trash-can"></i></button>
                                                 </form>
                                             </td>
@@ -133,7 +126,7 @@
                 const userId = this.getAttribute('data-id');
                 Swal.fire({
                     title: 'Bạn có chắc chắn?',
-                    text: "Phim này sẽ bị xóa vĩnh viễn!",
+                    text: "Phim này sẽ được xóa !",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -147,6 +140,11 @@
                 });
             });
         });
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 
     <!-- Datatables js -->

@@ -9,6 +9,7 @@ File: Main Js File
 
 class App {
 
+
     initComponents() {
 
         // Waves Effect

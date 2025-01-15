@@ -15,6 +15,7 @@
                             class="mdi mdi-magnify fs-16 position-absolute text-muted top-50 translate-middle-y ms-2"></i>
                     </div>
                 </li>
+
             </ul>
 
             <ul class="list-unstyled topnav-menu mb-0 d-flex align-items-center">
@@ -93,7 +94,7 @@
                             <!-- item-->
                             {{-- <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary">
                                 <div class="notify-icon">
-                                    <img src="assets/images/users/user-3.jpg" class="img-fluid rounded-circle" alt="" /> 
+                                    <img src="assets/images/users/user-3.jpg" class="img-fluid rounded-circle" alt="" />
                                 </div>
                                 <div class="notify-content">
                                     <div class="d-flex align-items-center justify-content-between">
@@ -137,7 +138,7 @@
                             <!-- item-->
                             {{-- <a href="javascript:void(0);" class="dropdown-item notify-item text-muted link-primary">
                                 <div class="notify-icon">
-                                    <img src="assets/images/users/user-6.jpg" class="img-fluid rounded-circle" alt="" /> 
+                                    <img src="assets/images/users/user-6.jpg" class="img-fluid rounded-circle" alt="" />
                                 </div>
                                 <div class="notify-content">
                                     <div class="d-flex align-items-center justify-content-between">
@@ -158,6 +159,7 @@
 
                     </div>
                 </li>
+
 
                 <li class="dropdown notification-list topbar-dropdown">
                     <a class="nav-link dropdown-toggle nav-user me-0" data-bs-toggle="dropdown" href="#"
@@ -213,3 +215,5 @@
     </div>
 
 </div>
+
+

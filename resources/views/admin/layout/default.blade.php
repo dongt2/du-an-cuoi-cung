@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    
+
 <!-- Mirrored from zoyothemes.com/tapeli/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Jul 2024 08:33:02 GMT -->
 <!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
@@ -27,6 +27,18 @@
         <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
         @stack('style')
+        <style>
+            #qr-reader {
+                width: 100%;
+                max-width: 400px;
+                height: auto;
+                margin: 20px auto;
+                border: 2px solid #ccc;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+        </style>
+    @vite('resources/js/app.js')
     </head>
 
     <!-- body start -->
@@ -54,7 +66,7 @@
                 <!-- Footer Start -->
                 @include('admin.layout.footer')
                 <!-- end Footer -->
-                
+
             </div>
             <!-- ============================================================== -->
             <!-- End Page content -->
@@ -70,19 +82,19 @@
         <script src="{{ asset('assets/libs/node-waves/waves.min.js') }}"></script>
         <script src="{{ asset('assets/libs/waypoints/lib/jquery.waypoints.min.js') }}"></script>
         <script src="{{ asset('assets/libs/jquery.counterup/jquery.counterup.min.js') }}"></script>
+        <script src="{{ asset('assets/libs/qrcode/html5-qrcode.min.js') }}"></script>
         <script src="{{ asset('assets/libs/feather-icons/feather.min.js') }}"></script>
 
         <!-- Apexcharts JS -->
         <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
         <!-- for basic area chart -->
-        <script src="../../../apexcharts.com/samples/assets/stock-prices.js"></script>
-
+{{--        <script src="{{ asset('https://cdn.jsdelivr.net/npm/apexcharts') }}"></script>--}}
         <!-- App js-->
         <script src="{{ asset('assets/js/app.js') }}"></script>
+
 
         @stack('script')
     </body>
 
-<!-- Mirrored from zoyothemes.com/tapeli/html/ by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 16 Jul 2024 08:34:03 GMT -->
 </html>

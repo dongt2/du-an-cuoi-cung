@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -17,7 +16,7 @@ class CategoryController extends Controller
     {
         $data = Category::all();
 
-        return view('admin.category.list', compact('data'));
+        return view('admin.category.list', data: compact('data'));
     }
 
     /**
@@ -81,14 +80,37 @@ class CategoryController extends Controller
 
         $movieCount = $cat->movies()->count();
 
-        if ($movieCount == 0) {
-            $cat->delete();
 
-            toastr()->success('Thao tác thành công');
-        }else{
-            toastr()->error('Thao tác không thành công vì thể loại này vẫn còn liên kết');
-        }
+        $cat->delete();
 
-        return back();
+        toastr()->success('Thao tác thành công');
+
+
+        return redirect()->route('admin.category.index');
+    }
+
+    public function trashed()
+    {
+        $categories = Category::onlyTrashed()->get();
+
+        return view('admin.category.trashed', compact('categories'));
+    }
+
+    public function restore(string $id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->restore();
+
+        return redirect()->route('admin.category.index')->with('success', 'Khôi phục dữ liệu thành công');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $category = Category::withTrashed()->findOrFail($id);
+
+        $category->forceDelete();
+
+        return redirect()->route('admin.category.index')->with('success', 'Đã xóa thành công');
     }
 }

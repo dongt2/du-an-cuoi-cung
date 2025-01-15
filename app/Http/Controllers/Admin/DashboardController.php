@@ -16,6 +16,40 @@ class DashboardController extends Controller
 {
     public function index()
     {
+
+        // Daily Revenue
+        $dailyRevenue = Booking::select(
+            DB::raw('DATE(created_at) as date'), // Comma added correctly
+            DB::raw('SUM(total_price) as total_revenue') // Removed extra semicolon
+        )
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->take(7) // Get last 7 days
+            ->get();
+
+        // Weekly Revenue
+        $weeklyRevenue = Booking::select(
+            DB::raw('YEARWEEK(created_at, 1) as week'), // Fixed logic for week
+            DB::raw('SUM(total_price) as total_revenue') // Ensure proper syntax
+        )
+            ->groupBy('week')
+            ->orderBy('week', 'desc')
+            ->take(4)
+            ->get();
+
+        // Monthly Revenue
+        $monthlyRevenue = Booking::select(
+            DB::raw('YEAR(created_at) as year'),
+            DB::raw('MONTH(created_at) as month'),
+            DB::raw('SUM(total_price) as total_revenue')
+        )
+            ->groupBy('year', 'month')
+            ->orderBy('year', 'desc')
+            ->orderBy('month', 'desc')
+            ->take(12) // Get last 12 months
+            ->get();
+
+
         // Best-Selling Movies
         $bestSellingMovies = Ticket::select
         ('movie_id', DB::raw('SUM(ticket_id) as total_tickets_sold'))
@@ -41,6 +75,8 @@ class DashboardController extends Controller
             ->take(5) // Get top 5 most-purchased screens
             ->get();
 //        dd($mostPurchasedScreens);
-        return view('admin.dashboard', compact('bestSellingMovies','mostPurchasedCombos','mostPurchasedScreens'));
+        return view('admin.dashboard', compact('bestSellingMovies','mostPurchasedCombos','mostPurchasedScreens',
+            'dailyRevenue', 'weeklyRevenue', 'monthlyRevenue',
+            'bestSellingMovies'));
     }
 }

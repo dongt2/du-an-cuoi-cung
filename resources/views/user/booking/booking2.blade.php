@@ -382,57 +382,30 @@
         const maxSeats = 9; // Giới hạn số ghế
         let selectedSeats = [];
 
-        // Hàm để lấy danh sách các ghế liền kề xung quanh một ghế đã chọn
+        // Hàm lấy danh sách ghế liền kề (chỉ hàng ngang và dọc)
         function getAdjacentSeats(row, col) {
-            const adjacentSeats = [{
-                row: String.fromCharCode(row.charCodeAt(0) - 1),
-                col: col
-            }, // Dưới
-                {
-                    row: String.fromCharCode(row.charCodeAt(0) + 1),
-                    col: col
-                }, // Trên
-                {
-                    row: row,
-                    col: col - 1
-                }, // Trái
-                {
-                    row: row,
-                    col: col + 1
-                }, // Phải
-                {
-                    row: String.fromCharCode(row.charCodeAt(0) - 1),
-                    col: col - 1
-                }, // Dưới trái
-                {
-                    row: String.fromCharCode(row.charCodeAt(0) - 1),
-                    col: col + 1
-                }, // Dưới phải
-                {
-                    row: String.fromCharCode(row.charCodeAt(0) + 1),
-                    col: col - 1
-                }, // Trên trái
-                {
-                    row: String.fromCharCode(row.charCodeAt(0) + 1),
-                    col: col + 1
-                }, // Trên phải
+            const offsets = [
+                [-1, 0], // Trên
+                [1, 0], // Dưới
+                [0, -1], // Trái
+                [0, 1] // Phải
             ];
 
-            return adjacentSeats.filter(seat => seat.col >= 1 && seat.col <= 18 && seat.row >= 'A' && seat.row <= 'K');
+            return offsets
+                .map(([rOffset, cOffset]) => ({
+                    row: String.fromCharCode(row.charCodeAt(0) + rOffset),
+                    col: col + cOffset
+                }))
+                .filter(seat => seat.col >= 1 && seat.col <= 18 && seat.row >= 'A' && seat.row <= 'K');
         }
 
-        // Kiểm tra nếu ghế bị bỏ chọn là một trong các ghế "giữa" trong một chuỗi liên tiếp
+        // Kiểm tra nếu ghế nằm giữa
         function isMiddleSeat(seat, selectedSeats) {
-            // Tạo mảng ghế theo thứ tự cột
-            const colSeats = selectedSeats.filter(s => s.row === seat.row).sort((a, b) => a.col - b.col);
-            const rowSeats = selectedSeats.filter(s => s.col === seat.col).sort((a, b) => a.row.localeCompare(b.row));
-
-
-            // Kiểm tra nếu ghế là ghế giữa (có ghế trước và sau)
-            return (
-                (colSeats.length > 2 && colSeats[1].col === seat.col) ||
-                (rowSeats.length > 2 && rowSeats[1].row === seat.row)
+            const adjacentSeats = getAdjacentSeats(seat.row, seat.col);
+            const adjacentSelected = adjacentSeats.filter(adjSeat =>
+                selectedSeats.some(s => s.row === adjSeat.row && s.col === adjSeat.col)
             );
+            return adjacentSelected.length >= 2;
         }
 
         cells.forEach(cell => {
@@ -443,16 +416,12 @@
                 const col = parseInt(originalContent.slice(1));
                 const price = this.getAttribute('data-price');
 
-                // Nếu ghế đã được chọn, kiểm tra nếu ghế đó nằm trong những ghế liền kề
                 if (this.classList.contains('active')) {
-                    // Kiểm tra nếu ghế đang hủy là ghế "giữa"
                     const seatToRemove = {
                         row,
                         col
                     };
-                    const isMiddle = isMiddleSeat(seatToRemove, selectedSeats);
-
-                    if (isMiddle) {
+                    if (isMiddleSeat(seatToRemove, selectedSeats)) {
                         alert("Không thể bỏ chọn ghế giữa vì các ghế bên cạnh sẽ bị cách nhau!");
                         return;
                     }
@@ -460,48 +429,36 @@
                     this.classList.remove('active');
                     this.style.removeProperty('color');
                     this.textContent = originalContent;
-
-                    // Xóa ghế đã chọn khỏi mảng
                     selectedSeats = selectedSeats.filter(seat => seat.row !== row || seat.col !== col);
 
-                    // Xóa thẻ input đã thêm
                     const inputElement = document.getElementById(`input-${row}${col}`);
-                    if (inputElement) {
-                        inputElement.remove();
-                    }
+                    if (inputElement) inputElement.remove();
                 } else {
-                    // Kiểm tra số ghế đã chọn
                     if (selectedSeats.length >= maxSeats) {
                         alert("Bạn chỉ được chọn nhiều nhất 9 ghế!");
                         return;
                     }
 
-                    // Kiểm tra nếu ghế thứ 2 hoặc sau phải nằm trong vùng xung quanh bất kỳ ghế nào đã chọn
                     if (selectedSeats.length > 0) {
-                        const isValidSeat = selectedSeats.some(seat => {
-                            const adjacentSeats = getAdjacentSeats(seat.row, seat.col);
-                            return adjacentSeats.some(adjSeat => adjSeat.row === row && adjSeat
-                                .col === col);
-                        });
-
+                        const isValidSeat = selectedSeats.some(seat =>
+                            getAdjacentSeats(seat.row, seat.col).some(adjSeat =>
+                                adjSeat.row === row && adjSeat.col === col
+                            )
+                        );
                         if (!isValidSeat) {
-                            alert("Ghế phải nằm trong khu vực xung quanh ít nhất một ghế đã chọn!");
+                            alert("Ghế phải nằm cạnh các ghế đã chọn!");
                             return;
                         }
                     }
 
-                    // Thêm ghế vào mảng đã chọn
                     selectedSeats.push({
                         row,
                         col
                     });
-
-                    // Thêm active và thay đổi màu sắc
                     this.classList.add('active');
                     this.style.color = 'white';
                     this.textContent = originalContent;
 
-                    // Tạo thẻ input
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = originalContent;
@@ -511,23 +468,12 @@
                     document.getElementById('input-container').appendChild(input);
                 }
 
-                // Tính tổng giá trị data-price
-                const inputs = document.querySelectorAll('#input-container input');
-                let totalPrice = 0;
+                const totalPrice = [...document.querySelectorAll('#input-container input')]
+                    .reduce((sum, input) => sum + parseFloat(input.getAttribute('data-price') || 0), 0);
 
-                inputs.forEach(input => {
-                    const price = parseFloat(input.getAttribute('data-price'));
-                    if (!isNaN(price)) {
-                        totalPrice += price;
-                    }
-                });
-
-                // Định dạng số với dấu chấm phân cách hàng nghìn và thêm "đ" vào cuối
                 const formattedPrice = new Intl.NumberFormat('vi-VN').format(totalPrice);
-
                 document.getElementById('price_ticket').value = totalPrice;
                 document.getElementById('price-display').textContent = `Giá: ${formattedPrice} VNĐ`;
-
             });
         });
     </script>

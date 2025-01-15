@@ -6,6 +6,7 @@
 @endsection
 
 @section('style')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Mobile Specific Metas-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="telephone=no" name="format-detection">
@@ -36,6 +37,7 @@
     <!-- Modernizr -->
     <script src="{{ asset('js/external/modernizr.custom.js') }}"></script>
 
+    <script src="{{ asset('https://code.jquery.com/jquery-3.6.4.min.js') }}" integrity="sha384-UG8ao2jwOWB7/oDdObZc6ItJmwUkR/PfMyt9Qs5AwX7PsnYn1CRKCTWyncPTWvaS" crossorigin="anonymous"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
                                                                                                                     <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
@@ -107,7 +109,7 @@
                 <div class="movie__info">
                     <div class="col-sm-4 col-md-3 movie-mobile">
                         <div class="movie__images">
-                            <span class="movie__rating">{{ number_format($data->average_rating ?? 0, 1, '.', ',') }}</span>
+                            <span class="movie__rating">{{ number_format($data->reviews ? $data->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}</span>
                             <img alt='' src="{{ Storage::url($data->cover_image) }}" width="270px" height="380px">
                         </div>
                     </div>
@@ -125,7 +127,7 @@
                                 </a>
                             @endforeach
                         </p>
-                        <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $data->release_date }}</p>
+                        <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $data->release_date->format('d-m-Y') }}</p>
                         <p class="movie__option"><strong>Tác giả: </strong>
                                 @foreach ($data->directors as $director)
                                     <a href="#">
@@ -183,34 +185,20 @@
                     @foreach ($showtimes as $screenAndDate => $items)
                         <div class="time-select__group">
                             <div class="col-sm-4">
-                                <p class="time-select__place">{{ explode(' - ', $screenAndDate)[0] }} -
-                                    phòng:{{ explode(' - ', $screenAndDate)[1] }}</p>
+                                <p class="time-select__place">{{ \Carbon\Carbon::parse(explode(' - ', $screenAndDate)[0])->format('d-m-Y') }} :
+                                    {{ explode(' - ', $screenAndDate)[1] }}</p>
                             </div>
                             <ul class="col-sm-8 items-wrap">
                                 @foreach ($items as $item)
-                                    <li class="time-select__item" data-time="{{ $item->time }}">
+                                    <li class="time-select__item" data-time="{{ $item->time }}" data-movie-id="{{ $data->movie_id }}" data-duration="{{ $data->duration }}" style="cursor: pointer;">
                                         {{ date('H:i', strtotime($item->time)) }} ~ {{ date('H:i', strtotime($item->time . ' + ' . $data->duration . ' minutes')) }}
                                     </li>
                                 @endforeach
                             </ul>
                         </div>
                     @endforeach
-
-                    {{-- <div class="time-select__group">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Empire</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='10:45'>10:45</li>
-                            <li class="time-select__item" data-time='16:00'>16:00</li>
-                            <li class="time-select__item" data-time='19:00'>19:00</li>
-                            <li class="time-select__item" data-time='21:15'>21:15</li>
-                            <li class="time-select__item" data-time='23:00'>23:00</li>
-                        </ul>
-                    </div> --}}
                 </div>
 
-                <!-- hiden maps with multiple locator-->
 
                 <h2 class="page-heading">Bình luận ({{ $reviews->count() }})</h2>
 
@@ -283,13 +271,65 @@
                         });
                     });
                 </script>
+
+{{--                <script>--}}
+{{--                    // Define routes in the global JavaScript scope--}}
+{{--                    const routes = {--}}
+{{--                        bookingStore: @json(route('user.bookingStore2')),--}}
+{{--                        bookingPage: @json(route('user.booking2'))--}}
+{{--                    };--}}
+
+{{--                    $(document).ready(function() {--}}
+{{--                        $('.time-select__item').on('click', function() {--}}
+{{--                            const time = $(this).data('time');--}}
+{{--                            const movieId = $(this).data('movie-id');--}}
+{{--                            const duration = $(this).data('duration');--}}
+
+{{--                            // Validate data before sending the AJAX request--}}
+{{--                            if (!time || !movieId || !duration) {--}}
+{{--                                alert('Some essential data is missing. Please try again.');--}}
+{{--                                return;--}}
+{{--                            }--}}
+
+{{--                            // Send AJAX request--}}
+{{--                            $.ajax({--}}
+{{--                                url: routes.bookingStore,--}}
+{{--                                method: "POST",--}}
+{{--                                headers: {--}}
+{{--                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Fetch token dynamically--}}
+{{--                                },--}}
+{{--                                data: {--}}
+{{--                                    time: time,--}}
+{{--                                    movie_id: movieId,--}}
+{{--                                    duration: duration--}}
+{{--                                },--}}
+{{--                                success: function(response) {--}}
+{{--                                    // Redirect on success--}}
+{{--                                    window.location.href = routes.bookingPage;--}}
+{{--                                    console.log(response);--}}
+{{--                                },--}}
+{{--                                error: function(xhr) {--}}
+{{--                                    // Handle errors and show feedback--}}
+{{--                                    alert('An error occurred: ' + (xhr.responseJSON?.message || 'Please try again later.'));--}}
+{{--                                }--}}
+{{--                            });--}}
+{{--                        });--}}
+{{--                    });--}}
+{{--                </script>--}}
+{{--                <script>--}}
+{{--                    $(document).ready(function() {--}}
+{{--                        console.log('jQuery is loaded!');--}}
+{{--                    });--}}
+{{--                </script>--}}
             </div>
         </div>
 
     </section>
+
 @endsection
 
 @section('script')
+
     <!-- JavaScript-->
     <!-- jQuery 1.9.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
@@ -343,4 +383,6 @@
             init_MoviePageFull();
         });
     </script>
+
+
 @endsection

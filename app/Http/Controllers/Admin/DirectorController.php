@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreDirectorRequest;
 use App\Http\Requests\UpdateDirectorRequest;
 use App\Models\Director;
-use Illuminate\Http\Request;
 
 class DirectorController extends Controller
 {
@@ -37,9 +36,9 @@ class DirectorController extends Controller
 
         $dire = Director::create($data);
 
-        if($dire){
+        if ($dire) {
             toastr()->success('Thao tác thành công');
-        }else{
+        } else {
             toastr()->error('Thao tác không thành công. Vui lòng thử lại');
         }
 
@@ -75,9 +74,9 @@ class DirectorController extends Controller
 
         $dire->update($data);
 
-        if($dire){
+        if ($dire) {
             toastr()->success('Thao tác thành công');
-        }else{
+        } else {
             toastr()->error('Thao tác không thành công. Vui lòng thử lại');
         }
 
@@ -91,16 +90,49 @@ class DirectorController extends Controller
     {
         $dire = Director::findOrFail($id);
 
-        $direactorCount = $dire->director()->count();
+        $dire->delete();
 
-        if ($direactorCount == 0) {
-            $dire->delete();
-
+        if ($dire) {
             toastr()->success('Thao tác thành công');
-        }else{
-            toastr()->error('Thao tác không thành công vì đạo diễn này vẫn còn liên kết');
+        } else {
+            toastr()->error('Vui lòng thử lại sau');
         }
 
-        return back();
+        return redirect()->route('admin.director.index');
+    }
+
+    public function trashed() {
+        $data = Director::onlyTrashed()->get();
+
+        return view('admin.director.trashed', compact('data'));
+    }
+
+    public function restore(string $id) {
+        $director = Director::withTrashed()->findOrFail($id);
+
+        $director->restore();
+
+        if($director){
+            toastr()->success('Khôi phục dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.director.index');
+    }
+
+    public function forceDelete(string $id) {
+
+        $director = Director::withTrashed()->findOrFail($id);
+
+        $director->forceDelete();
+
+        if($director){
+            toastr()->success('Xóa dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.director.trashed');
     }
 }

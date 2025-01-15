@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreActorRequest extends FormRequest
 {
@@ -23,20 +24,33 @@ class StoreActorRequest extends FormRequest
     {
         return [
             'actor_name' => [
-                'required',
-                'string',
-                'max:255',
-                'unique:actors,id,',
+                'required',                     // Bắt buộc phải nhập
+                'string',                       // Phải là chuỗi ký tự
+                'max:255',                      // Độ dài tối đa là 255 ký tự
+                'min:3',                        // Độ dài tối thiểu là 3 ký tự
+                'regex:/^[a-zA-ZÀ-ỹ\s\'.\-]+$/u', // Chỉ cho phép chữ cái, dấu cách, dấu nháy, dấu gạch ngang
+                Rule::unique('actors', 'actor_name')->ignore($this->route('actor'), 'id'), // Kiểm tra trùng lặp
             ],
         ];
     }
-
-    public function messages(){
+    public function messages(): array
+    {
         return [
-            'actor_name.required' => 'Trường diễn viên không được bỏ trống',
-            'actor_name.string'  => 'Trường diễn viên phải là chuỗi ký tự',
-            'actor_name.max'  => 'Trường diễn viên tối đa 255 ký tự',
-            'actor_name.unique'  => 'Trường diễn viên đã tồn tại trong CSDL',
+            // Trường bắt buộc
+            'actor_name.required' => 'Trường diễn viên không được để trống',
+
+            // Kiểu dữ liệu
+            'actor_name.string' => 'Trường diễn viên phải là chuỗi ký tự',
+
+            // Độ dài
+            'actor_name.max' => 'Trường diễn viên tối đa 255 ký tự',
+            'actor_name.min' => 'Trường diễn viên phải có ít nhất 3 ký tự',
+
+            // Định dạng
+            'actor_name.regex' => 'Trường diễn viên chỉ được chứa chữ cái, dấu cách, dấu nháy đơn và dấu gạch ngang',
+
+            // Trùng lặp
+            'actor_name.unique' => 'Trường diễn viên đã tồn tại trong cơ sở dữ liệu',
         ];
     }
 }

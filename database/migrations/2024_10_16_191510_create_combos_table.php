@@ -18,6 +18,8 @@ return new class extends Migration
             $table->longText('short_description');
             $table->integer('price');
             $table->integer('quantity')->default(0);
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

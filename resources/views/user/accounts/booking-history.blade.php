@@ -37,9 +37,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-            <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
 
     <style>
         /* Account Section */
@@ -87,73 +87,158 @@
         }
 
         .account-container {
-            padding-top: 250px;
+            padding-top: 150px;
         }
 
+        /* Đặt kiểu tổng thể cho Sidebar và Account Content */
+        .account-sidebar {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-        /*CSS  Account Section */
-        .col-md-12 {
-            margin: 20px auto;
+        .account-content {
+            background: #fff;
             padding: 30px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-            font-family: 'Arial', sans-serif;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .col-md-12 h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
+        /* Tiêu đề của Sidebar */
+        .account-title {
+            font-size: 20px;
             font-weight: bold;
             color: #333;
-            border-bottom: 2px solid #007bff;
-            display: inline-block;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 5px;
+        }
+
+        /* Danh sách trong Sidebar */
+        .user__list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .user__item {
+            margin-bottom: 10px;
+        }
+
+        .user__link {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            padding: 10px 15px;
+            display: block;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .user__link:hover {
+            background: #ffc107;
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        /* Thông tin tài khoản trong Account Content */
+        .account-info {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .user__name,
+        .user__email {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        /* Nút cập nhật tài khoản */
+        .btn--warning {
+            background-color: #ffc107;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn--warning:hover {
+            background-color: #e0a800;
+            transform: scale(1.05);
+        }
+
+        .btn--wide {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Điều chỉnh bố cục chung */
+        .col-md-3,
+        .col-md-9 {
+            padding: 15px;
+        }
+
+        /* Hiệu ứng khi hover trên Sidebar */
+        .account-sidebar:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Booking History Styles */
+        .account-content {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
         }
 
         .table {
             width: 100%;
+            margin-bottom: 20px;
             border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 16px;
+        }
+
+        .table thead {
+            background-color: #ffc107;
+            color: #2b2b2c;
         }
 
         .table th,
         .table td {
-            padding: 15px;
-            text-align: center;
+            padding: 12px 15px;
             border: 1px solid #ddd;
+            text-align: left;
         }
 
-        .table thead th {
-            background: linear-gradient(90deg, #007bff, #0056b3);
-            color: #fff;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .table tbody tr:nth-child(even) {
+        .table-striped tbody tr:nth-child(odd) {
             background-color: #f9f9f9;
         }
 
-        .table tbody tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-
-        .table tbody tr:hover {
-            background-color: #f1faff;
-            transform: scale(1.01);
-            transition: all 0.3s ease-in-out;
-        }
-
         .label {
-            display: inline-block;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+            padding: 5px 10px;
+            font-size: 9px;
+            border-radius: 4px;
             text-transform: uppercase;
+            font-weight: bold;
+            text-align: center;
+
         }
 
         .label-warning {
@@ -171,85 +256,99 @@
             color: #fff;
         }
 
-        a {
+        .button-account {
             color: #007bff;
-            font-weight: bold;
             text-decoration: none;
-            transition: color 0.3s ease-in-out;
+            transition: color 0.3s ease;
         }
 
-        a:hover {
+        .button-account:hover {
             color: #0056b3;
-            text-decoration: underline;
         }
 
-        /* Add subtle animations */
-        .table tbody tr td a {
-            display: inline-block;
-            padding: 6px 12px;
-            background-color: #007bff;
-            color: #fff;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s, transform 0.2s;
+        /* Responsive Design */
+        @media (max-width: 768px) {
+
+            .col-md-3,
+            .col-md-9 {
+                width: 100%;
+                padding: 0;
+            }
         }
 
-        .table tbody tr td a:hover {
-            background-color: #0056b3;
-            transform: scale(1.1);
-        }
     </style>
 @endsection
 
 @section('content')
-    <section class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Booking History</h2>
+    <section class="container account-container">
+        <div class="row" >
+            <div class="col-md-2 account-sidebar">
+                <div class="sidebar">
+                    <div class="user">
+                        <div class="user__head">
+                            <div class="user__info">
+                                <div class="content__title account-title">Thông tin tài khoản</div>
+
+                            </div>
+                        </div>
+                        <div class="user__content">
+                            <ul class="user__list">
+                                <li class="user__item"><a href="{{ route('account.info') }}" class="user__link">Thông tin
+                                        tài khoản</a></li>
+
+                                <li class="user__item"><a href="{{ route('account.booking-history') }}"
+                                                          class="user__link">Lịch sử đặt vé</a></li>
+
+                                <li class="user__item"><a href="{{ route('logout') }}" class="user__link">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <h2>Lịch sử đặt vé</h2>
                 @if ($bookings->isEmpty())
                     <p>No bookings found.</p>
                 @else
                     <table class="table table-striped">
                         <thead>
-                            <tr>
-                                <th>Mã vé</th>
-                                <th>Tên phim</th>
-                                <th>Phòng chiếu</th>
-                                <th>Xuất chiếu</th>
-                                <th>Giá vé</th>
-                                <th>Ngày đặt vé</th>
-                                <th>Trạng thái</th>
-
-                                <th>Details</th>
-                            </tr>
+                        <tr>
+                            <th>Mã vé</th>
+                            <th>Tên phim</th>
+                            <th>Phòng chiếu</th>
+                            <th>Xuất chiếu</th>
+                            <th>Giá vé</th>
+                            <th>Ngày đặt vé</th>
+                            <th>Trạng thái</th>
+                            <th></th>
+                        </tr>
                         </thead>
                         <tbody>
 
 
 
-                            @foreach ($bookings as $booking)
-                                <tr>
-                                    <td>{{ $booking->booking->order_code }}</td>
-                                    <td>{{ $booking->movie->title }}</td>
-                                    <td>{{ $booking->showtime->screen->screen_name }}</td>
-                                    <td>{{ $booking->showtime->time }}</td>
-                                    <td>{{ number_format($booking->transaction->total, 0, '.', '.') }}đ</td>
+                        @foreach ($bookings as $booking)
+                            <tr>
+                                <td>{{ $booking->booking->order_code }}</td>
+                                <td>{{ $booking->movie->title }}</td>
+                                <td>{{ $booking->showtime->screen->screen_name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($booking->showtime->time)->format('H:i') }}</td>
+                                <td>{{ number_format($booking->transaction->total, 0, '.', '.') }}đ</td>
 
-                                    <td>{{ $booking->created_at->format('d/m/Y') }}</td>
-                                    <td>
-                                        @if ($booking->status == 0)
-                                            <span class="label label-warning">Vé chưa xem</span>
-                                        @elseif($booking->status == 1)
-                                            <span class="label label-success">Vé đã xem</span>
-                                        @else
-                                            <span class="label label-danger">Vé đã hủy</span>
-                                        @endif
-                                    </td>
+                                <td>{{ $booking->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    @if ($booking->status == 0)
+                                        <span class="label label-warning">Vé chưa xem</span>
+                                    @elseif($booking->status == 1)
+                                        <span class="label label-success">Vé đã xem</span>
+                                    @else
+                                        <span class="label label-danger">Vé đã hủy</span>
+                                    @endif
+                                </td>
 
-                                    <td><a href="{{ route('account.booking-detail', $booking->ticket_id) }}">View
-                                            Details</a></td>
-                                </tr>
-                            @endforeach
+                                <td><a class="button-account" href="{{ route('account.booking-detail', $booking->ticket_id) }}">Xem chi tiết</a></td>
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                 @endif

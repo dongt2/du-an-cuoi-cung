@@ -33,9 +33,50 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                                                                                                                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-                                                                                                                                                <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
-                                                                                                                                            <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.js"></script>
+    <![endif]-->
+    <style>
+        /* Đặt chung cho form */
+        form {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Đảm bảo các phần tử nằm trên một hàng */
+            gap: 10px;
+            /* Khoảng cách giữa các phần tử */
+            align-items: center;
+            /* Canh giữa theo chiều dọc */
+            margin-bottom: 20px;
+        }
+
+        /* Styling cho các ô chọn */
+        form select {
+            padding: 5px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 150px;
+            /* Tùy chỉnh kích thước */
+        }
+
+        /* Styling cho nút lọc */
+        form button {
+            padding: 6px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+            /* Đảm bảo không bị xuống dòng */
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -45,9 +86,72 @@
 
             <form action="{{ route('movie.index') }}" method="GET" class="search">
                 <input type="text" id="search-input" name="query" value="{{ old('query', request('query')) }}"
-                    class="search__field" placeholder="Tìm kiếm phim...">
+                       class="search__field" placeholder="Tìm kiếm phim...">
                 <button type="submit" class="btn btn-md btn--danger search__button">Tìm kiếm</button>
             </form>
+
+            <div class="col-sm-12">
+                <div class="p-3 mb-2 bg-secondary text-white">
+                    <!-- Bộ lọc -->
+                    <form method="GET" action="{{ route('movie.index') }}" class="mb-4">
+
+                        <!-- Bộ lọc thể loại -->
+                        <div class="col-md-2">
+                            <select name="category" class="form-control">
+                                <option value="" hidden>Thể Loại</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->category_id }}"
+                                        {{ request('category') == $category->category_id ? 'selected' : '' }}>
+                                        {{ $category->category_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Bộ lọc năm -->
+                        <div class="col-md-2">
+                            <select name="year" class="form-control">
+                                <option value="">Năm</option>
+                                @for ($year = now()->year; $year >= 2000; $year--)
+                                    <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
+                                        {{ $year }}
+                                    </option>
+                                @endfor
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <select name="director" class="form-control">
+                                <option value="" hidden>Đạo diễn</option>
+                                @foreach ($directors as $director)
+                                    <option value="{{ $director->id }}"
+                                        {{ request('director') == $director->id ? 'selected' : '' }}>
+                                        {{ $director->directors }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <select name="actors" class="form-control">
+                                <option value="" hidden>Diễn viên</option>
+                                @foreach ($actors as $actor)
+                                    <option value="{{ $actor->id }}"
+                                        {{ request('actors') == $actor->id ? 'selected' : '' }}>
+                                        {{ $actor->actor_name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
+                        <!-- Nút lọc -->
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary w-100">Lọc</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <hr style="border: 1px solid #ccc; margin-top:30px; margin-bottom:30px">
 
@@ -64,20 +168,20 @@
                 @foreach ($movies as $movie)
                     <div class="movie movie--preview movie--full release">
                         <div class="col-sm-3 col-md-2 col-lg-2">
+
                             <div class="movie__images">
+
                                 {{-- <img alt='' src="images/movie/movie-sample1.jpg"> --}}
                                 <img alt='' src="{{ Storage::url($movie->cover_image) }}" width="170px"
-                                    height="260px">
-                            </div>
-                            <div class="movie__feature">
-                                <a href="#" class="movie__feature-item movie__feature--comment">123</a>
-                                <a href="#" class="movie__feature-item movie__feature--video">7</a>
-                                <a href="#" class="movie__feature-item movie__feature--photo">352</a>
+                                     height="260px">
+                                <span class="movie__rating"
+                                      style="left: 111px">{{ number_format($movie->reviews ? $movie->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}</span>
                             </div>
                         </div>
 
                         <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                            <a href='movie-page-full.html' class="movie__title link--huge">{{ $movie->title }}</a>
+                            <a href='{{ route('movie.show', $movie->movie_id) }}'
+                               class="movie__title link--huge">{{ $movie->title }}</a>
 
                             <p class="movie__time">{{ $movie->duration }} min</p>
 
@@ -86,7 +190,9 @@
                             <p class="movie__option"><strong>Thể loại: </strong>
                                 @foreach ($movie->categories as $category)
                                     <a href="#">
-                                        {{ $category->category_name }}@if(!$loop->last), @endif
+                                        {{ $category->category_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
                                     </a>
                             @endforeach
                             <p class="movie__option"><strong>Ngày phát hành: </strong>{{ $movie->release_date }}
@@ -94,14 +200,18 @@
                             <p class="movie__option"><strong>Đạo diễn: </strong>
                                 @foreach ($movie->directors as $director)
                                     <a href="#">
-                                        {{ $director->directors }}@if(!$loop->last), @endif
+                                        {{ $director->directors }}@if (!$loop->last)
+                                            ,
+                                        @endif
                                     </a>
                                 @endforeach
                             </p>
                             <p class="movie__option"><strong>Diễn viên: </strong>
                                 @foreach ($movie->actors as $actor)
                                     <a href="#">
-                                        {{ $actor->actor_name }}@if(!$loop->last), @endif
+                                        {{ $actor->actor_name }}@if (!$loop->last)
+                                            ,
+                                        @endif
                                     </a>
                                 @endforeach
                             </p>
@@ -116,8 +226,7 @@
 
                             <div class="preview-footer">
                                 <div class="movie__rate">
-                                    <span class="movie__rate-number">{{ $movie->reviews_today->count() ?? 0 }} người đã đánh giá hôm nay</span>
-                                    <span class="">{{ number_format($movie->reviews ? $movie->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}</span>
+                                    {{--                                    <span class="movie__rate-number">{{ $movie->reviews_today->count() ?? 0 }} người đã đánh giá hôm nay</span> --}}
                                 </div>
 
 

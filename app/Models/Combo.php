@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Combo extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'combos';
 
     protected $primaryKey = 'combo_id';
+
+    protected $dates = [
+        'deleted_at',
+    ];
 
     protected $fillable = [
         'combo_name',
@@ -19,5 +24,6 @@ class Combo extends Model
         'short_description',
         'price',
         'quantity',
+        'deleted_at',
     ];
 }

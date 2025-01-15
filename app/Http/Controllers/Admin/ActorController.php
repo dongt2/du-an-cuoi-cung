@@ -90,17 +90,48 @@ class ActorController extends Controller
     {
         $act = Actor::findOrFail($id);
 
-        $actorCount = $act->actor()->count();
+        $act->delete();
 
-        if ($actorCount == 0) {
-            $act->delete();
-
+        if($act){
             toastr()->success('Thao tác thành công');
         }else{
-            toastr()->error('Thao tác không thành công vì diễn viên này vẫn còn liên kết');
+            toastr()->error('Vui lòng thử lại sau');
         }
 
-        return back();
+        return redirect()->route('admin.actor.index');
 
+    }
+
+    public function trashed()
+    {
+        $actor = Actor::onlyTrashed()->get();
+
+        return view('admin.actor.trashed', compact('actor'));
+    }
+
+    public function restore(string $id)
+    {
+        $actor = Actor::withTrashed()->findOrFail($id);
+
+        $actor->restore();
+
+        if($actor){
+            toastr()->success('Khôi phục thành công');
+        }
+
+        return redirect()->route('admin.actor.index');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $actor = Actor::withTrashed()->findOrFail($id);
+
+        $actor->forceDelete();
+
+        if($actor){
+            toastr()->success('Xóa dữ liệu thành công');
+        }
+
+        return redirect()->route('admin.actor.trashed');
     }
 }

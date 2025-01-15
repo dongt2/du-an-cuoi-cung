@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('directors', function (Blueprint $table) {
             $table->id();
             $table->string('directors')->unique();
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

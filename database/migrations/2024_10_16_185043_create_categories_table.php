@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->bigIncrements('category_id');
             $table->string('category_name', 255);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

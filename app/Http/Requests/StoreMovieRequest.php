@@ -118,7 +118,6 @@ class StoreMovieRequest extends FormRequest
 
             'description.required'  => 'Trường không được bỏ trống',
             'description.string'  => 'Trường phải là một chuỗi',
-            'description.max'  => 'Max 500 ký tự',
 
             'trailer_url.nullable'  => 'Có thể bỏ trống',
             'trailer_url.url'  => 'Trường URL của trailer phải là một URL hợp lệ.',

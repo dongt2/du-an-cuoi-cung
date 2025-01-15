@@ -58,12 +58,12 @@
 //                            dd($movie);
                         @endphp
                         <div class="movie-beta__item">
-                            <img alt='' src="{{ Storage::url($movie->cover_image) }}">
+                            <img alt='' src="{{ Storage::url($movie->cover_image) }}" >
                             <span class="best-rate">{{ number_format($movie->average_rating ?? 0, 1, '.', ',') }}</span>
 
-                            <ul class="movie-beta__info">
+                            <ul class="movie-beta__info" style="width: 190px">
                                 <li>
-                                    <span class="best-voted" style="font-size: 19px;
+                                    <span class="best-voted" style="font-size: 15px;
                                                 font-weight: bold;">
                                         {{ $movie->title }}
                                     </span>
@@ -82,7 +82,7 @@
 
                                 </li>
                                 <li class="last-block">
-                                    <a href="{{ route('movie.show', $movie->movie_id) }}" class="slide__link">more</a>
+                                    <a href="{{ route('movie.show', $movie->movie_id) }}" class="slide__link">Xem thêm</a>
                                 </li>
                             </ul>
                         </div>
@@ -103,45 +103,62 @@
         <div class="clearfix"></div>
 
         <h2 id='target' class="page-heading heading--outcontainer">Phim đang chiếu</h2>
-
+        @if($data != null)
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-8 col-md-9">
                     <!-- Movie variant with time -->
-                    @foreach ($data as $item)
-                        <div class="movie movie--test movie--test--dark movie--test--left">
-                            <div class="movie__images">
-                                <a href="{{ route('movie.show', $item->movie_id) }}" class="movie-beta__link">
-                                    <img alt='' src="{{ Storage::url($item->cover_image) }}" width="210px"
-                                        height="210px">
-                                </a>
-                            </div>
 
-                            <div class="movie__info">
-                                <a href="{{ route('movie.show', $item->movie_id) }}" class="movie__title">{{ $item->title }}</a>
 
-                                <p class="movie__time">{{ $item->duration }} phút</p>
-
-                                <p class="movie__option">
-                                    @foreach ($item->categories as $category)
-                                    <a href="#">
-                                            {{ $category->category_name }}@if(!$loop->last), @endif
+                        @foreach ($data as $item)
+                            <div class="movie movie--test movie--test--dark movie--test--left">
+                                <div class="movie__images">
+                                    <a href="{{ route('movie.show', $item->movie_id) }}" class="movie-beta__link">
+                                        <img alt='' src="{{ Storage::url($item->cover_image) }}" width="182px"
+                                            height="260px">
                                     </a>
-                                    @endforeach
+                                </div>
 
-                                </p>
+                                <div class="movie__info">
+                                    <a href="{{ route('movie.show', $item->movie_id) }}" class="movie__title">{{ $item->title }}</a>
 
-                                <div class="movie__rate">
-                                    <span class="movie__rating">
-                                        {{ number_format($item->reviews ? $item->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}
-                                    </span>
+                                    <p class="movie__time">{{ $item->duration }} phút</p>
+
+                                    <p class="movie__option"> Thể loại:
+                                        @foreach ($item->categories as $category)
+                                        <a href="#">
+                                                {{ $category->category_name }}@if(!$loop->last), @endif
+                                        </a>
+                                        @endforeach
+                                    </p>
+                                    <p class="movie__option"> Đạo diễn:
+                                        @foreach ($item->directors as $director)
+                                            <a href="#">
+                                                {{ $director->directors }}@if(!$loop->last), @endif
+                                            </a>
+                                        @endforeach
+                                    </p>
+
+
+                                    <div class="movie__rate">
+                                        <span class="movie__rating">
+                                            {{ number_format($item->reviews ? $item->reviews->avg('rating') ?? 0 : 0, 1, '.', ',') }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
 
                 </div>
+                @else
+                    <p style="text-align: center;
+                                padding: 10px;
+                                padding-top: 30px;
+                                font-size: large;
+                                           ">
+                        Hiện tại không có phim nào đang chiếu.</p>
 
+                @endif
                 <aside class="col-sm-4 col-md-3">
                     <div class="sitebar first-banner--left">
                         <div class="banner-wrap first-banner--left">

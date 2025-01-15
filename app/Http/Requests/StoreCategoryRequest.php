@@ -25,7 +25,7 @@ class StoreCategoryRequest extends FormRequest
             'category_name' => [
                 'required',
                 'string',
-                'min:1',
+                'min:3',
                 'max:50',
                 'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
                 'unique:categories,category_name', // Kiểm tra trùng tên trong bảng `categories`

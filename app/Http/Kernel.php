@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\CheckAdminMiddleware;
 use App\Http\Middleware\CheckUserMiddleware;
@@ -74,4 +75,9 @@ class Kernel extends HttpKernel
    protected $routeMiddleware = [
        'auth' => \App\Http\Middleware\Authenticate::class,
    ];
+
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('tickets:cancel-past')->everyMinute();
+    }
 }

@@ -25,11 +25,6 @@ class ShowtimeController extends Controller
             ->orderByDesc('showtimes.showtime_id')
             ->get();
 
-        // Kiểm tra nếu không có dữ liệu
-        if ($data->isEmpty()) {
-            // Xử lý khi không có dữ liệu
-            return response()->json(['message' => 'Không có dữ liệu'], 404);
-        }
 
         // dd($data);
         $listScreens = DB::table('screens')->get();
@@ -153,5 +148,46 @@ class ShowtimeController extends Controller
 
         // Chuyển hướng với thông báo thành công
         return redirect()->route('admin.showtime.index')->with('success', 'Thao tác thành công');
+    }
+
+    public function trashed() {
+        $data = Showtime::query()
+            ->join('movies', 'movies.movie_id', '=', 'showtimes.movie_id')
+            ->join('screens', 'screens.screen_id', '=', 'showtimes.screen_id')
+            ->select('showtimes.showtime_id', 'movies.title as movie_title', 'screens.screen_name as screen_name', 'showtimes.showtime_date', 'showtimes.time')
+            ->orderByDesc('showtimes.showtime_id')
+            ->onlyTrashed()
+            ->get();
+
+        return view('admin.showtime.trashed', compact('data'));
+    }
+
+    public function restore(string $id) {
+        $show = Showtime::withTrashed()->findOrFail($id);
+
+        $show->restore();
+
+        if($show){
+            toastr()->success('Khôi phục dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.showtime.index');
+    }
+
+    public function forceDelete(string $id) {
+
+        $show = Showtime::withTrashed()->findOrFail($id);
+
+        $show->forceDelete();
+
+        if($show){
+            toastr()->success('Xóa dữ liệu thành công');
+        }else{
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.showtime.trashed');
     }
 }

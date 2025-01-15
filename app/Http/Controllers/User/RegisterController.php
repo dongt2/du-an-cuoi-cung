@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -27,20 +29,16 @@ class RegisterController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $data = $request->validate([
-            'username' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'phone' => 'nullable|string|max:15',
-        ]);
+        $data = $request->all();
 
         // $data['password'] = bcrypt($data['password']);
 
         $data['role'] = 'Khach hang';
         $data['is_active'] = 1;
         $data['is_vip'] = 0;
+
 
         User::create($data);
         session()->flash('success', 'Đăng ký tài khoản thành công!');

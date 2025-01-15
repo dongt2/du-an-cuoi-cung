@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreComboRequest;
 use App\Http\Requests\UpdateComboRequest;
 use App\Models\Combo;
-use Illuminate\Http\Request;
 
 class ComboController extends Controller
 {
@@ -35,22 +34,22 @@ class ComboController extends Controller
     {
         $path = null;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
 
-            $newName = time(). '.' .$image->getClientOriginalExtension();
+            $newName = time().'.'.$image->getClientOriginalExtension();
 
             $path = $image->storeAs('images/combo', $newName, 'public');
         }
 
         $data = [
             'combo_name' => $request->combo_name,
-            'image'      => $path,
+            'image' => $path,
             'short_description' => $request->short_description,
             'price' => $request->price,
             'quantity' => $request->quantity,
         ];
-//dd($data);
+        // dd($data);
         Combo::create($data);
 
         return redirect()->route('admin.combo.index')->with('success', 'Thao tác thành công');
@@ -83,17 +82,17 @@ class ComboController extends Controller
 
         $path = $com->image;
 
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
 
-            $newName = time(). '.' .$image->getClientOriginalExtension();
+            $newName = time().'.'.$image->getClientOriginalExtension();
 
             $path = $image->storeAs('images/combo', $newName, 'public');
         }
 
         $data = [
             'combo_name' => $request->combo_name,
-            'image'      => $path,
+            'image' => $path,
             'short_description' => $request->short_description,
             'price' => $request->price,
             'quantity' => $request->quantity,
@@ -114,5 +113,36 @@ class ComboController extends Controller
         $com->delete();
 
         return redirect()->route('admin.combo.index')->with('success', 'Thao tác thành công');
+    }
+
+    public function trashed()
+    {
+
+        $data = Combo::onlyTrashed()->get();
+
+        return view('admin.combo.trashed', compact('data'));
+    }
+
+    public function restore(string $id)
+    {
+
+        $data = Combo::withTrashed()->findOrFail($id);
+
+        $data->restore();
+        if ($data) {
+            toastr()->success('Khôi phục dữ liệu thành công');
+        } else {
+            toastr()->error('Vui lòng thử lại');
+        }
+
+        return redirect()->route('admin.combo.index', compact('data'));
+    }
+
+    public function forceDelete(string $id) {
+        $data = Combo::withTrashed()->findOrFail($id);
+
+        $data->forceDelete();
+
+        return redirect()->route('admin.combo.index')->with('success', 'Xóa dữ liệu thành công');
     }
 }

@@ -19,10 +19,6 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Combo</h4>
-                </div>
-
             </div>
 
             <!-- Advance Form -->
@@ -30,7 +26,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Thêm mới</h5>
+                            <h5 class="card-title mb-0"><strong>Thêm mới</strong></h5>
                         </div><!-- end card header -->
 
                         <form action="{{ route('admin.combo.store') }}" method="post" enctype="multipart/form-data">

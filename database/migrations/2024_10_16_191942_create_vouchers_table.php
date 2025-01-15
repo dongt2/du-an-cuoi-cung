@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('quantity')->default(0);
             $table->integer('deduct_amount');
             $table->timestamps();
+            $table->softDeletes();
 
             // Thêm chỉ số cho code
             $table->index(['code']);

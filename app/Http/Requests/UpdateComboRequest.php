@@ -38,7 +38,6 @@ class UpdateComboRequest extends FormRequest
             'short_description' => [
                 'nullable',
                 'string',
-                'max:500',
             ],
             'price' => [
                 'required',
@@ -61,8 +60,7 @@ class UpdateComboRequest extends FormRequest
 
             'short_description.nullable'  => 'Có thể bỏ trống',
             'short_description.string'  => 'Phải là chuỗi ký tự',
-            'short_description.max'  => 'Max 255',
-
+    
             'price.required' => 'Trường không thể bỏ trống',
             'price.decimal' => 'Lấy 0 số thập phân',
         ];

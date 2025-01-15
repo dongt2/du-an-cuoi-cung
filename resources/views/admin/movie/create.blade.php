@@ -25,13 +25,6 @@
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
 
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Forms</a></li>
-                        <li class="breadcrumb-item active">Form Pickers</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Advance Form -->

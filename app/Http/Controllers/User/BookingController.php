@@ -58,7 +58,7 @@ class BookingController extends Controller
     public function viewBooking1()
     {
         $data = Movie::where('movie_id', session('movie.movie_id'))->get()->filter(function ($movie) {
-            // Convert premiere date to Carbon instance and compare
+            // Convert premiere date to Carbon instance and validate
             $premiereTime = \Illuminate\Support\Carbon::parse($movie->premiere_date);
             $currentTime = Carbon::now();
 
@@ -75,7 +75,19 @@ class BookingController extends Controller
             return true; // Include the movie if it passes both checks
         });
 
-        $screen_ids = Showtime::where('movie_id', session('movie.movie_id'))->pluck('screen_id');
+        $screen_ids = Showtime::where('movie_id', session('movie.movie_id'))
+            ->where(function ($query) {
+                // Filter out past showtimes (use Carbon for current time)
+                $currentTime = Carbon::now();
+                $query->where('showtime_date', '>', $currentTime->toDateString())
+                    ->orWhere(function ($query) use ($currentTime) {
+                        $query->where('showtime_date', '=', $currentTime->toDateString())
+                            ->where('time', '>=', $currentTime->format('H:i:s'));
+                    });
+            })
+            ->distinct()
+            ->pluck('screen_id');
+
         $screens = Screen::whereIn('screen_id', $screen_ids)
             ->select('screen_id', 'screen_name')
             ->get();
@@ -136,6 +148,7 @@ class BookingController extends Controller
 
     public function bookingStore2(Request $request)
     {
+
         session([
             'booking' => [
                 'user_id' => auth()->user()->user_id,
@@ -152,7 +165,7 @@ class BookingController extends Controller
 
     public function viewBooking2()
     {
-        // dd(session()->get('booking'));
+//         dd(session()->get('booking'));
         $showtime_id = Showtime::where('movie_id', session('booking.movie_id'))
             ->where('screen_id', session('booking.screen_id'))
             ->where('showtime_date', session('booking.showtime_date'))
@@ -183,7 +196,8 @@ class BookingController extends Controller
         $movie_name = Movie::where('movie_id', session('booking.movie_id'))->value('title');
         $screen_name = Screen::where('screen_id', session('booking.screen_id'))->value('screen_name');
         $combos = Combo::get();
-        return view('user.booking.booking3', compact('combos', 'movie_name', 'screen_name'));
+        $voucher = Voucher::get();
+        return view('user.booking.booking3', compact('combos', 'movie_name', 'screen_name','voucher'));
     }
 
     public function getPriceCombo(Request $request)
@@ -197,7 +211,30 @@ class BookingController extends Controller
             $totalCombos += $combo['quantity']; // Count total combos
             $price_combo += $combo['price'] * $combo['quantity'];
             $combo_id = $combo['id'];
+            $quantity = $combo['quantity'];
         }
+        $session = session('booking.quantity_combo');
+        // Subtract quantity logic
+        $comboItem = Combo::find($combo['id']);
+        if ($comboItem) {
+            if($quantity > $session) {
+                $trunggian = $quantity - $session;
+                $comboItem->quantity = $comboItem->quantity - $trunggian;
+                $session = $session + $trunggian;
+                session(['booking.quantity_combo' => $session]);
+            }else{
+                $trunggian = $session - $quantity;
+                $comboItem->quantity = $comboItem->quantity + $trunggian;
+                $session + $trunggian = $session;
+                session(['booking.quantity_combo' => $session]);
+            }
+
+            // Deduct the quantity for the combo
+            $comboItem->save();
+        } else {
+            return response()->json(['error' => 'Combo does not exist'], 404);
+        }
+
 
         if ($totalCombos > 8) {
             return response()->json(['error' => 'You cannot select more than 8 combos in total.'], 400);
@@ -206,52 +243,84 @@ class BookingController extends Controller
         session(['booking.price_combo' => $price_combo]);
         session(['booking.combos' => $combos]);
         session(['booking.combo_id' => $combo_id]);
+        session(['booking.quantity_combo' => $quantity]);
 
         return response()->json(['success' => 'Combos added successfully!', 'price_combo' => $price_combo]);
     }
 
     public function getPriceVoucher(Request $request)
     {
+        // Validate Voucher Input
         $request->validate([
             'voucher' => 'required|string|max:255',
         ]);
 
         $voucherCode = $request->input('voucher');
+
+        // Fetch Voucher from the database
         $voucher = Voucher::where('code', $voucherCode)->first();
 
+        // Prices from session
         $priceTicket = session('booking.price_ticket', 0);
         $priceCombo = session('booking.price_combo', 0);
-        $priceVoucher = 0; // Mặc định không có giảm giá
+        $priceVoucher = 0; // Default discount is 0
 
         if ($voucher) {
-            $priceVoucher = ($voucher->deduct_amount / 100) * ($priceTicket + $priceCombo);
-            session(['booking.price_voucher' => $priceVoucher]);
-            session(['booking.voucher_code' => $voucher->code]);
-            session(['booking.voucher_name' => $voucher->voucher_name]);
-            session(['booking.voucher_id' => $voucher->voucher_id]);
+            // Check if voucher has remaining quantity
+            if ($voucher->quantity > 0) {
+                // Calculate voucher discount as a percentage of total price
+                $priceVoucher = ($voucher->deduct_amount / 100) * ($priceTicket + $priceCombo);
+
+                // Deduct 1 from voucher quantity in the database
+                $voucher->quantity -= 1;
+                $voucher->save(); // Persist the change to the database
+
+                // Store the voucher information in the session
+                session([
+                    'booking.price_voucher' => $priceVoucher,
+                    'booking.voucher_code' => $voucher->code,
+                    'booking.voucher_name' => $voucher->voucher_name,
+                    'booking.voucher_id' => $voucher->voucher_id,
+                ]);
+            } else {
+                return response()->json(['error' => 'Voucher is no longer available.'], 400);
+            }
         } else {
-            session()->forget('booking.price_voucher');
+            return response()->json(['error' => 'Voucher does not exist.'], 404);
         }
 
+        // Calculate the total price after applying the voucher discount
         $priceTotal = $priceTicket + $priceCombo - $priceVoucher;
         session(['booking.price_total' => $priceTotal]);
-//        dd(session()->get('booking'));
 
-        if ($voucher) {
-            return response()->json(['success' => 'Mã giảm giá áp dụng thành công', 'price_total' => $priceTotal]);
-        } else {
-            return response()->json(['error' => 'Mã giảm giá không tồn tại hoặc đã được sử dụng', 'price_total' => $priceTotal]);
-        }
+        return response()->json([
+            'success' => 'Áp dụng mã giảm giá thành công!',
+            'price_total' => $priceTotal
+        ]);
     }
 
     public function destroyVoucher(Request $request)
     {
-        // Remove the voucher code from session or database
-        session()->forget('booking.voucher_code'); // Clear voucher from session
-        session()->put('booking.price_voucher', 0); // Reset voucher discount to zero
+        // Check if a voucher code exists in the session
+        $voucherCode = session('booking.voucher_code');
+
+        if ($voucherCode) {
+            // Fetch the voucher from the database using the code
+            $voucher = Voucher::where('code', $voucherCode)->first();
+
+            if ($voucher) {
+                // Increment the quantity of the voucher
+                $voucher->quantity += 1;
+                $voucher->save(); // Save the updated quantity in the database
+            }
+
+            // Remove the voucher information from the session
+            session()->forget('booking.voucher_code');
+            session()->put('booking.price_voucher', 0); // Optionally reset voucher price to zero
+        }
 
         return response()->json([
-            'success' => 'Voucher đã được gỡ bỏ thành công.'
+            'success' => 'Bạn đã xóa mã giảm giá thành công!',
         ]);
     }
 
@@ -364,17 +433,20 @@ class BookingController extends Controller
                     'total_price' => $data_order['price_ticket'],
 
                     'combo_id' => isset($data_order['combo_id']) ? $data_order['combo_id'] : null,
+                    'quantity_combo' => isset($data_order['quantity_combo']) ? $data_order['quantity_combo'] : 0,
                     'voucher_id' => isset($data_order['voucher_id']) ? $data_order['voucher_id'] : null,
 
                     'showtime_date' => $data_order['showtime_date'],
                     'showtime_time' => $data_order['showtime_time'],
                 ]);
 
+
+
                 $transaction =  Transaction::create([
                     'booking_id' => $booking->booking_id,
                     'user_id' => $data_order['user_id'],
                     'payment_method' => 'online',
-                    'total' => $data_order['price_total'],
+                    'total' => isset($data_order['price_total']) ? $data_order['price_total'] : $data_order['price_ticket'],
                     'payment_date' => Carbon::now(),
                     'status_payment' => 'completed',
                 ]);

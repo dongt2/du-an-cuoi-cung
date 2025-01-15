@@ -30,9 +30,9 @@
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script>
-                    <![endif]-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
 @endsection
 
 @section('content')
@@ -52,20 +52,24 @@
         <div class="field-wrap">
             <input type='text' placeholder='Tên người dùng' name='username' class="login__input">
             @error('username')
-                <span style="color: red;">{{ $message }}</span>
+            <span style="color: red;">{{ $message }}</span>
             @enderror
+
             <input type='email' placeholder='Email' name='email' class="login__input">
             @error('email')
-                <span style="color: red;">{{ $message }}</span>
+            <span style="color: red;">{{ $message }}</span>
             @enderror
+
             <input type='password' placeholder='Mật khẩu' name='password' class="login__input">
             @error('password')
-                <span style="color: red;">{{ $message }}</span>
+            <span style="color: red;">{{ $message }}</span>
             @enderror
+
             <input type='password' placeholder='Nhập lại mật khẩu' name='phone' class="login__input">
             @error('phone')
-                <span style="color: red;">{{ $message }}</span>
+            <span style="color: red;">{{ $message }}</span>
             @enderror
+
             <input type="hidden" name="role">
             <input type="hidden" name="is_active">
             <input type="hidden" name="is_vip">

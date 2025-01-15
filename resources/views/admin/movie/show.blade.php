@@ -131,7 +131,7 @@
                                         <div>
                                             <label class="form-label">Ngày phát hành</label>
                                             <input type="date" class="form-control"
-                                                name="release_date" value="{{ $data->release_date }}"
+                                                name="release_date" value="{{ $data->release_date->format('Y-m-d') }}"
                                                 disabled>
                                         </div>
                                     </div>

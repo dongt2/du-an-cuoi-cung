@@ -4,14 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Review extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
+
 
     protected $table = 'reviews';
 
     protected $primaryKey = 'review_id';
+
+    protected $dates = [
+        'deleted_at',
+    ];
 
     protected $fillable = [
         'movie_id',
@@ -19,6 +25,7 @@ class Review extends Model
         'review_date',
         'review_time',
         'comment',
+        'deleted_at',
     ];
 
     public function movie()

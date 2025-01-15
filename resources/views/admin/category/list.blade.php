@@ -30,9 +30,6 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                {{-- <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
-                </div> --}}
             </div>
 
             <!-- Datatables  -->
@@ -43,7 +40,9 @@
                         <div class="card-header">
                             <h5 class="card-title mb-0"><strong>Danh sách thể loại</strong></h5>
                         </div><!-- end card header -->
-
+                        <div class="mb-3 mt-3" style="margin-left:20px">
+                            <a href="{{ url('admin/category/trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>
@@ -51,6 +50,7 @@
                                         <th>#</th>
                                         <th>Tên thể loại</th>
                                         <th>Tổng Thể Loại</th>
+                                        <th>Trạng Thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -60,18 +60,25 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->category_name }}</td>
                                             <td>{{ $item->movies()->count() }}</td>
+                                            <td>
+                                                @if ($item->trashed())
+                                                    <span class="text-danger">Đã xóa</span>
+                                                @else
+                                                    <span class="text-success">Còn hoạt động</span>
+                                                @endif
+                                            </td>
                                             <td class="d-flex gap-2">
                                                 <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                    class="btn btn-warning d-inline"><i
-                                                        class="fa-solid fa-pen-to-square"></i></a>
+                                                    class="btn btn-warning d-inline" data-bs-toggle="tooltip"
+                                                    title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <form action="{{ route('admin.category.destroy', $item->category_id) }}"
                                                     method="post" class="d-inline"
                                                     id="delete-form-{{ $item->category_id }}">
                                                     @csrf
                                                     @method('delete')
                                                     <button type="button" data-id="{{ $item->category_id }}"
-                                                        class="btn btn-danger delete-button"><i
-                                                            class="fa-solid fa-trash-can"></i></button>
+                                                        class="btn btn-danger delete-button" data-bs-toggle="tooltip"
+                                                        title="Xóa"><i class="fa-solid fa-trash-can"></i></button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -98,7 +105,7 @@
                 const userId = this.getAttribute('data-id');
                 Swal.fire({
                     title: 'Bạn có chắc chắn?',
-                    text: "Người dùng này sẽ bị xóa vĩnh viễn!",
+                    text: "Thể loại này sẽ được xóa",
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
@@ -113,6 +120,10 @@
             });
         });
 
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
     </script>
 
     <!-- Datatables js -->

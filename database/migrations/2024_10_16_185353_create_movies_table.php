@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('release_date');
             $table->string('cover_image')->nullable();
             $table->string('trailer_url', 255)->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

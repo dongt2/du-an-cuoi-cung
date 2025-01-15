@@ -21,6 +21,7 @@ class Booking extends Model
         'showtime_date',
         'showtime_time',
         'total_price',
+        'quantity_combo',
 
         'combo_id',
         'voucher_id',
@@ -47,7 +48,7 @@ class Booking extends Model
     }
     public function voucher()
     {
-        return $this->belongsTo(Combo::class, 'voucher_id', 'voucher_id');
+        return $this->belongsTo(Voucher::class, 'voucher_id', 'voucher_id');
     }
 
 }

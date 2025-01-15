@@ -9,6 +9,9 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    /**
+     * @var \Illuminate\Support\HigherOrderCollectionProxy|int|mixed
+     */
     protected $primaryKey = 'ticket_id';
 
     protected $fillable = [

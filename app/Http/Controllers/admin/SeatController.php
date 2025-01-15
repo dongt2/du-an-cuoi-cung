@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\seat;
 use App\Models\screen;
 use App\Models\Showtime;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SeatController extends Controller
@@ -19,7 +20,14 @@ class SeatController extends Controller
             return redirect()->route('admin.seat.index', ['showtime' => 0]);
         }
 
-        $showtimes = Showtime::with(['movie', 'screen'])->get();
+        $showtimes = Showtime::with(['movie', 'screen'])
+            ->whereRaw(
+                "CONCAT(showtime_date, ' ', time) > ?",
+                [Carbon::now('Asia/Ho_Chi_Minh')->addMinutes(15)]
+            )
+            ->orderBy('showtime_date')
+            ->orderBy('time')
+            ->get();
         $showtime_id = $request->input('showtime');
 
         // Lấy tất cả các ghế đã có trong cơ sở dữ liệu

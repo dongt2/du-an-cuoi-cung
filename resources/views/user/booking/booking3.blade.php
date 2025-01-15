@@ -177,28 +177,29 @@
             <div class="checkout-wrapper">
                 <div class="container mt-5">
                     <h2 class="page-heading">Combo</h2>
-                    <div class="btn btn--warning btn-md" id="buyComboBtn">Mua combo</div>
+                    <div class="btn btn--warning btn-md" id="buyComboBtn">Chọn combo tại đây!!!</div>
                 </div>
 
                 <!-- Modal -->
                 <div id="comboModal" class="modal">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <p style="padding-top: 20px; font-size: 24px;">Combo</p>
+                            <p style="padding-top: 20px; font-size: 24px; color:azure">Combo</p>
                         </div>
                         <div class="modal-body">
                             @foreach ($combos as $item)
+                                <div style="display: flex;">
+                                    <img src="{{ Storage::url($item->image) }}" alt="Hình ảnh combo"
+                                         style="flex: 1; padding-right: 5px; max-width: 150px;">
+                                    <div style="flex: 3;">
+                                        <strong style="font-size: 18px;">{{ $item->combo_name }} -
+                                            {{ number_format($item->price) }} VNĐ</strong>
+                                        <p>{!! $item->short_description !!}</p>
+                                        <input type="number" class="combo-quantity" data-price="{{ $item->price }}"
+                                               data-combo-id="{{ $item->combo_id }}" value="0" min="0"
+                                               max="7">
 
-                                <div class="combo-container">
-                                    <input type="hidden" name="combo_id" value="{{ $item->combo_id }}">
-                                    <img src="{{ Storage::url($item->image) }}"
-                                         alt="Combo Image" class="combo-image" width="80px">
-                                    <div class="combo-details">
-                                        <strong class="combo-title">
-                                            {{ $item->combo_name ?? 'Unknown' }} - {{ $item->price ? number_format($item->price) : 'N/A' }} VNĐ
-                                        </strong>
-                                        <p>{!! $item->short_description ?? 'No description available.' !!}</p>
-                                        <input type="number" class="combo-quantity" data-price="{{ $item->price }}" data-combo-id="{{ $item->combo_id }}" value="0" min="0" max="{{ $item->max_quantity ?? 10 }}" aria-label="Quantity for {{ $item->combo_name }}" aria-describedby="combo-{{ $item->combo_id }}">
+                                        <span style="float: right">Số lượng còn lại: {{ $item->quantity }}</span>
                                     </div>
                                 </div>
                                 <hr>
@@ -206,7 +207,7 @@
                         </div>
                         <div class="modal-footer">
                             <div class="price">Tổng cộng: <span id="price-combo">0 VNĐ</span></div>
-                            <button class="btn btn-success" id="confirmCombos" onclick="getPriceCombo()" disabled>Xác nhận</button>
+                            <button class="btn btn-success" onclick="getPriceCombo()">Xác nhận</button>
                         </div>
                     </div>
                 </div>
@@ -214,7 +215,7 @@
                 <h2 class="page-heading" style="clear: both;">Voucher</h2>
                 <div class="container" style="float: left; max-width: 600px;">
 
-                    <div class="input-group">
+                    <div class="input-group" style="display: flex; gap: 3px">
                         @if(session('booking.voucher_code') != null)
                         <input type="text" name="voucher" id="voucher" value="{{ session('booking.voucher_code') }}"
                             placeholder="Nhập mã giảm giá" class="voucher" disabled>
@@ -225,7 +226,38 @@
                                    placeholder="Nhập mã giảm giá" class="voucher">
                             <button id="submit-voucher" class="btn btnVoucher"> Xác nhận </button>
                         @endif
+                            <div class="btn btn--warning btn-md" id="showVoucherBtn">Nhận mã giảm giá tại đây !!!</div>
 
+                            <div id="voucherModal" class="modal">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <p style="padding-top: 20px; font-size: 24px;">Voucher</p>
+                                    </div>
+                                    <div class="modal-body">
+                                        @foreach($voucher as $item)
+                                            <div class="combo-container">
+                                                <input type="hidden" name="voucher_id" value="{{ $item->id }}">
+
+                                                <div class="combo-details">
+                                                    <p>{{$item->voucher_name}}</p>
+
+                                                    <strong class="combo-title">
+                                                        <span style="color: darkred">{{ $item->code }}</span> - Giảm ngay {{ $item-> deduct_amount }}%
+                                                    </strong>
+                                                    <p>
+                                                        Ngày bắt đầu từ {{ $item->start_date->format('d-m-Y') }} đến {{ $item->end_date->format('d-m-Y') }}<span style="text-align: end; display: inherit">Số lượng chỉ còn {{ $item->quantity }}</span>
+                                                    </p>
+                                                    <button style="display: inherit; text-align: end" class="copy-button" data-code="{{ $item->code }}">Copy</button>
+                                                </div>
+                                            </div>
+                                            <hr>
+
+                                        @endforeach
+                                    </div>
+                                    <div class="modal-footer">
+                                    </div>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <br>
@@ -237,7 +269,7 @@
                     <li class="book-result__item">Phòng chiếu: <span
                             class="book-result__count booking-price">{{ $screen_name }}</span></li>
                     <li class="book-result__item">Ngày chiếu: <span
-                            class="book-result__count booking-price">{{ session('booking.showtime_date') }}</span></li>
+                            class="book-result__count booking-price">{{ \Carbon\Carbon::parse(session('booking.showtime_date'))->format('d-m-Y') }}</span></li>
                     <li class="book-result__item">Giờ chiếu: <span
                             class="book-result__count booking-price">{{ session('booking.showtime_time') }}</span></li>
                     <li class="book-result__item">Ghế:
@@ -258,7 +290,7 @@
                             VNĐ</span></li>
 
                     <li class="book-result__item">Giảm giá voucher: <span
-                            class="book-result__count booking-cost price-combo">{{ number_format(session('booking.price_voucher'), 0, ',', '.') }}
+                            class="book-result__count booking-cost price-combo"><del>{{ number_format(session('booking.price_voucher'), 0, ',', '.') }}</del>
                             VNĐ</span></li>
 
                     @php
@@ -306,15 +338,49 @@
 
 @section('script')
     <script>
-        const modal = document.getElementById("comboModal");
+        document.addEventListener('DOMContentLoaded', function() {
+            // Attach event listener to all copy buttons
+            document.querySelectorAll('.copy-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Get the voucher code from the data attribute
+                    const code = this.getAttribute('data-code');
+
+                    // Use the Clipboard API to copy the code
+                    navigator.clipboard.writeText(code).then(() => {
+                        alert('Mã voucher đã được sao chép: ' + code);
+                    }).catch(err => {
+                        console.error('Không thể sao chép mã voucher:', err);
+                        alert('Không thể sao chép mã voucher. Vui lòng thử lại.');
+                    });
+                });
+            });
+        });
+
+
+
+
+        // Combo Modal
+        const comboModal = document.getElementById("comboModal");
         const buyComboBtn = document.getElementById("buyComboBtn");
 
-        // Mở modal
-        buyComboBtn.addEventListener("click", () => modal.style.display = "block");
+        // Open the combo modal
+        buyComboBtn.addEventListener("click", () => comboModal.style.display = "block");
 
-        // Đóng modal khi bấm ngoài modal
+        // Close the combo modal when clicking outside it
         window.addEventListener("click", event => {
-            if (event.target === modal) modal.style.display = "none";
+            if (event.target === comboModal) comboModal.style.display = "none";
+        });
+
+        // Voucher Modal
+        const voucherModal = document.getElementById("voucherModal");
+        const showVoucherBtn = document.getElementById("showVoucherBtn");
+
+        // Open the voucher modal
+        showVoucherBtn.addEventListener("click", () => voucherModal.style.display = "block");
+
+        // Close the voucher modal when clicking outside it
+        window.addEventListener("click", event => {
+            if (event.target === voucherModal) voucherModal.style.display = "none";
         });
 
         // Cập nhật tổng giá
@@ -322,35 +388,28 @@
             input.addEventListener('input', updateTotalPrice)
         );
 
+        function validateQuantity(input) {
+            const max = parseInt(input.max) || 7; // Lấy giá trị max từ thuộc tính `max`
+            const value = parseInt(input.value) || 0;
+
+            if (value < 0 || isNaN(value)) {
+                input.value = 0; // Đặt giá trị về 0 nếu nhỏ hơn 0 hoặc không hợp lệ
+            } else if (value > max) {
+                input.value = max; // Đặt giá trị về max nếu vượt quá giá trị tối đa
+            }
+        }
+
         function updateTotalPrice() {
-            const MAX_COMBOS = 8; // Total limit
+            document.querySelectorAll('.combo-quantity').forEach(input => validateQuantity(input));
 
-            let totalCombos = 0;
-            let valid = true;
-
-            // Calculate the total number of combos selected
             const price_combo = [...document.querySelectorAll('.combo-quantity')].reduce((sum, input) => {
                 const quantity = parseInt(input.value) || 0;
-
-                // Increment the total selected combos
-                totalCombos += quantity;
-
-                if (totalCombos > MAX_COMBOS) {
-                    alert(`You can only select a maximum of ${MAX_COMBOS} combos per ticket.`);
-                    input.value = quantity - 1; // Reset the last invalid update
-                    valid = false; // Prevent further actions
-                }
-
                 const price = parseFloat(input.dataset.price) || 0;
-                return valid ? sum + (quantity * price) : sum;
+                return sum + (quantity * price);
             }, 0);
 
-            // Update the total price display
-            document.getElementById('price-combo').textContent = new Intl.NumberFormat('vi-VN').format(price_combo) + ' VNĐ';
-
-            // If needed, disable the confirm button while the limit is breached
-            const confirmButton = document.querySelector('.btn-success');
-            confirmButton.disabled = totalCombos > MAX_COMBOS;
+            document.getElementById('price-combo').textContent = new Intl.NumberFormat('vi-VN').format(price_combo) +
+                ' VNĐ';
         }
 
         function getPriceCombo() {
@@ -397,7 +456,7 @@
                     type: 'POST',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        voucher: voucherCode
+                        voucher: voucherCode,
                     },
                     success: function(response) {
                         if (response.success) {

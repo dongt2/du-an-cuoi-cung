@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('screens', function (Blueprint $table) {
             $table->bigIncrements('screen_id');
             $table->string('screen_name', 255);
+
+            $table->softDeletes();
             $table->timestamps();
         });
     }

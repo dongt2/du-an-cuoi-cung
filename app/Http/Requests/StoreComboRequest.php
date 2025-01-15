@@ -37,7 +37,6 @@ class StoreComboRequest extends FormRequest
             'short_description' => [
                 'nullable',
                 'string',
-                'max:500',
             ],
             'price' => [
                 'required',
@@ -48,7 +47,7 @@ class StoreComboRequest extends FormRequest
 
     public function messages(){
         return [
-            'combo_name.required' => 'Trường không được bỏ trống',
+            'combo_name.required' => 'Trường combo không được bỏ trống',
             'combo_name.string' => 'Phải là chuỗi ký tự',
             'combo_name.max' => 'Max 255',
             'combo_name.unique' => 'Đã tồn tại trong CSDL',
@@ -60,7 +59,6 @@ class StoreComboRequest extends FormRequest
 
             'short_description.nullable'  => 'Có thể bỏ trống',
             'short_description.string'  => 'Phải là chuỗi ký tự',
-            'short_description.max'  => 'Max 255',
 
             'price.required' => 'Trường không thể bỏ trống',
             'price.decimal' => 'Lấy 0 số thập phân',

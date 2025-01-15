@@ -4,10 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Movie extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+
+    protected $dates = [
+        'deleted_at',
+    ];
+    protected $casts = [
+        'release_date' => 'date',
+    ];
 
     protected $table = 'movies';
 
@@ -22,6 +30,7 @@ class Movie extends Model
         'release_date',
         'cover_image',
         'trailer_url',
+        'deleted_at',
     ];
 
     public function category()
@@ -46,7 +55,8 @@ class Movie extends Model
 
     public function showtimes()
     {
-        return $this->hasMany(Showtime::class);
+        // Define the correct foreign key and local key
+        return $this->hasMany(Showtime::class, 'movie_id', 'movie_id');
     }
 
     public function reviews()

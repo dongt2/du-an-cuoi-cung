@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo link-->
         <a href='{{ route('home') }}' class="logo">
-            <img alt='logo' src="{{ asset('images/logo.png') }}">
+            <p class="heading-special--small" style="color: white; font-size: 25px">Phimmoi</p>
         </a>
 
         <!-- Main website navigation-->
@@ -34,13 +34,8 @@
                 </li>
                 <li>
                     <span class="sub-nav-toggle plus"></span>
-                    <a href="page-elements.html">Các bước đặt phòng</a>
-                    <ul>
-                        <li class="menu__nav-item"><a href="{{ route('user.booking1') }}">Booking step 1</a></li>
-                        <li class="menu__nav-item"><a href="{{ route('user.booking2') }}">Booking step 2</a></li>
-                        <li class="menu__nav-item"><a href="{{ route('user.booking3') }}">Booking step 3</a></li>
-                        <li class="menu__nav-item"><a href="book-final.html">Final ticket view</a></li>
-                    </ul>
+                    <a href="{{ route('instruction.stepfinal') }}">Các bước đặt phòng</a>
+
                 </li>
                 {{-- <li>
                     <span class="sub-nav-toggle plus"></span>

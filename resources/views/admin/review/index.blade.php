@@ -2,21 +2,21 @@
 
 @section('title')
     @parent
-    Movie
+    Bình Luận
 @endsection
 
 @push('style')
     <!-- Datatables css -->
     <link href="{{ asset('assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-keytable-bs5/css/keyTable.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
     <link href="{{ asset('assets/libs/datatables.net-select-bs5/css/select.bootstrap5.min.css') }}" rel="stylesheet"
-        type="text/css" />
+          type="text/css" />
 @endpush
 
 @section('content')
@@ -26,16 +26,6 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Category</h4>
-                </div>
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Tables</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Datatables  -->
@@ -44,40 +34,48 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách thể loại</h5>
+                            <h5 class="card-title mb-0"><strong>Danh sách bình luận</strong></h5>
                         </div><!-- end card header -->
-
+                        <div class="mb-3 mt-3" style="margin-left: 20px">
+                            <a href="{{ route('admin.review.trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Tên thể loại</th>
-                                        <th>Tổng Thể Loại</th>
-                                        <th>Hành động</th>
-                                    </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Tên người dùng</th>
+                                    <th>Tên phim</th>
+                                    <th>Nội Dung</th>
+                                    <th>Ngày bình luận</th>
+                                    <th>Giờ bình luận</th>
+                                    <th>Số sao</th>
+                                    <th>Hành động</th>
+                                </tr>
                                 </thead>
-                                {{-- <tbody>
-                                    @foreach ($data as $item)
-                                        <tr>
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->category_name }}</td>
-                                            <td>{{ $item->movies()->count() }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.category.edit', $item->category_id) }}"
-                                                    class="btn btn-warning d-inline">Sửa</a>
-                                                <form action="{{ route('admin.category.destroy', $item->category_id) }}"
-                                                    method="post" class="d-inline">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="btn btn-danger"
+                                <tbody>
+                                @foreach ($review as $item)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->user->username }}</td>
+                                        <td>{{ $item->movie->title }}</td>
+                                        <td>{{ $item->comment }}</td>
+                                        <td>{{ $item->review_date }}</td>
+                                        <td>{{ $item->review_time }}</td>
+                                        <td>{{ $item->rating }}</td>
+                                        <td>
+                                            <form action="{{ route('admin.review.destroy', $item->review_id) }}"
+                                                  method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-danger"
                                                         style="padding: 0.335rem 0.7rem; line-height: 1.5;"
                                                         onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody> --}}
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
                             </table>
                         </div>
 

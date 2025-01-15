@@ -21,6 +21,23 @@
             </div>
 
             <div class="row">
+                <!-- Revenue Statistics -->
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Revenue Statistics</h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Revenue Charts -->
+                            <div id="daily-revenue-chart"></div>
+                            <div id="weekly-revenue-chart" class="mt-4"></div>
+                            <div id="monthly-revenue-chart" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <!-- Best-Selling Movies -->
                 <div class="col-md-4">
                     <div class="card">
@@ -88,6 +105,8 @@
 
 @push('script')
     <script>
+
+
         document.addEventListener("DOMContentLoaded", function () {
             // Best-Selling Movies Chart
             var moviesChartOptions = {
@@ -136,6 +155,95 @@
             };
             var screeningsChart = new ApexCharts(document.querySelector("#most-purchased-screenings-chart"), screeningsChartOptions);
             screeningsChart.render();
+
+            var dailyRevenueChartOptions = {
+                series: [{
+                    name: 'Revenue',
+                    data: @json($dailyRevenue->pluck('total_revenue')->toArray())
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350
+                },
+                xaxis: {
+                    categories: @json($dailyRevenue->pluck('date')->toArray()),
+                    title: {
+                        text: 'Date'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Doanh thu (₫)' // Change unit to Vietnam Dong
+                    },
+                    labels: {
+                        formatter: function (value) { // Formatter for custom labeling
+                            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                        }
+                    }
+                }
+            };
+            var dailyRevenueChart = new ApexCharts(document.querySelector("#daily-revenue-chart"), dailyRevenueChartOptions);
+            dailyRevenueChart.render();
+
+// Weekly Revenue Chart
+            var weeklyRevenueChartOptions = {
+                series: [{
+                    name: 'Revenue',
+                    data: @json($weeklyRevenue->pluck('total_revenue')->toArray())
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                xaxis: {
+                    categories: @json($weeklyRevenue->pluck('week')->toArray()),
+                    title: {
+                        text: 'Week (YearWeek Format)'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Doanh thu (₫)' // Change unit to Vietnam Dong
+                    },
+                    labels: {
+                        formatter: function (value) { // Formatter for custom labeling
+                            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                        }
+                    }
+                }
+            };
+            var weeklyRevenueChart = new ApexCharts(document.querySelector("#weekly-revenue-chart"), weeklyRevenueChartOptions);
+            weeklyRevenueChart.render();
+
+// Monthly Revenue Chart
+            var monthlyRevenueChartOptions = {
+                series: [{
+                    name: 'Revenue',
+                    data: @json($monthlyRevenue->pluck('total_revenue')->toArray())
+                }],
+                chart: {
+                    type: 'line',
+                    height: 350
+                },
+                yaxis: {
+                    title: {
+                        text: 'Doanh thu (₫)' // Change unit to Vietnam Dong
+                    },
+                    labels: {
+                        formatter: function (value) { // Formatter for custom labeling
+                            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+                        }
+                    }
+                },
+                {{--xaxis: {--}}
+                {{--    categories: @json($monthlyRevenue->map(function($r){ return $r->year . '-' . str_pad($r->month, 2, '0', STR_PAD_LEFT); })->toArray()),--}}
+                {{--    title: {--}}
+                {{--        text: 'Month'--}}
+                {{--    }--}}
+                {{--}--}}
+            }
+            var monthlyRevenueChart = new ApexCharts(document.querySelector("#monthly-revenue-chart"), monthlyRevenueChartOptions);
+            monthlyRevenueChart.render();
         });
     </script>
 

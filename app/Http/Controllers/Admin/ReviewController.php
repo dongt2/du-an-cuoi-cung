@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
@@ -12,7 +13,9 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        return view('admin.review.index');
+        $review = Review::all();
+
+        return view('admin.review.index', compact('review'));
     }
 
     /**
@@ -60,6 +63,39 @@ class ReviewController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $review = Review::findOrFail($id);
+
+        $review->delete();
+
+        if($review){
+            toastr()->success('Thao tác thành công');
+        }
+
+        return redirect()->route('admin.review.index');
+    }
+
+    public function trashed()
+    {
+        $review = Review::onlyTrashed()->get();
+
+        return view('admin.review.trashed', compact('review'));
+    }
+
+    public function restore(string $id)
+    {
+        $review = Review::withTrashed()->findOrFail($id);
+
+        $review->restore();
+
+        return redirect()->route('admin.review.index')->with('success', 'Khôi phục dữ liệu thành công');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $review = Review::withTrashed()->findOrFail($id);
+
+        $review->forceDelete();
+
+        return redirect()->route('admin.review.index')->with('success', 'Đã xóa thành công');
     }
 }

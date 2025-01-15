@@ -30,7 +30,9 @@ class MovieController extends Controller
     public function create()
     {
         $data = Category::all();
+
         $actor = Actor::all();
+
         $director = Director::all();
 
         return view('admin.movie.create', compact('data', 'actor', 'director'));
@@ -64,17 +66,11 @@ class MovieController extends Controller
 
         $movie = Movie::create($data);
 
-        // MovieCategory::create([
-        //     'movie_id' => $movie->movie_id,
-        //     'category_id' => $request->categories,
-        // ]);
-
         $movie->categories()->sync($request->categories);
 
-        // dd(vars: $movie);
         $movie->actors()->sync($request->actors);
+
         $movie->directors()->sync($request->directors);
-        // dd($movie);
 
         return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
     }
@@ -84,14 +80,14 @@ class MovieController extends Controller
      */
     public function show(string $id)
     {
-        // Lấy dữ liệu của phim cần chỉnh sửa, kèm theo các mối quan hệ (categories, actors, directors)
         $data = Movie::with(['categories', 'actors', 'directors'])->findOrFail($id);
 
-        // Lấy toàn bộ danh sách thể loại, diễn viên, đạo diễn để hiển thị trong form
-        $category = Category::all(); // Danh sách thể loại
-        $actor = Actor::all();       // Danh sách diễn viên
-        $director = Director::all(); // Danh sách đạo diễn
-        //dd($data, $category, $actor, $director);
+        $category = Category::all();
+
+        $actor = Actor::all();
+
+        $director = Director::all();
+
         return view('admin.movie.show', compact('data', 'category', 'actor', 'director'));
     }
 
@@ -100,14 +96,14 @@ class MovieController extends Controller
      */
     public function edit(string $id)
     {
-        // Lấy dữ liệu của phim cần chỉnh sửa, kèm theo các mối quan hệ (categories, actors, directors)
         $data = Movie::with(['categories', 'actors', 'directors'])->findOrFail($id);
 
-        // Lấy toàn bộ danh sách thể loại, diễn viên, đạo diễn để hiển thị trong form
-        $category = Category::all(); // Danh sách thể loại
-        $actor = Actor::all();       // Danh sách diễn viên
-        $director = Director::all(); // Danh sách đạo diễn
-        //dd($data, $category, $actor, $director);
+        $category = Category::all();
+
+        $actor = Actor::all();
+
+        $director = Director::all();
+
         return view('admin.movie.edit', compact('data', 'category', 'actor', 'director'));
     }
 
@@ -149,8 +145,8 @@ class MovieController extends Controller
 
         $movie->categories()->sync($request->categories);
 
-        // dd(vars: $movie);
         $movie->actors()->sync($request->actors);
+
         $movie->directors()->sync($request->directors);
 
         return redirect()->route('admin.movie.index')->with('success', 'Thao tác thành công');
@@ -172,4 +168,35 @@ class MovieController extends Controller
         return back();
 
     }
+
+    public function trashed(){
+
+        $data = Movie::with('categories', 'actors', 'directors')->onlyTrashed()->get();
+
+        return view('admin.movie.trashed', compact('data'));
+    }
+
+    public function restore(string $id)
+    {
+        $movie = Movie::with(['categories', 'actors', 'directors'])->withTrashed()->findOrFail($id);
+
+        $movie->restore();
+
+        if($movie){
+            toastr()->success('Khôi phục dữ liệu thành công');
+        }
+        return redirect()->route('admin.movie.index');
+
+    }
+
+    public function forceDelete(string $id)
+    {
+        $movie = Movie::with(['categories', 'actors', 'directors'])->withTrashed()->findOrFail($id);
+
+        $movie->forceDelete();
+
+        return redirect()->route('admin.movie.index')->with('success', 'Xóa dữ liệu thành công');
+
+    }
+
 }

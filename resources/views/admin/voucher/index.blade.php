@@ -26,16 +26,6 @@
         <div class="container-xxl">
 
             <div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
-                <div class="flex-grow-1">
-                    <h4 class="fs-18 fw-semibold m-0">Voucher</h4>
-                </div>
-
-                {{-- <div class="text-end">
-                    <ol class="breadcrumb m-0 py-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
-                        <li class="breadcrumb-item active">Data Tables</li>
-                    </ol>
-                </div> --}}
             </div>
 
             <!-- Datatables  -->
@@ -44,9 +34,11 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Danh sách mã giảm giá</h5>
+                            <h5 class="card-title mb-0"><strong>Danh sách mã giảm giá</strong></h5>
                         </div><!-- end card header -->
-
+                        <div class="mb-3 mt-3" style="margin-left: 20px">
+                            <a href="{{ route('admin.voucher.trashed') }}" class="btn btn-danger">Thùng rác</a>
+                        </div>
                         <div class="card-body">
                             <table id="datatable" class="table table-bordered dt-responsive table-responsive nowrap">
                                 <thead>

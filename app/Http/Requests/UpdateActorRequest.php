@@ -24,22 +24,34 @@ class UpdateActorRequest extends FormRequest
     {
         return [
             'actor_name' => [
-                'required',
-                'string',
-                'max:255',
-                'regex:/^[\pL\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
-                Rule::unique('actors', 'actor_name')->ignore($this->route('actor'), 'id'),
+                'required',                     // Bắt buộc phải nhập
+                'string',                       // Phải là chuỗi ký tự
+                'max:255',                      // Độ dài tối đa 255 ký tự
+                'min:3',                        // Độ dài tối thiểu 3 ký tự
+                'regex:/^[\pL\s\'\-]+$/u',      // Chỉ cho phép chữ cái, khoảng trắng, dấu nháy đơn, dấu gạch ngang
+                Rule::unique('actors', 'actor_name')->ignore($this->route('actor'), 'id'), // Kiểm tra tính duy nhất
             ],
         ];
     }
 
-    public function messages(){
+    public function messages(): array
+    {
         return [
-            'actor_name.required' => 'Tên thể loại không được bỏ trống',
-            'actor_name.string' => 'Tên thể loại phải là chuỗi ký tự.',
-            'actor_name.max' => 'Tên thể loại không được vượt quá 255 ký tự.',
-            'actor_name.regex' => 'Tên thể loại không được chứa ký tự đặc biệt.',
-            'actor_name.unique' => 'Tên thể loại đã tồn tại.', // Thông báo lỗi khi bị trùng
+            // Trường bắt buộc
+            'actor_name.required' => 'Tên diễn viên không được để trống.',
+
+            // Kiểu dữ liệu
+            'actor_name.string' => 'Tên diễn viên phải là chuỗi ký tự.',
+
+            // Độ dài
+            'actor_name.max' => 'Tên diễn viên không được vượt quá 255 ký tự.',
+            'actor_name.min' => 'Tên diễn viên phải có ít nhất 3 ký tự.',
+
+            // Định dạng
+            'actor_name.regex' => 'Tên diễn viên chỉ được chứa chữ cái, khoảng trắng, dấu nháy đơn và dấu gạch ngang.',
+
+            // Trùng lặp
+            'actor_name.unique' => 'Tên diễn viên đã tồn tại trong cơ sở dữ liệu.',
         ];
     }
 }

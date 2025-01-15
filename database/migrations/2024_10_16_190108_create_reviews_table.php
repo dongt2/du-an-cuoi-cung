@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('comment', 1000);
             $table->integer('rating');
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }
